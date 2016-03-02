@@ -1,0 +1,100 @@
+{
+  "processes": [
+    {
+      "_id": 10001,
+      "threats": [
+        {
+          "is_controlled": "False",
+          "asset_ids": [],
+          "project_owner": "None",
+          "short_name": "",
+          "score_safety": 0,
+          "score_financial": 0,
+          "score_other": 0,
+          "score_probability": 0,
+          "score_operational": 0,
+          "score_impact": 0,
+          "score_reputation": 0,
+          "score_risk": 0,
+          "project_names": "None",
+          "containers": [
+          ],
+          "score_legal": 0,
+          "_id": 40001,
+          "project_deadline_iso": "None",
+          "action_decided": "False",
+          "threat_lib_reference": "T001"
+        }
+      ],
+      "description": "",
+      "name": "",
+      "assets": [
+        {
+          "criticality_a": "False",
+          "name": "",
+          "criticality_c": "False",
+          "rpo_days": 0,
+          "criticality_i": "False",
+          "rto_days": 0,
+          "owner": "",
+          "_id": 20001,
+          "description": ""
+        }
+      ]
+    }
+  ],
+  "containertypes": [
+    "Physical",
+    "Human",
+    "Technical"
+  ],
+  "Actions": [
+    "Accepter risiko",
+    "Håndter risiko",
+    "Overfør risiko",
+    "Udskyd beslutning"
+  ],
+  "scoreweights": {
+    "score_operational": 2,
+    "score_safety": 3,
+    "score_financial": 1,
+    "score_other": 5,
+    "score_reputation": 4,
+    "score_legal": 0
+  },
+  "containerlib": [
+    {
+      "process_id": 0,
+      "_id": "",
+      "description": "",
+      "name": ""
+    }
+  ],
+  "impact_levels": {
+    "1": "Lav",
+    "2": "Medium",
+    "3": "Høj",
+    "4": "Meget høj"
+  },
+  "threatlib": [
+    {
+      "_id": "",
+      "name": "",
+      "description": ""
+    }
+  ],
+  "controllib": [
+    {
+      "source": "",
+      "_id": "",
+      "name": "",
+      "description": ""
+    }
+  ],
+  "probability_levels": {
+    "1": "Næsten aldrig",
+    "2": "Sjældent",
+    "3": "Hænder",
+    "4": "Ofte"
+  }
+}
