@@ -1,0 +1,15 @@
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+
+<div id ="headline">
+<h1>OpenISMS</h1>
+</div>
+
+<div id="nav">
+<a href="http://127.0.0.1:5000/">Assess risk</a><br>
+<a href="http://127.0.0.1:5000/reports">Report risk</a><br>
+<a href="http://127.0.0.1:5000/configs">Configure</a><br>
+</div>
+
+<div id="section">
+{% block body %}{% endblock %}
+</div>
