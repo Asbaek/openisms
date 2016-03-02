@@ -1,0 +1,1317 @@
+{
+    "processes": [
+        {
+            "threats": [
+                {
+                    "is_controlled": "False", 
+                    "asset_ids": [
+                        20001
+                    ], 
+                    "risk_decision": "Modify", 
+                    "project_owner": "None", 
+                    "short_name": "", 
+                    "score_safety": 1, 
+                    "score_financial": 1, 
+                    "score_other": 1, 
+                    "score_probability": 1, 
+                    "score_operational": 1, 
+                    "score_impact": 27, 
+                    "score_reputation": 4, 
+                    "score_risk": 0.53, 
+                    "project_names": "None", 
+                    "containers": [], 
+                    "score_legal": 1, 
+                    "_id": 40001, 
+                    "project_deadline_iso": "None", 
+                    "action_decided": "False", 
+                    "threat_lib_reference": "T001"
+                }
+            ], 
+            "description": "Test description", 
+            "name": "Test process", 
+            "process_id": "10001", 
+            "_id": 10001, 
+            "assets": [
+                {
+                    "criticality_a": "False", 
+                    "name": "Test data", 
+                    "criticality_c": "True", 
+                    "rpo_days": "0", 
+                    "criticality_i": "False", 
+                    "rto_days": "0", 
+                    "owner": "", 
+                    "_id": 20001, 
+                    "description": "Test"
+                }
+            ]
+        }
+    ], 
+    "containertypes": [
+        "Physical", 
+        "Human", 
+        "Technical"
+    ], 
+    "Actions": [
+        "Accepter risiko", 
+        "H\u00e5ndter risiko", 
+        "Overf\u00f8r risiko", 
+        "Udskyd beslutning"
+    ], 
+    "scoreweights": {
+        "score_operational": 2, 
+        "score_safety": 3, 
+        "score_financial": 1, 
+        "score_other": 5, 
+        "score_reputation": 4, 
+        "score_legal": 0
+    }, 
+    "containerlib": [
+        {
+            "_id": "C001", 
+            "description": "", 
+            "name": "Network appliances"
+        }, 
+        {
+            "_id": "C002", 
+            "description": "", 
+            "name": "Network appliances - Routers"
+        }, 
+        {
+            "_id": "C003", 
+            "description": "", 
+            "name": "Network appliances - Swithces"
+        }, 
+        {
+            "_id": "C004", 
+            "description": "", 
+            "name": "Network appliances - Firewalls"
+        }, 
+        {
+            "_id": "C005", 
+            "description": "", 
+            "name": "Servers - Web External"
+        }, 
+        {
+            "_id": "C006", 
+            "description": "", 
+            "name": "Servers - Database"
+        }, 
+        {
+            "_id": "C007", 
+            "description": "", 
+            "name": "Servers - Infrastructure"
+        }, 
+        {
+            "_id": "C008", 
+            "description": "", 
+            "name": "Servers - Web Internal"
+        }, 
+        {
+            "_id": "C009", 
+            "description": "", 
+            "name": "Servers - Virtualisation infrastructure"
+        }, 
+        {
+            "_id": "C010", 
+            "description": "", 
+            "name": "Servers"
+        }, 
+        {
+            "_id": "C011", 
+            "description": "", 
+            "name": "Laptops - HR"
+        }, 
+        {
+            "_id": "C012", 
+            "description": "", 
+            "name": "Laptops - Finance"
+        }, 
+        {
+            "_id": "C013", 
+            "description": "", 
+            "name": "Laptops - Management"
+        }, 
+        {
+            "_id": "C014", 
+            "description": "", 
+            "name": "Laptops - Operations"
+        }, 
+        {
+            "_id": "C015", 
+            "description": "", 
+            "name": "Laptops - Research & Development"
+        }, 
+        {
+            "_id": "C016", 
+            "description": "", 
+            "name": "Laptops"
+        }, 
+        {
+            "_id": "C017", 
+            "description": "", 
+            "name": "Managers"
+        }, 
+        {
+            "_id": "C018", 
+            "description": "", 
+            "name": "End-users"
+        }, 
+        {
+            "_id": "C019", 
+            "description": "", 
+            "name": "Employees - Operations"
+        }, 
+        {
+            "_id": "C020", 
+            "description": "", 
+            "name": "Employees - Research & Development"
+        }, 
+        {
+            "_id": "C021", 
+            "description": "", 
+            "name": "Employees - Human Resources"
+        }, 
+        {
+            "_id": "C022", 
+            "description": "", 
+            "name": "Employees - Finance"
+        }, 
+        {
+            "_id": "C023", 
+            "description": "", 
+            "name": "Employees"
+        }, 
+        {
+            "_id": "C024", 
+            "description": "", 
+            "name": "Administrators - Servers"
+        }, 
+        {
+            "_id": "C025", 
+            "description": "", 
+            "name": "Administrators - Network"
+        }, 
+        {
+            "_id": "C026", 
+            "description": "", 
+            "name": "Administrators"
+        }, 
+        {
+            "_id": "C027", 
+            "description": "USB keys, flash cards, DVDs or external harddrives", 
+            "name": "Removable media"
+        }, 
+        {
+            "_id": "C028", 
+            "description": "Storage Area Networks and other shared storage", 
+            "name": "Shared storage"
+        }, 
+        {
+            "_id": "C029", 
+            "description": "", 
+            "name": "Printouts"
+        }, 
+        {
+            "_id": "C030", 
+            "description": "", 
+            "name": "Offices"
+        }, 
+        {
+            "_id": "C031", 
+            "description": "", 
+            "name": "Datacenters"
+        }, 
+        {
+            "_id": "C032", 
+            "description": "", 
+            "name": "Safes"
+        }, 
+        {
+            "_id": "C033", 
+            "description": "", 
+            "name": "Private homes"
+        }, 
+        {
+            "_id": "C034", 
+            "description": "", 
+            "name": "Cables"
+        }
+    ], 
+    "impact_levels": {
+        "1": "Lav", 
+        "3": "H\u00f8j", 
+        "2": "Medium", 
+        "4": "Meget h\u00f8j"
+    }, 
+    "threatlib": [
+        {
+            "_id": "T001", 
+            "name": "Malicious Code", 
+            "description": "Use of code to perform unauthorised disclosure, adjustment or destruction"
+        }, 
+        {
+            "_id": "T002", 
+            "name": "Information Gathering", 
+            "description": "Gathering of information about systems, people or facilities"
+        }, 
+        {
+            "_id": "T003", 
+            "name": "Intrusions", 
+            "description": "Unauthorised access to systems, physical documents, or facilities"
+        }, 
+        {
+            "_id": "T004", 
+            "name": "Availablity", 
+            "description": "Unavailability of systems, people, physical documents or facilities"
+        }, 
+        {
+            "_id": "T005", 
+            "name": "Information Content Security", 
+            "description": "Unauthorised adjustment or disclosure of information content"
+        }, 
+        {
+            "_id": "T006", 
+            "name": "Fraud", 
+            "description": "Fraud is deliberate deception to secure unfair or unlawful gain, or to deprive a victim of a legal right."
+        }, 
+        {
+            "_id": "T007", 
+            "name": "Vulnerability", 
+            "description": "Vulnerability refers to the inability (of a system or a unit) to withstand the effects of a hostile environment."
+        }
+    ], 
+    "controllib": [
+        {
+            "source": "NIST", 
+            "_id": "AC-01", 
+            "name": "Access Control Policies and Procedures", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AC-02", 
+            "name": "Account Management", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AC-03", 
+            "name": "Access Enforcement", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AC-04", 
+            "name": "Information Flow Enforcement", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AC-05", 
+            "name": "Separation Of Duties", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AC-06", 
+            "name": "Least Privilege", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AC-07", 
+            "name": "Unsuccessful Login Attempts", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AC-08", 
+            "name": "System Use Notification", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AC-09", 
+            "name": "Previous Logon Notification", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AC-10", 
+            "name": "Concurrent Session Control", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AC-11", 
+            "name": "Session Lock", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AC-12", 
+            "name": "Session Termination", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AC-13", 
+            "name": "Supervision And Review -- Access Control", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AC-14", 
+            "name": "Permitted Actions Without Identification Or Authentication", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AC-15", 
+            "name": "Automated Marking", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AC-16", 
+            "name": "Automated Labeling", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AC-17", 
+            "name": "Remote Access", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AC-18", 
+            "name": "Wireless Access Restrictions", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AC-19", 
+            "name": "Access Control For Portable And Mobile Devices", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AC-20", 
+            "name": "Use Of External Information Systems", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AT-01", 
+            "name": "Security Awareness And Training Policy And Procedures", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AT-02", 
+            "name": "Security Awareness", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AT-03", 
+            "name": "Security Training", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AT-04", 
+            "name": "Security Training Records", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AT-05", 
+            "name": "Contacts With Security Groups And Associations", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AU-01", 
+            "name": "Audit And Accountability Policy And Procedures", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AU-02", 
+            "name": "Auditable Events", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AU-03", 
+            "name": "Content Of Audit Records", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AU-04", 
+            "name": "Audit Storage Capacity", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AU-05", 
+            "name": "Response To Audit Processing Failures", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AU-06", 
+            "name": "Audit Monitoring, Analysis, And Reporting", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AU-07", 
+            "name": "Audit Reduction And Report Generation", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AU-08", 
+            "name": "Time Stamps", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AU-09", 
+            "name": "Protection Of Audit Information", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AU-10", 
+            "name": "Non-Repudiation", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "AU-11", 
+            "name": "Audit Record Retention", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CA-01", 
+            "name": "Certification, Accreditation, And Security Assessment Policies And Procedures", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CA-02", 
+            "name": "Security Assessments", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CA-03", 
+            "name": "Information System Connections", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CA-04", 
+            "name": "Security Certification", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CA-05", 
+            "name": "Plan Of Action And Milestones", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CA-06", 
+            "name": "Security Accreditation", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CA-07", 
+            "name": "Continuous Monitoring", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CM-01", 
+            "name": "Configuration Management Policy And Procedures", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CM-02", 
+            "name": "Baseline Configuration", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CM-03", 
+            "name": "Configuration Change Control", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CM-04", 
+            "name": "Monitoring Configuration Changes", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CM-05", 
+            "name": "Access Restrictions For Change", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CM-06", 
+            "name": "Configuration Settings", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CM-07", 
+            "name": "Least Functionality", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CM-08", 
+            "name": "Information System Component Inventory", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CP-01", 
+            "name": "Contingency Planning Policy And Procedures", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CP-02", 
+            "name": "Contingency Plan", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CP-03", 
+            "name": "Contingency Training", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CP-04", 
+            "name": "Contingency Plan Testing And Exercises", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CP-05", 
+            "name": "Contingency Plan Update", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CP-06", 
+            "name": "Alternate Storage Site", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CP-07", 
+            "name": "Alternate Processing Site", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CP-08", 
+            "name": "Telecommunications Services", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CP-09", 
+            "name": "Information System Backup", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "CP-10", 
+            "name": "Information System Recovery And Reconstitution", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "IA-01", 
+            "name": "Identification And Authentication Policy And Procedures", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "IA-02", 
+            "name": "User Identification And Authentication", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "IA-03", 
+            "name": "Device Identification And Authentication", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "IA-04", 
+            "name": "Identifier Management", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "IA-05", 
+            "name": "Authenticator Management", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "IA-06", 
+            "name": "Authenticator Feedback", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "IA-07", 
+            "name": "Cryptographic Module Authentication", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "IR-01", 
+            "name": "Incident Response Policy And Procedures", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "IR-02", 
+            "name": "Incident Response Training", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "IR-03", 
+            "name": "Incident Response Testing And Exercises", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "IR-04", 
+            "name": "Incident Handling", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "IR-05", 
+            "name": "Incident Monitoring", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "IR-06", 
+            "name": "Incident Reporting", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "IR-07", 
+            "name": "Incident Response Assistance", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "MA-01", 
+            "name": "System Maintenance Policy And Procedures", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "MA-02", 
+            "name": "Controlled Maintenance", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "MA-03", 
+            "name": "Maintenance Tools", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "MA-04", 
+            "name": "Remote Maintenance", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "MA-05", 
+            "name": "Maintenance Personnel", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "MA-06", 
+            "name": "Timely Maintenance", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "MP-01", 
+            "name": "Media Protection Policy And Procedures", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "MP-02", 
+            "name": "Media Access", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "MP-03", 
+            "name": "Media Labeling", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "MP-04", 
+            "name": "Media Storage", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "MP-05", 
+            "name": "Media Transport", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "MP-06", 
+            "name": "Media Sanitization And Disposal", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PE-01", 
+            "name": "Physical And Environmental Protection Policy And Procedures", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PE-02", 
+            "name": "Physical Access Authorizations", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PE-03", 
+            "name": "Physical Access Control", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PE-04", 
+            "name": "Access Control For Transmission Medium", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PE-05", 
+            "name": "Access Control For Display Medium", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PE-06", 
+            "name": "Monitoring Physical Access", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PE-07", 
+            "name": "Visitor Control", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PE-08", 
+            "name": "Access Records", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PE-09", 
+            "name": "Power Equipment And Power Cabling", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PE-10", 
+            "name": "Emergency Shutoff", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PE-11", 
+            "name": "Emergency Power", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PE-12", 
+            "name": "Emergency Lighting", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PE-13", 
+            "name": "Fire Protection", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PE-14", 
+            "name": "Temperature And Humidity Controls", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PE-15", 
+            "name": "Water Damage Protection", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PE-16", 
+            "name": "Delivery And Removal", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PE-17", 
+            "name": "Alternate Work Site", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PE-18", 
+            "name": "Location Of Information System Components", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PE-19", 
+            "name": "Information Leakage", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PL-01", 
+            "name": "Security Planning Policy And Procedures", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PL-02", 
+            "name": "System Security Plan", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PL-03", 
+            "name": "System Security Plan Update", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PL-04", 
+            "name": "Rules Of Behavior", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PL-05", 
+            "name": "Privacy Impact Assessment", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PL-06", 
+            "name": "Security-Related Activity Planning", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PS-01", 
+            "name": "Personnel Security Policy And Procedures", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PS-02", 
+            "name": "Position Categorization", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PS-03", 
+            "name": "Personnel Screening", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PS-04", 
+            "name": "Personnel Termination", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PS-05", 
+            "name": "Personnel Transfer", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PS-06", 
+            "name": "Access Agreements", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PS-07", 
+            "name": "Third-Party Personnel Security", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "PS-08", 
+            "name": "Personnel Sanctions", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "RA-01", 
+            "name": "Risk Assessment Policy And Procedures", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "RA-02", 
+            "name": "Security Categorization", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "RA-03", 
+            "name": "Risk Assessment", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "RA-04", 
+            "name": "Risk Assessment Update", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "RA-05", 
+            "name": "Vulnerability Scanning", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SA-01", 
+            "name": "System And Services Acquisition Policy And Procedures", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SA-02", 
+            "name": "Allocation Of Resources", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SA-03", 
+            "name": "Life Cycle Support", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SA-04", 
+            "name": "Acquisitions", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SA-05", 
+            "name": "Information System Documentation", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SA-06", 
+            "name": "Software Usage Restrictions", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SA-07", 
+            "name": "User Installed Software", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SA-08", 
+            "name": "Security Engineering Principles", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SA-09", 
+            "name": "External Information System Services", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SA-10", 
+            "name": "Developer Configuration Management", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SA-11", 
+            "name": "Developer Security Testing", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SC-01", 
+            "name": "System And Communications Protection Policy And Procedures", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SC-02", 
+            "name": "Application Partitioning", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SC-03", 
+            "name": "Security Function Isolation", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SC-04", 
+            "name": "Information Remnance", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SC-05", 
+            "name": "Denial Of Service Protection", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SC-06", 
+            "name": "Resource Priority", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SC-07", 
+            "name": "Boundary Protection", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SC-08", 
+            "name": "Transmission Integrity", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SC-09", 
+            "name": "Transmission Confidentiality", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SC-10", 
+            "name": "Network Disconnect", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SC-11", 
+            "name": "Trusted Path", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SC-12", 
+            "name": "Cryptographic Key Establishment And Management", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SC-13", 
+            "name": "Use Of Cryptography", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SC-14", 
+            "name": "Public Access Protections", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SC-15", 
+            "name": "Collaborative Computing", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SC-16", 
+            "name": "Transmission Of Security Parameters", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SC-17", 
+            "name": "Public Key Infrastructure Certificates", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SC-18", 
+            "name": "Mobile Code", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SC-19", 
+            "name": "Voice Over Internet Protocol", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SC-20", 
+            "name": "Secure Name / Address Resolution Service (Authoritative Source)", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SC-21", 
+            "name": "Secure Name / Address Resolution Service (Recursive Or Caching Resolver)", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SC-22", 
+            "name": "Architecture And Provisioning For Name / Address Resolution Service", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SC-23", 
+            "name": "Session Authenticity", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SI-01", 
+            "name": "System And Information Integrity Policy And Procedures", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SI-02", 
+            "name": "Flaw Remediation", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SI-03", 
+            "name": "Malicious Code Protection", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SI-04", 
+            "name": "Information System Monitoring Tools And Techniques", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SI-05", 
+            "name": "Security Alerts And Advisories", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SI-06", 
+            "name": "Security Functionality Verification", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SI-07", 
+            "name": "Software And Information Integrity", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SI-08", 
+            "name": "Spam Protection", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SI-09", 
+            "name": "Information Input Restrictions", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SI-10", 
+            "name": "Information Accuracy, Completeness, Validity, And Authenticity", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SI-11", 
+            "name": "Error Handling", 
+            "description": ""
+        }, 
+        {
+            "source": "NIST", 
+            "_id": "SI-12", 
+            "name": "Information Output Handling And Retention", 
+            "description": ""
+        }
+    ], 
+    "probability_levels": {
+        "1": "N\u00e6sten aldrig", 
+        "3": "H\u00e6nder", 
+        "2": "Sj\u00e6ldent", 
+        "4": "Ofte"
+    }
+}
