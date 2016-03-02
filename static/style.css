@@ -1,0 +1,33 @@
+<style>
+#headline {
+    background-color:#000000;
+    color:#eeeeee;
+    padding:5px;
+}
+#nav {
+    line-height:30px;
+    background-color:#eeeeee;
+    height:300px;
+    width:100px;
+    float:left;
+    padding:5px; 
+}
+#section {
+    width:800px;
+    float:left;
+    padding:10px; 
+}
+#footer {
+    background-color:black;
+    color:white;
+    clear:both;
+    text-align:center;
+    padding:5px; 
+}
+table {
+    border-collapse: collapse;
+}
+table,th,td {
+    border: 1px solid black;
+}
+</style>
