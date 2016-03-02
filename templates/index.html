@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block body %}
+<H3>Processes</H3>
+<form action="/load_process_form" method=GET>
+{% for process in process_list|sort(attribute='name') %}
+<input type="radio" name="process_id" value="{{process._id}}" required > {{process.name}}<br>
+{% endfor %}
+<br>
+<input type=submit name="action" value="New process">
+<input type=submit name="action" value="Update process">
+<input type=submit name="action" value="Delete process">
+</form>
+{% endblock %}
+

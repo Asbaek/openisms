@@ -1,0 +1,128 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<H2>Risk Report</H2>
+
+{% for process in data.processes %}
+
+<H3>Details for {{process.name}}</H3>
+<!-- List all critical information assets and processes -->
+<H4>Critical information</H4>
+<!-- Table have columns: Process | Cr.I.As. | Desr. | Criticality  -->
+<table>
+<tr>
+<td><b>Critical Information</b></td>
+<td><b>Description</b></td>
+<td><b>Confidentiality critical</b></td>
+<td><b>Integrity critical </b></td>
+<td><b>Availability critical </b></td>
+<td><b>RTO</b></td>
+<td><b>RPO</b></td>
+<td><b>Information Owner</b></td>
+</tr>
+  {% for asset in process.assets %}
+      <tr>
+      <td>{{asset.name}}</td>
+      <td>{{asset.description}}</td>
+      <td>{{asset.criticality_c}}</td>
+      <td>{{asset.criticality_i}}</td>
+      <td>{{asset.criticality_a}}</td>
+      <td>{{asset.rto_days}}</td>
+      <td>{{asset.rpo_days}}</td>
+      <td>{{asset.owner}}</td>
+      </tr>
+  {% endfor %}
+</table>
+
+
+
+<!-- Create table of threats, impact, likelihood, and risk per critical asset -->
+<H4> Containers </H4>
+<table>
+<tr>
+<td><b>Container</b></td> 
+<td><b>Critical Information</b></td>
+<td><b>Threats</b></td>
+<td><b>Controls</b></td>
+</tr>
+{% for container in containers %}
+{% if container.process_name==process.name %}
+<tr>
+<td>{{container.name}}</td>
+<td>
+<ul>
+{% for container in container.assets %}
+<li>{{container}}</li>
+{% endfor %}
+</ul>
+</td>
+<td>
+<ul>
+{% for container in container.threats %}
+<li>{{ container }}</li>
+{% endfor %}
+</ul>
+</td>
+<td>
+{% for control in container.controls %}
+{{control}} <br>
+{% endfor%}
+</td>
+</tr>
+{% endif %}
+{% endfor %}
+</table>
+
+
+<!-- Create table of threats, impact, likelihood, and risk per critical asset -->
+<H4> Threats</H4>
+<table>
+<tr>
+<td><b>Threat</b></td> 
+<td><b>Description</b></td>
+<td><b>Affected Information</b></td>
+<td><b>Impact</b></td>
+<td><b>Probability</b></td>
+<td><b>Risk</b></td>
+<td><b>Sufficient Control implemented</b></td>
+</tr>
+  {% for threat in threats|sort(attribute='score_risk',reverse=True)   %}
+  {% if threat.process_name==process.name %}
+      <tr>
+      <td>{{threat.threat_name}}</td>
+      <td>{{threat.threat_description}}</td>
+      <td>
+        <ul>
+	{% for asset in threat.affected_assets %}
+           <li>{{asset}}</li>
+        {% endfor %}
+	</ul>
+      </td>
+      <td>{{threat.score_impact}}</td>
+      <td>{{threat.score_probability}}</td>
+      <td>{{threat.score_risk}}</td>
+      <td>{{threat.is_controlled}}</td>
+      </tr>
+  {% endif %}
+  {% endfor %}
+</table>
+
+<!-- Create table of controls in use for current process -->
+<H4> Control list (aggregated) </H4>
+<table>
+<tr>
+<td><b>Control ID</b></td> 
+<td><b>Control Name</b></td>
+</tr>
+  {% for control in controls  %}
+  {% if control.process_name==process.name %}
+      <tr>
+      <td>{{control._id}}</td>
+      <td>{{control.name}}</td>
+      </tr>
+  {% endif %}
+  {% endfor %}
+</table>
+
+{% endfor %}
+{% endblock %}

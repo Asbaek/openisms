@@ -1,0 +1,439 @@
+{% extends "layout.html" %}
+{% block body %}
+{# FORM TO UPDATE PROCESS DETAILS #}
+<fieldset>
+<form action="/prepare_process_query" method="POST">
+  <input type="hidden" name="process_id" value="{{process_id}}">
+  <H2>Process: {{process_data.name}}</H2>
+  Process ID: {{process_id}} <br>
+  Process name:<input type="text" name="name" value="{{process_data.name}}"><br>
+  Process description: <br><textarea rows="4" name="description" cols=50>
+  {{process_data.description}}
+  </textarea>
+  <br>
+  <input type="submit" name="action" value="Apply process changes">
+</form>
+<form action="/" method="GET">
+  <input type="submit" name="action" value="Back">
+</form>
+</fieldset>
+
+{# FORM TO SELECT ASSET TO UPDATE, ADD OR DELETE #}
+<fieldset>
+{% for asset in process_data.assets %}
+<form action="/prepare_asset_query" method="POST">
+  <H2>Critical Information: {{asset.name}}</H2>
+  <input type="hidden" name="asset_id" value="{{ asset._id }}">
+  Asset ID:{{asset._id}}<br>
+  Asset name: <input type="text" name="name" value="{{asset.name}}"><br>
+  Asset description: <br><textarea rows="4" name="description" cols=50>
+  {{asset.description}}
+  </textarea><br>
+  Owner: <input type="text" name="owner" value="{{asset.owner}}"><br>
+  {% set check_c="" %}
+  {% set check_i="" %}
+  {% set check_a="" %}
+  {% if asset.criticality_c == "True" %} {% set check_c="checked" %} {% endif %}
+  {% if asset.criticality_i == "True" %} {% set check_i="checked" %} {% endif %}
+  {% if asset.criticality_a == "True" %} {% set check_a="checked" %} {% endif %}
+  <input type="checkbox" name="criticality_c" value ="True" {{ check_c }} > Confidentiality critical <br>
+  <input type="checkbox" name="criticality_i" value ="True" {{ check_i }} > Integrity critical <br>
+  <input type="checkbox" name="criticality_a" value ="True" {{ check_a }} > Availability critical <br>
+  Recovery point objective:
+  <select name="rpo_days">
+    <option>{{asset.rpo_days}}</option>
+    {% for element in [1,3,7,14,30,60,90,180,365] %}
+    <option>{{element}} </option>
+    {% endfor %} 
+  </select>
+  <br>
+  Recovery time objective:
+  <select name="rto_days">
+    <option>{{asset.rto_days}}</option>
+    {% for element in [1,3,7,14,30,60,90,180,365] %}
+      <option>{{element}} </option>
+    {% endfor %}
+  </select>
+  <br>
+  <input type="hidden" name="process_id" value="{{ process_id }}">
+  <input type="submit" name="action" value="Apply asset changes">
+</form>
+<hr>
+{% endfor %}
+<form action="/prepare_asset_query" method="POST">
+  <input type="hidden" name="process_id" value="{{ process_id }}">
+  <input type="submit" name="action" value="Add asset">
+</form>
+</fieldset>
+
+
+{# FORM TO SELECT CONTAINER TO UPDATE, ADD OR DELETE 
+<fieldset>
+<H3>Containers in organisation </H3>
+
+<table>
+<tr><td>Id</td><td>Container name</td><td>Container description</td><td>Actions</td></tr>
+{% for container in containerlib %}
+<tr>
+<form action="/prepare_containerlib_query" method="POST">
+  <td>
+    {{container._id}}
+    <input type="hidden" name="_id" value="{{ container._id }}">
+    <input type="hidden" name="process_id" value="{{ process_id }}">
+  </td>
+  <td>
+    <input type="text" name="name" value="{{container.name}}" size="40"><br>
+  </td>
+  <td>
+  <textarea rows="4" name="description" cols=50>
+    {{ container.description }}
+  </textarea><br>
+  </td>
+  <td>
+  <input type="submit" name="action" value="Apply container changes">
+  </td>
+</form>
+</tr>
+{% endfor %}
+</table>
+<form action="/prepare_containerlib_query" method="POST">
+  <input type="submit" name="action" value="Add container">
+</form>
+</fieldset>
+#}
+
+{# FORM TO SELECT THREAT TO UPDATE, ADD OR DELETE #}
+<fieldset>
+
+{% for threat in process_data.threats %}
+  {% for item in threatlib %}
+    {% if item._id == threat.threat_lib_reference %}
+      <form action="prepare_threat_query" method="POST">
+      <input type="hidden" value="{{process_data._id}}" name="process_id" />
+      <H2>Threat: {{item.name}}</H2><br>
+      <b> General description: </b><br>
+        <i>Threat template:</i>
+        <select name="threat_lib_reference">
+        {% for lthreat in threatlib %}
+           {% if lthreat._id == threat.threat_lib_reference %}
+             <option value="{{lthreat._id}}" selected>
+             {{lthreat.name}}
+             </option>
+           {% else %}
+             <option  value="{{lthreat._id}}">
+             {{lthreat.name}}
+             </option>
+           {% endif%}
+        {% endfor %}
+        </select><br>
+        <i>ID:</i> {{threat._id}}<br>
+        <input type="hidden" value="{{threat._id}}" name="_id" />
+      <i>Threat name </i><br>
+        {{item.name}}<br>
+      <i>Threat description:</i> <br>
+        {{item.description}}<br>
+      <input type="submit" name="action" value="Change threat template">
+      </form>
+    {% endif %}
+  {% endfor %}
+
+  <b> Critical information affected </b><br>
+  {% for asset in process_data.assets %}
+    <form action="prepare_threat_query" method="POST">
+    <input type="hidden" value="{{process_data._id}}" name="process_id" />
+    <input type="hidden" name="threat_id" value="{{ threat._id }}">
+    {% if asset._id in threat.asset_ids %}
+        <input type="checkbox" name="asset_ids" value="{{asset._id}}" checked> {{asset.name}} <br>
+    {% elif asset._id not in threat.asset_ids %}
+        <input type="checkbox" name="asset_ids" value="{{asset._id}}"> {{asset.name}} <br>
+    {% endif %}
+   {% endfor %}
+    <input type="submit" name="action" value="Change affected asset ids" />
+    </form>
+
+
+  <b>Unmitigated risk score</b><br>
+  <form action="prepare_threat_query" method="POST">
+  Select worst case impact:<br>
+  <table>
+  <tr>
+  <td>
+  Legal:
+  </td>
+  <td>
+  {% set check1=""  %}
+  {% set check2=""  %}
+  {% set check3=""  %}
+  {% set check4=""  %}
+  {% if threat.score_legal == 1 %} {% set check1="checked"  %} {% endif %}
+  {% if threat.score_legal == 2 %} {% set check2="checked"  %} {% endif %}
+  {% if threat.score_legal == 3 %} {% set check3="checked"  %} {% endif %}
+  {% if threat.score_legal == 4 %} {% set check4="checked"  %} {% endif %}
+  <input type="radio" name="score_legal" value="1" required {{ check1 }} /> Low   
+  <input type="radio" name="score_legal" value="2" required {{ check2 }} /> Medium
+  <input type="radio" name="score_legal" value="3" required {{ check3 }} /> High
+  <input type="radio" name="score_legal" value="4" required {{ check4 }} /> Very high
+  </td>
+  </tr>
+  <tr>
+  <td>
+  Financial:
+  </td>
+  <td>
+  {% set check1=""  %}
+  {% set check2=""  %}
+  {% set check3=""  %}
+  {% set check4=""  %}
+  {% if threat.score_financial == 1 %} {% set check1="checked"  %} {% endif %}
+  {% if threat.score_financial == 2 %} {% set check2="checked"  %} {% endif %}
+  {% if threat.score_financial == 3 %} {% set check3="checked"  %} {% endif %}
+  {% if threat.score_financial == 4 %} {% set check4="checked"  %} {% endif %}
+  <input type="radio" name="score_financial" value="1" required {{ check1 }} > Low   
+  <input type="radio" name="score_financial" value="2" required {{ check2 }} > Medium
+  <input type="radio" name="score_financial" value="3" required {{ check3 }} > High
+  <input type="radio" name="score_financial" value="4" required {{ check4 }} > Very high
+  </td>
+  </tr>
+  <tr>
+  <td>
+
+  Reputational:
+  </td>
+  <td>
+  {% set check1=""  %}
+  {% set check2=""  %}
+  {% set check3=""  %}
+  {% set check4=""  %}
+  {% if threat.score_reputation == 1 %} {% set check1="checked"  %} {% endif %}
+  {% if threat.score_reputation == 2 %} {% set check2="checked"  %} {% endif %}
+  {% if threat.score_reputation == 3 %} {% set check3="checked"  %} {% endif %}
+  {% if threat.score_reputation == 4 %} {% set check4="checked"  %} {% endif %}
+  <input type="radio" name="score_reputation" value="1" required {{ check1 }} > Low   
+  <input type="radio" name="score_reputation" value="2" required {{ check2 }} > Medium
+  <input type="radio" name="score_reputation" value="3" required {{ check3 }} > High
+  <input type="radio" name="score_reputation" value="4" required {{ check4 }} > Very high
+  </td>
+  </tr>
+  <tr>
+  <td>
+  Safety:
+  </td>
+  <td>
+  {% set check1=""  %}
+  {% set check2=""  %}
+  {% set check3=""  %}
+  {% set check4=""  %}
+  {% if threat.score_safety == 1 %} {% set check1="checked"  %} {% endif %}
+  {% if threat.score_safety == 2 %} {% set check2="checked"  %} {% endif %}
+  {% if threat.score_safety == 3 %} {% set check3="checked"  %} {% endif %}
+  {% if threat.score_safety == 4 %} {% set check4="checked"  %} {% endif %}
+  <input type="radio" name="score_safety" value="1" required {{ check1 }} > Low   
+  <input type="radio" name="score_safety" value="2" required {{ check2 }} > Medium
+  <input type="radio" name="score_safety" value="3" required {{ check3 }} > High
+  <input type="radio" name="score_safety" value="4" required {{ check4 }} > Very high
+  </td>
+  </tr>
+  <tr>
+  <td>
+  Operational:
+  </td>
+  <td>
+  {% set check1=""  %}
+  {% set check2=""  %}
+  {% set check3=""  %}
+  {% set check4=""  %}
+  {% if threat.score_operational == 1 %} {% set check1="checked"  %} {% endif %}
+  {% if threat.score_operational == 2 %} {% set check2="checked"  %} {% endif %}
+  {% if threat.score_operational == 3 %} {% set check3="checked"  %} {% endif %}
+  {% if threat.score_operational == 4 %} {% set check4="checked"  %} {% endif %}
+  <input type="radio" name="score_operational" value="1" required {{ check1 }}> Low   
+  <input type="radio" name="score_operational" value="2" required {{ check2 }}> Medium
+  <input type="radio" name="score_operational" value="3" required {{ check3 }}> High
+  <input type="radio" name="score_operational" value="4" required {{ check4 }}> Very high
+  </td>
+  </tr>
+  <tr>
+  <td>
+  Other:
+  </td>
+  <td>
+  {% set check1=""  %}
+  {% set check2=""  %}
+  {% set check3=""  %}
+  {% set check4=""  %}
+  {% if threat.score_other == 1 %} {% set check1="checked"  %} {% endif %}
+  {% if threat.score_other == 2 %} {% set check2="checked"  %} {% endif %}
+  {% if threat.score_other == 3 %} {% set check3="checked"  %} {% endif %}
+  {% if threat.score_other == 4 %} {% set check4="checked"  %} {% endif %}
+  <input type="radio" name="score_other" value="1" required {{ check1 }}> Low   
+  <input type="radio" name="score_other" value="2" required {{ check2 }}> Medium
+  <input type="radio" name="score_other" value="3" required {{ check3 }}> High
+  <input type="radio" name="score_other" value="4" required {{ check4 }}> Very high
+  </td>
+  </tr>
+ </table>
+
+  Exposure probability:
+  {% set check1=""  %}
+  {% set check2=""  %}
+  {% set check3=""  %}
+  {% set check4=""  %}
+  {% if threat.score_probability == 1 %} {% set check1="checked"  %} {% endif %}
+  {% if threat.score_probability == 2 %} {% set check2="checked"  %} {% endif %}
+  {% if threat.score_probability == 3 %} {% set check3="checked"  %} {% endif %}
+  {% if threat.score_probability == 4 %} {% set check4="checked"  %} {% endif %}
+  <input type="radio" name="score_probability" value="1" required {{ check1 }}> Almost never  
+  <input type="radio" name="score_probability" value="2" required {{ check2 }}> Rarely
+  <input type="radio" name="score_probability" value="3" required {{ check3 }}> Sometimes
+  <input type="radio" name="score_probability" value="4" required {{ check4 }}> Frequently
+  <input type="hidden" name="threat_id" value="{{ threat._id }}">
+  <input type="hidden" name="process_id" value="{{ process_id }}">
+  <br>
+ <input type="submit" name="action" value="Change threat scores" />
+ </form>
+
+
+
+
+
+
+  <b>Risk decisions:</b><br>
+  <form action="prepare_threat_query" method="POST">
+  <table>
+  <tr>
+    <td>Treatment decision: </td>
+    <td>
+  {% set selected0=""  %}
+  {% set selected1=""  %}
+  {% set selected2=""  %}
+  {% set selected3=""  %}
+  {% set selected4=""  %}
+  {% if threat.risk_decision == "None" %} {% set selected0="selected"  %} {% endif %}
+  {% if threat.risk_decision == "Accept" %} {% set selected1="selected"  %} {% endif %}
+  {% if threat.risk_decision == "Modify" %} {% set selected2="selected"  %} {% endif %}
+  {% if threat.risk_decision == "Transfer" %} {% set selected3="selected"  %} {% endif %}
+  {% if threat.risk_decision == "Avoid" %} {% set selected4="selected"  %} {% endif %}
+       <select name="risk_decision">
+       <option value="None"     {{ selected0 }}> None </option>
+       <option value="Accept"   {{ selected1 }} >Accept</option>
+       <option value="Modify"   {{ selected2 }} >Modify</option>
+       <option value="Transfer" {{ selected3 }} >Transfer</option>
+       <option value="Avoid"    {{ selected3 }} >Avoid</option>
+       </select>
+    </td>
+  </tr>
+  <tr>
+    <td>
+     Threat sufficiently treated?
+    </td>
+    <td>
+       {% set selected1=""  %}
+       {% set selected2=""  %}
+       {% if threat.is_controlled == "False" %} {% set selected1="selected"  %} {% endif %}
+       {% if threat.is_controlled == "True" %} {% set selected2="selected"  %} {% endif %}
+       <select name="is_controlled">
+       <option value="False" {{ selected1 }}>False</option>
+       <option value="True"  {{ selected2 }}>True</option>
+       </select>
+    </td>
+
+  </tr>
+  <tr>
+     <td>Project owner</td>
+     <td><input type="text" name="project_owner" value="{{threat.project_owner}}"></td>
+  </tr>
+
+  <tr>
+     <td>Project names</td>
+     <td><textarea rows="4" name="project_names"  cols=50>
+     {{threat.project_names}}
+     </textarea>
+  </tr>
+  <tr>
+     <td>Project deadline</td>
+     <td><input type="text" name="project_deadline_iso" value="{{threat.project_deadline_iso}}"></td>
+  </tr>
+  </table>
+  <br>
+  <input type="hidden" name="process_id" value="{{process_id}}">
+  <input type="hidden" name="threat_id" value="{{threat._id}}">
+  <input type="submit" name="action" value="Apply decision changes"><br><br>
+  </form>
+
+
+ <b>Control recommendations</b><br>
+  <table border="1">
+  <tr>
+  <td><b> Container </b></td><td><b> Controls </b></td>
+  </tr>
+  {% for container in threat.containers %}
+  <tr>
+  <td> 
+    {% for lcontainer in containerlib %}
+      {% if container.reference == lcontainer._id %}
+	<form action="prepare_threat_query" method="POST">
+        {{lcontainer.name}} 
+	 <input type="hidden" name="process_id" value="{{process_id}}">
+	 <input type="hidden" name="threat_id" value="{{threat._id}}">
+         <input type="hidden" name="container_id" value="{{container.reference}}">
+        <input type="submit" name="action" value="Delete container">
+	</form>
+      {% endif %}
+    {% endfor %}
+    </td>
+    <td>
+    {% for controlid in container.control_ids %}
+      {% for item in controllib %}
+        {% if item._id == controlid %}
+          <form action="prepare_threat_query" method="POST">
+         {{item._id}} {{item.name}}
+	 <input type="hidden" name="process_id" value="{{process_id}}">
+	 <input type="hidden" name="threat_id" value="{{threat._id}}">
+         <input type="hidden" name="container_id" value="{{container.reference}}">
+         <input type="hidden" name="control_id" value="{{item._id}}">
+         <input type="submit" name="action" value="Delete control">
+         </form>
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+
+    <form action="prepare_threat_query" method="POST">
+    <select name="control_id"> 
+    <option selected>
+    </option>
+    {% for c in controllib %}
+      <option value="{{c._id}}"> 
+         {{c._id}} {{c.name}} 
+      </option> 
+    {% endfor %}
+    </select>
+    <input type="hidden" name="process_id" value={{process_id}}>
+    <input type="hidden" name="threat_id" value={{threat._id}}>
+    <input type="hidden" name="containerlib_id" value={{container.reference}}>
+    <input type="submit" name="action" value="Add control"> 
+    </form>
+    </td>
+    </tr>
+  {% endfor %}
+  </table>
+
+  <form action="prepare_threat_query" method="POST">
+  <select name="container_id">
+  <option selected>
+  </option>
+  {% for lcontainer in containerlib|sort(attribute='name') %}
+     <option value={{lcontainer._id}}> {{lcontainer.name}} </option>
+  {% endfor%}
+  <input type="hidden" name="process_id" value={{process_id}}>
+  <input type="hidden" name="threat_id" value={{threat._id}}>
+  <input type="submit" name="action" value="Add container">
+  </form>
+{% endfor %}
+
+<form action="prepare_threat_query" method="POST">
+  <input type="hidden" name="process_id" value={{process_id}}>
+  <input type="submit" name="action" value="Add threat">
+</form>
+</fieldset>
+
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<H3>Unmitigated Threats</H3>
+This list show threats that lacks proper control
+
+<table>
+<tr><td><b>Threat name</b></td><td><b>Threat score (0-10)</b></td></tr>
+{% for threat in threats|sort(attribute='score_risk', reverse = True) %}
+{% if threat.is_controlled=="False" %}
+<tr><td>
+   {{threat.threat_name}} in {{threat.process_name}}
+</td><td>
+   {{threat.score_risk}}
+</td><tr>
+{% endif %}
+{% endfor %}
+</table>
+
+
+
+
+
+<H3>All Threats</H3>
+This list show all threats (mitigated and unmitigated)  recorded in OpenISMS.
+<table>
+<tr><td><b>Threat name</b></td><td><b>Threat score (0-10)</b></td></tr>
+{% for threat in threats|sort(attribute='score_risk', reverse = True) %}
+<tr><td>
+   {{threat.threat_name}} in {{threat.process_name}}
+</td><td>
+   {{threat.score_risk}}
+</td><tr>
+{% endfor %}
+</table>
+{% endblock %}
+
+
+
+
+{#
+9                     row['process_name'] = process['name']
+210                     for threat_lib_item in data['threatlib']:
+211                         if threat_lib_item['_id'] == threat[
+212                                 'threat_lib_reference']:
+213                             row['threat_name'] = threat_lib_item['name']
+214                             row['threat_description'] = threat_lib_item[
+215                                 'description']
+216                     affected_assets_list = []
+217                     for asset_id in threat['asset_ids']:
+218                         for asset in process['assets']:
+219                             if str(asset['_id']) == str(asset_id):
+220                                 affected_assets_list.append(
+221                                     str(asset['name']) + "\n")
+222                     row['affected_assets'] = ''.join(affected_assets_list)
+223                     row['score_impact'] = threat['score_impact']
+224                     row['score_probability'] = threat['score_probability']
+225                     row['score_risk'] = threat['score_risk']
+226                     row['is_controlled'] = threat['is_controlled']
+#}
