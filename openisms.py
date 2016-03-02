@@ -3,7 +3,6 @@
 from flask import Flask, request, render_template, jsonify
 import json
 import codecs
-from jsonschema import validate
 
 
 DATAFILE = "assessments/data.json"
