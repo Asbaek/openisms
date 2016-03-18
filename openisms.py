@@ -1,9 +1,9 @@
 #/usr/bin/env python
 # -*- coding: utf-8 -*-
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, redirect, url_for
 import json
 import codecs
-
+import os
 
 DATAFILE = "assessments/data.json"
 SCHEMADATA = "assessments/schema.json"
@@ -17,7 +17,7 @@ def import_jsondata(selected_file):
     """
     Returns dictionary loaded from specified json file
     Argument:
-    	selected_file: String such as "assessments/data.json" 
+        selected_file: String such as "assessments/data.json"
     """
     f = codecs.open(selected_file, mode='r', encoding='utf-8')
     data = json.load(f)
@@ -29,8 +29,8 @@ def write_file(filename, contents, charset='utf-8'):
     """
     Returns nothing, but writes unicode text to specified file
     Arguments:
-    	filename: String, such as "assessments/data.json"
-	contents: String, such as output form json.dumps()
+        filename: String, such as "assessments/data.json"
+        contents: String, such as output form json.dumps()
         charset: Must be utf-8 to allow special characters
     """
     with open(filename, 'w') as f:
@@ -42,7 +42,7 @@ def index():
     """
     Populates and returns the index.html page to browser
     Arguments:
-    	None
+        None
     """
     query = {'action': 'load_list', 'aspect': 'process',
              'processid': None, 'aspectid': None, 'inputdata': None}
@@ -55,7 +55,7 @@ def change_service(datafile=DATAFILE):
     """
     Populates and returns an editable view of all threat information
     Arguments
-    	datafile: String, such as "assessments/data.json"
+        datafile: String, such as "assessments/data.json"
     """
     data = import_jsondata(datafile)
     # collect data
@@ -439,7 +439,7 @@ def prepare_containerlib_query():
         result = storage_processor(query)
     except Exception as e:
         print "Error occured in prepare_containerlib_query: " + str(e)
-    return "Data updated"
+    return redirect(url_for('change_service', process_id=process_id, action='Update process'))
 
 
 @app.route("/prepare_process_query", methods=['POST'])
@@ -459,7 +459,7 @@ def prepare_process_query():
             query = {'action': 'edit', 'aspect': 'process',
                      'processid': process_id, 'aspectid': threat_id, 'inputdata': output}
             result = storage_processor(query)
-            return "Process changes added"
+            return redirect(url_for('change_service', process_id=process_id, action='Update process'))
     except Exception as e:
         return "Error occured in prepare_process_query: " + str(e)
 
@@ -581,7 +581,7 @@ def prepare_threat_query():
             query = {'action': 'delete', 'aspect': 'threat_control',
                      'processid': process_id, 'aspectid': threat_id, 'inputdata': inputdata}
         result = storage_processor(query)
-        return "Threat detials saved"
+        return redirect(url_for('change_service', process_id=process_id, action='Update process'))
     except Exception as e:
         return "Error occured in prepare_threat_query: " + str(e)
 
@@ -610,13 +610,12 @@ def load_asset_form():
             query = {'action': 'edit', 'aspect': 'assets',
                      'processid': process_id, 'aspectid': asset_id, 'inputdata': inputdata}
             result = storage_processor(query)
-            return "Asset changes saved"
         if action == "Add asset":
             process_id = f.get('process_id', 'no_value')
             query = {'action': 'add', 'aspect': 'assets',
                      'processid': process_id}
             result = storage_processor(query)
-            return "Asset added"
+        return redirect(url_for('change_service', process_id=process_id, action='Update process'))
     except Exception as e:
         return "Error occured in prepare_asset_query " + str(e)
 
@@ -674,4 +673,7 @@ def report_full():
                            containers=containers, threats=threats, controls=controls)
 
 if __name__ == '__main__':
-    app.run()
+    # Try and get SERVER_NAME env variable, defaults to 127.0.0.1
+    host = os.getenv('HOSTNAME', '127.0.0.1')
+
+    app.run(host=host)
