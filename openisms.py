@@ -189,7 +189,7 @@ def delete(query, process_index, aspect_index, data, filename, inputdata):
                         aspect_index]['containers'].pop(index)
 
         output = json.dumps(data, indent=4)
-        write_file(datafile, output)
+        write_file(filename, output)
         return aspect + " deleted"
     except Exception as e:
         return "Error encountered in the delete function: " + str(e)
