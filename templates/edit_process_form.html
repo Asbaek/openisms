@@ -2,68 +2,121 @@
 {% block body %}
 {# FORM TO UPDATE PROCESS DETAILS #}
 <fieldset>
-<form action="/prepare_process_query" method="POST">
-  <input type="hidden" name="process_id" value="{{process_id}}">
-  <H2>Process: {{process_data.name}}</H2>
-  Process ID: {{process_id}} <br>
-  Process name:<input type="text" name="name" value="{{process_data.name}}"><br>
-  Process description: <br><textarea rows="4" name="description" cols=50>
-  {{process_data.description}}
-  </textarea>
-  <br>
-  <input type="submit" name="action" value="Apply process changes">
-</form>
-<form action="/" method="GET">
-  <input type="submit" name="action" value="Back">
-</form>
+  <form class="ui form" action="/prepare_process_query" method="POST">
+    <input type="hidden" name="process_id" value="{{process_id}}">
+    <h2>Process {{process_data.name}}</h2>
+    <div class="field">
+      Process ID: {{process_id}}
+    </div>
+
+    <div class="field">
+      <label>Process name</label>
+      <input type="text" name="name" value="{{process_data.name}}">
+    </div>
+
+    <div class="field">
+      <label>Process description</label>
+      <textarea rows="4" name="description" cols=50>
+        {{process_data.description}}
+      </textarea>
+    </div>
+
+    <input class="ui button" type="submit" name="action" value="Apply process changes">
+  </form>
 </fieldset>
 
 {# FORM TO SELECT ASSET TO UPDATE, ADD OR DELETE #}
 <fieldset>
 {% for asset in process_data.assets %}
-<form action="/prepare_asset_query" method="POST">
-  <H2>Critical Information: {{asset.name}}</H2>
+<form class="ui form" action="/prepare_asset_query" method="POST">
+  <h2>Critical Information {{asset.name}}</h2>
   <input type="hidden" name="asset_id" value="{{ asset._id }}">
-  Asset ID:{{asset._id}}<br>
-  Asset name: <input type="text" name="name" value="{{asset.name}}"><br>
-  Asset description: <br><textarea rows="4" name="description" cols=50>
-  {{asset.description}}
-  </textarea><br>
-  Owner: <input type="text" name="owner" value="{{asset.owner}}"><br>
+
+  <div class="field">
+    Asset ID: {{asset._id}}
+  </div>
+
+  <div class="field">
+    <label>Asset name</label>
+    <div class="ui input">
+      <input type="text" name="name" value="{{asset.name}}">
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Asset description</label>
+    <textarea rows="4" name="description" cols=50>
+      {{asset.description}}
+    </textarea>
+  </div>
+
+  <div class="field">
+    <label>Owner</label>
+    <input type="text" name="owner" value="{{asset.owner}}">
+  </div>
+
   {% set check_c="" %}
   {% set check_i="" %}
   {% set check_a="" %}
   {% if asset.criticality_c == "True" %} {% set check_c="checked" %} {% endif %}
   {% if asset.criticality_i == "True" %} {% set check_i="checked" %} {% endif %}
   {% if asset.criticality_a == "True" %} {% set check_a="checked" %} {% endif %}
-  <input type="checkbox" name="criticality_c" value ="True" {{ check_c }} > Confidentiality critical <br>
-  <input type="checkbox" name="criticality_i" value ="True" {{ check_i }} > Integrity critical <br>
-  <input type="checkbox" name="criticality_a" value ="True" {{ check_a }} > Availability critical <br>
-  Recovery point objective:
-  <select name="rpo_days">
-    <option>{{asset.rpo_days}}</option>
-    {% for element in [1,3,7,14,30,60,90,180,365] %}
-    <option>{{element}} </option>
-    {% endfor %} 
-  </select>
-  <br>
-  Recovery time objective:
-  <select name="rto_days">
-    <option>{{asset.rto_days}}</option>
-    {% for element in [1,3,7,14,30,60,90,180,365] %}
+
+  <div class="inline field">
+    <div class="ui checkbox">
+      <input type="checkbox" name="criticality_c" value ="True" {{ check_c }} tabindex="0" class="hidden">
+      <label>Confidentiality critical</label>
+    </div>
+  </div>
+
+  <div class="inline field">
+    <div class="ui checkbox">
+      <input type="checkbox" name="criticality_i" value ="True" {{ check_i }} tabindex="0" class="hidden">
+      <label>Integrity critical</label>
+    </div>
+  </div>
+
+  <div class="inline field">
+    <div class="ui checkbox">
+      <input type="checkbox" name="criticality_a" value ="True" {{ check_a }} tabindex="0" class="hidden">
+      <label>Availability critical</label>
+    </div>
+  </div>
+
+  <div class="field">
+    Recovery point objective
+    <select class="ui fluid dropdown" name="rpo_days">
+      <option>{{asset.rpo_days}}</option>
+      {% for element in [1,3,7,14,30,60,90,180,365] %}
       <option>{{element}} </option>
-    {% endfor %}
-  </select>
-  <br>
+      {% endfor %} 
+    </select>
+  </div>
+
+  <div class="field">
+    Recovery time objective
+    <select class="ui fluid dropdown" name="rto_days">
+      <option>{{asset.rto_days}}</option>
+      {% for element in [1,3,7,14,30,60,90,180,365] %}
+        <option>{{element}} </option>
+      {% endfor %}
+    </select>
+  </div>
+
   <input type="hidden" name="process_id" value="{{ process_id }}">
-  <input type="submit" name="action" value="Apply asset changes">
+
+  <input class="ui button" type="submit" name="action" value="Apply asset changes">
 </form>
+
 <hr>
+
 {% endfor %}
-<form action="/prepare_asset_query" method="POST">
+<form class="ui form" action="/prepare_asset_query" method="POST">
   <input type="hidden" name="process_id" value="{{ process_id }}">
-  <input type="submit" name="action" value="Add asset">
+
+  <input class="ui button" type="submit" name="action" value="Add asset">
 </form>
+
 </fieldset>
 
 
@@ -108,58 +161,90 @@
 {% for threat in process_data.threats %}
   {% for item in threatlib %}
     {% if item._id == threat.threat_lib_reference %}
-      <form action="prepare_threat_query" method="POST">
+      <form class="ui form" action="prepare_threat_query" method="POST">
       <input type="hidden" value="{{process_data._id}}" name="process_id" />
-      <H2>Threat: {{item.name}}</H2><br>
-      <b> General description: </b><br>
-        <i>Threat template:</i>
-        <select name="threat_lib_reference">
-        {% for lthreat in threatlib %}
-           {% if lthreat._id == threat.threat_lib_reference %}
-             <option value="{{lthreat._id}}" selected>
-             {{lthreat.name}}
-             </option>
-           {% else %}
-             <option  value="{{lthreat._id}}">
-             {{lthreat.name}}
-             </option>
-           {% endif%}
-        {% endfor %}
-        </select><br>
-        <i>ID:</i> {{threat._id}}<br>
-        <input type="hidden" value="{{threat._id}}" name="_id" />
-      <i>Threat name </i><br>
-        {{item.name}}<br>
-      <i>Threat description:</i> <br>
-        {{item.description}}<br>
-      <input type="submit" name="action" value="Change threat template">
+      <h2>Threat: {{item.name}}</h2>
+
+      <h3>General description</h3>
+
+      <div class="field">
+        <label>Threat template</label>
+        <select class="ui fluid dropdown" name="threat_lib_reference">
+          {% for lthreat in threatlib %}
+          {% if lthreat._id == threat.threat_lib_reference %}
+          <option value="{{lthreat._id}}" selected>
+          {{lthreat.name}}
+          </option>
+          {% else %}
+          <option  value="{{lthreat._id}}">
+          {{lthreat.name}}
+          </option>
+          {% endif%}
+          {% endfor %}
+        </select>
+      </div>
+
+      <input type="hidden" value="{{threat._id}}" name="_id" />
+
+      <div class="field">
+        <label>ID</label>
+        {{threat._id}}
+      </div>
+
+      <div class="field">
+        <label>Threat name</label>
+        {{item.name}}
+      </div>
+
+      <div class="field">
+        <label>Threat description</label>
+        {{item.description}}
+      </div>
+
+      <input class="ui button" type="submit" name="action" value="Change threat template">
       </form>
     {% endif %}
   {% endfor %}
 
-  <b> Critical information affected </b><br>
+  <h3>Critical information affected</h3>
   {% for asset in process_data.assets %}
-    <form action="prepare_threat_query" method="POST">
+  <form class="ui form" action="prepare_threat_query" method="POST">
     <input type="hidden" value="{{process_data._id}}" name="process_id" />
     <input type="hidden" name="threat_id" value="{{ threat._id }}">
     {% if asset._id in threat.asset_ids %}
-        <input type="checkbox" name="asset_ids" value="{{asset._id}}" checked> {{asset.name}} <br>
+
+    <div class="inline field">
+      <div class="ui checkbox">
+        <input type="checkbox" name="asset_ids" value="{{asset._id}}" checked>
+        <label>{{asset.name}}</label>
+      </div>
+    </div>
+
     {% elif asset._id not in threat.asset_ids %}
-        <input type="checkbox" name="asset_ids" value="{{asset._id}}"> {{asset.name}} <br>
+
+    <div class="inline field">
+      <div class="ui checkbox">
+        <input type="checkbox" name="asset_ids" value="{{asset._id}}">
+        <label>{{asset.name}}</label>
+      </div>
+    </div>
+
     {% endif %}
-   {% endfor %}
-    <input type="submit" name="action" value="Change affected asset ids" />
-    </form>
+    {% endfor %}
 
+    <input class="ui button" type="submit" name="action" value="Change affected asset ids" />
+  </form>
 
-  <b>Unmitigated risk score</b><br>
-  <form action="prepare_threat_query" method="POST">
-  Select worst case impact:<br>
-  <table>
+  <h3>Unmitigated risk score</h3>
+
+  <form class="ui form" action="prepare_threat_query" method="POST">
+  <div class="field">
+    Select worst case impact
+  </div>
+
+  <table class="ui celled table">
   <tr>
-  <td>
-  Legal:
-  </td>
+  <td>Legal</td>
   <td>
   {% set check1=""  %}
   {% set check2=""  %}
@@ -169,16 +254,37 @@
   {% if threat.score_legal == 2 %} {% set check2="checked"  %} {% endif %}
   {% if threat.score_legal == 3 %} {% set check3="checked"  %} {% endif %}
   {% if threat.score_legal == 4 %} {% set check4="checked"  %} {% endif %}
-  <input type="radio" name="score_legal" value="1" required {{ check1 }} /> Low   
-  <input type="radio" name="score_legal" value="2" required {{ check2 }} /> Medium
-  <input type="radio" name="score_legal" value="3" required {{ check3 }} /> High
-  <input type="radio" name="score_legal" value="4" required {{ check4 }} /> Very high
+  <div class="inline fields">
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_legal" value="1" required {{ check1 }} />
+        <label>Low</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_legal" value="2" required {{ check2 }} />
+        <label>Medium</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_legal" value="3" required {{ check3 }} />
+        <label>High</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_legal" value="4" required {{ check4 }} />
+        <label>Very high</label>
+      </div>
+    </div>
+  </div>
   </td>
   </tr>
+
   <tr>
-  <td>
-  Financial:
-  </td>
+  <td>Financial</td>
   <td>
   {% set check1=""  %}
   {% set check2=""  %}
@@ -188,17 +294,37 @@
   {% if threat.score_financial == 2 %} {% set check2="checked"  %} {% endif %}
   {% if threat.score_financial == 3 %} {% set check3="checked"  %} {% endif %}
   {% if threat.score_financial == 4 %} {% set check4="checked"  %} {% endif %}
-  <input type="radio" name="score_financial" value="1" required {{ check1 }} > Low   
-  <input type="radio" name="score_financial" value="2" required {{ check2 }} > Medium
-  <input type="radio" name="score_financial" value="3" required {{ check3 }} > High
-  <input type="radio" name="score_financial" value="4" required {{ check4 }} > Very high
+  <div class="inline fields">
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_financial" value="1" required {{ check1 }} >
+        <label>Low</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_financial" value="2" required {{ check2 }} >
+        <label>Medium</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_financial" value="3" required {{ check3 }} >
+        <label>High</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_financial" value="4" required {{ check4 }} >
+        <label>Very high</label>
+      </div>
+    </div>
+  </div>
   </td>
   </tr>
-  <tr>
-  <td>
 
-  Reputational:
-  </td>
+  <tr>
+  <td>Reputational</td>
   <td>
   {% set check1=""  %}
   {% set check2=""  %}
@@ -208,16 +334,37 @@
   {% if threat.score_reputation == 2 %} {% set check2="checked"  %} {% endif %}
   {% if threat.score_reputation == 3 %} {% set check3="checked"  %} {% endif %}
   {% if threat.score_reputation == 4 %} {% set check4="checked"  %} {% endif %}
-  <input type="radio" name="score_reputation" value="1" required {{ check1 }} > Low   
-  <input type="radio" name="score_reputation" value="2" required {{ check2 }} > Medium
-  <input type="radio" name="score_reputation" value="3" required {{ check3 }} > High
-  <input type="radio" name="score_reputation" value="4" required {{ check4 }} > Very high
+  <div class="inline fields">
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_reputation" value="1" required {{ check1 }} >
+        <label>Low   </label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_reputation" value="2" required {{ check2 }} >
+        <label>Medium</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_reputation" value="3" required {{ check3 }} >
+        <label>High</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_reputation" value="4" required {{ check4 }} >
+        <label>Very high</label>
+      </div>
+    </div>
+  </div>
   </td>
   </tr>
+
   <tr>
-  <td>
-  Safety:
-  </td>
+  <td>Safety</td>
   <td>
   {% set check1=""  %}
   {% set check2=""  %}
@@ -227,16 +374,37 @@
   {% if threat.score_safety == 2 %} {% set check2="checked"  %} {% endif %}
   {% if threat.score_safety == 3 %} {% set check3="checked"  %} {% endif %}
   {% if threat.score_safety == 4 %} {% set check4="checked"  %} {% endif %}
-  <input type="radio" name="score_safety" value="1" required {{ check1 }} > Low   
-  <input type="radio" name="score_safety" value="2" required {{ check2 }} > Medium
-  <input type="radio" name="score_safety" value="3" required {{ check3 }} > High
-  <input type="radio" name="score_safety" value="4" required {{ check4 }} > Very high
+  <div class="inline fields">
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_safety" value="1" required {{ check1 }} >
+        <label>Low   </label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_safety" value="2" required {{ check2 }} >
+        <label>Medium</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_safety" value="3" required {{ check3 }} >
+        <label>High</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_safety" value="4" required {{ check4 }} >
+        <label>Very high</label>
+      </div>
+    </div>
+  </div>
   </td>
   </tr>
+
   <tr>
-  <td>
-  Operational:
-  </td>
+  <td>Operational</td>
   <td>
   {% set check1=""  %}
   {% set check2=""  %}
@@ -246,16 +414,37 @@
   {% if threat.score_operational == 2 %} {% set check2="checked"  %} {% endif %}
   {% if threat.score_operational == 3 %} {% set check3="checked"  %} {% endif %}
   {% if threat.score_operational == 4 %} {% set check4="checked"  %} {% endif %}
-  <input type="radio" name="score_operational" value="1" required {{ check1 }}> Low   
-  <input type="radio" name="score_operational" value="2" required {{ check2 }}> Medium
-  <input type="radio" name="score_operational" value="3" required {{ check3 }}> High
-  <input type="radio" name="score_operational" value="4" required {{ check4 }}> Very high
+  <div class="inline fields">
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_operational" value="1" required {{ check1 }}>
+        <label>Low</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_operational" value="2" required {{ check2 }}>
+        <label>Medium</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_operational" value="3" required {{ check3 }}>
+        <label>High</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_operational" value="4" required {{ check4 }}>
+        <label>Very high</label>
+      </div>
+      </div>
+  </div>
   </td>
   </tr>
+
   <tr>
-  <td>
-  Other:
-  </td>
+  <td>Other</td>
   <td>
   {% set check1=""  %}
   {% set check2=""  %}
@@ -265,15 +454,36 @@
   {% if threat.score_other == 2 %} {% set check2="checked"  %} {% endif %}
   {% if threat.score_other == 3 %} {% set check3="checked"  %} {% endif %}
   {% if threat.score_other == 4 %} {% set check4="checked"  %} {% endif %}
-  <input type="radio" name="score_other" value="1" required {{ check1 }}> Low   
-  <input type="radio" name="score_other" value="2" required {{ check2 }}> Medium
-  <input type="radio" name="score_other" value="3" required {{ check3 }}> High
-  <input type="radio" name="score_other" value="4" required {{ check4 }}> Very high
+  <div class="inline fields">
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_other" value="1" required {{ check1 }} class="hidden">
+        <label>Low</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_other" value="2" required {{ check2 }} class="hidden">
+        <label>Medium</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_other" value="3" required {{ check3 }} class="hidden">
+        <label>High</label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="score_other" value="4" required {{ check4 }} class="hidden">
+        <label>Very high</label>
+      </div>
+    </div>
+  </div>
   </td>
   </tr>
  </table>
 
-  Exposure probability:
   {% set check1=""  %}
   {% set check2=""  %}
   {% set check3=""  %}
@@ -282,14 +492,40 @@
   {% if threat.score_probability == 2 %} {% set check2="checked"  %} {% endif %}
   {% if threat.score_probability == 3 %} {% set check3="checked"  %} {% endif %}
   {% if threat.score_probability == 4 %} {% set check4="checked"  %} {% endif %}
-  <input type="radio" name="score_probability" value="1" required {{ check1 }}> Almost never  
-  <input type="radio" name="score_probability" value="2" required {{ check2 }}> Rarely
-  <input type="radio" name="score_probability" value="3" required {{ check3 }}> Sometimes
-  <input type="radio" name="score_probability" value="4" required {{ check4 }}> Frequently
+
+  <div class="inline fields">
+    <label>Exposure probability</label>
+    <div class="field">
+    <div class="ui radio checkbox">
+      <input type="radio" name="score_probability" value="1" required {{ check1 }} class="hidden">
+      <label>Almost never</label>
+    </div>
+    </div>
+    <div class="field">
+    <div class="ui radio checkbox">
+      <input type="radio" name="score_probability" value="2" required {{ check2 }} class="hidden">
+      <label>Rarely</label>
+    </div>
+    </div>
+    <div class="field">
+    <div class="ui radio checkbox">
+      <input type="radio" name="score_probability" value="3" required {{ check3 }} class="hidden">
+      <label>Sometimes</label>
+    </div>
+    </div>
+    <div class="field">
+    <div class="ui radio checkbox">
+      <input type="radio" name="score_probability" value="4" required {{ check4 }} class="hidden">
+      <label>Frequently</label>
+    </div>
+    </div>
+  </div>
+
   <input type="hidden" name="threat_id" value="{{ threat._id }}">
   <input type="hidden" name="process_id" value="{{ process_id }}">
-  <br>
- <input type="submit" name="action" value="Change threat scores" />
+
+  <input class="ui button" type="submit" name="action" value="Change threat scores" />
+
  </form>
 
 
@@ -297,11 +533,11 @@
 
 
 
-  <b>Risk decisions:</b><br>
-  <form action="prepare_threat_query" method="POST">
-  <table>
+ <h3>Risk decisions</h3>
+  <form class="ui form" action="prepare_threat_query" method="POST">
+  <table class="ui celled table">
   <tr>
-    <td>Treatment decision: </td>
+    <td>Treatment decision </td>
     <td>
   {% set selected0=""  %}
   {% set selected1=""  %}
@@ -313,13 +549,15 @@
   {% if threat.risk_decision == "Modify" %} {% set selected2="selected"  %} {% endif %}
   {% if threat.risk_decision == "Transfer" %} {% set selected3="selected"  %} {% endif %}
   {% if threat.risk_decision == "Avoid" %} {% set selected4="selected"  %} {% endif %}
-       <select name="risk_decision">
-       <option value="None"     {{ selected0 }}> None </option>
-       <option value="Accept"   {{ selected1 }} >Accept</option>
-       <option value="Modify"   {{ selected2 }} >Modify</option>
-       <option value="Transfer" {{ selected3 }} >Transfer</option>
-       <option value="Avoid"    {{ selected3 }} >Avoid</option>
-       </select>
+       <div class="field">
+         <select class="ui fluid dropdown" name="risk_decision">
+         <option value="None"     {{ selected0 }}> None </option>
+         <option value="Accept"   {{ selected1 }} >Accept</option>
+         <option value="Modify"   {{ selected2 }} >Modify</option>
+         <option value="Transfer" {{ selected3 }} >Transfer</option>
+         <option value="Avoid"    {{ selected3 }} >Avoid</option>
+         </select>
+       </div>
     </td>
   </tr>
   <tr>
@@ -331,108 +569,146 @@
        {% set selected2=""  %}
        {% if threat.is_controlled == "False" %} {% set selected1="selected"  %} {% endif %}
        {% if threat.is_controlled == "True" %} {% set selected2="selected"  %} {% endif %}
-       <select name="is_controlled">
-       <option value="False" {{ selected1 }}>False</option>
-       <option value="True"  {{ selected2 }}>True</option>
-       </select>
+       <div class="field">
+         <select class="ui fluid dropdown" name="is_controlled">
+         <option value="False" {{ selected1 }}>False</option>
+         <option value="True"  {{ selected2 }}>True</option>
+         </select>
+       </div>
     </td>
 
   </tr>
   <tr>
-     <td>Project owner</td>
-     <td><input type="text" name="project_owner" value="{{threat.project_owner}}"></td>
+    <td>Project owner</td>
+    <td>
+      <div class="field">
+        <input type="text" name="project_owner" value="{{threat.project_owner}}">
+      </div>
+    </td>
   </tr>
 
   <tr>
      <td>Project names</td>
-     <td><textarea rows="4" name="project_names"  cols=50>
-     {{threat.project_names}}
-     </textarea>
+     <td>
+       <div class="field">
+         <textarea rows="4" name="project_names" cols=50>{{threat.project_names.strip()}}</textarea>
+       </div>
   </tr>
   <tr>
      <td>Project deadline</td>
-     <td><input type="text" name="project_deadline_iso" value="{{threat.project_deadline_iso}}"></td>
+     <td>
+       <div class="field">
+         <input type="text" name="project_deadline_iso" value="{{threat.project_deadline_iso}}">
+       </div>
+     </td>
   </tr>
   </table>
   <br>
+
   <input type="hidden" name="process_id" value="{{process_id}}">
   <input type="hidden" name="threat_id" value="{{threat._id}}">
-  <input type="submit" name="action" value="Apply decision changes"><br><br>
+
+  <input class="ui button" type="submit" name="action" value="Apply decision changes">
   </form>
 
 
- <b>Control recommendations</b><br>
-  <table border="1">
-  <tr>
-  <td><b> Container </b></td><td><b> Controls </b></td>
-  </tr>
-  {% for container in threat.containers %}
-  <tr>
+  <h3>Control recommendations</h3>
+
+  <table class="ui celled table">
+  <thead>
+    <tr>
+      <th>Container</th>
+      <th>Controls</th>
+    </tr>
+    {% for container in threat.containers %}
+    <tr>
+  </thead>
   <td> 
     {% for lcontainer in containerlib %}
-      {% if container.reference == lcontainer._id %}
-	<form action="prepare_threat_query" method="POST">
-        {{lcontainer.name}} 
-	 <input type="hidden" name="process_id" value="{{process_id}}">
-	 <input type="hidden" name="threat_id" value="{{threat._id}}">
-         <input type="hidden" name="container_id" value="{{container.reference}}">
-        <input type="submit" name="action" value="Delete container">
-	</form>
-      {% endif %}
+    {% if container.reference == lcontainer._id %}
+    <form class="ui form" action="prepare_threat_query" method="POST">
+      {{lcontainer.name}} 
+      <input type="hidden" name="process_id" value="{{process_id}}">
+      <input type="hidden" name="threat_id" value="{{threat._id}}">
+      <input type="hidden" name="container_id" value="{{container.reference}}">
+
+      <input class="red mini ui button" type="submit" name="action" value="Delete container">
+    </form>
+    {% endif %}
     {% endfor %}
-    </td>
-    <td>
+  </td>
+  <td>
     {% for controlid in container.control_ids %}
-      {% for item in controllib %}
-        {% if item._id == controlid %}
-          <form action="prepare_threat_query" method="POST">
-         {{item._id}} {{item.name}}
-	 <input type="hidden" name="process_id" value="{{process_id}}">
-	 <input type="hidden" name="threat_id" value="{{threat._id}}">
-         <input type="hidden" name="container_id" value="{{container.reference}}">
-         <input type="hidden" name="control_id" value="{{item._id}}">
-         <input type="submit" name="action" value="Delete control">
-         </form>
-        {% endif %}
-      {% endfor %}
+    {% for item in controllib %}
+    {% if item._id == controlid %}
+    <form action="prepare_threat_query" method="POST">
+      {{item._id}} {{item.name}}
+      <input type="hidden" name="process_id" value="{{process_id}}">
+      <input type="hidden" name="threat_id" value="{{threat._id}}">
+      <input type="hidden" name="container_id" value="{{container.reference}}">
+      <input type="hidden" name="control_id" value="{{item._id}}">
+
+      <input class="red mini ui button" type="submit" name="action" value="Delete control">
+    </form>
+    {% endif %}
+    {% endfor %}
     {% endfor %}
 
-    <form action="prepare_threat_query" method="POST">
-    <select name="control_id"> 
-    <option selected>
-    </option>
-    {% for c in controllib %}
-      <option value="{{c._id}}"> 
-         {{c._id}} {{c.name}} 
-      </option> 
-    {% endfor %}
-    </select>
+    <form class="ui form" action="prepare_threat_query" method="POST">
     <input type="hidden" name="process_id" value={{process_id}}>
     <input type="hidden" name="threat_id" value={{threat._id}}>
     <input type="hidden" name="containerlib_id" value={{container.reference}}>
-    <input type="submit" name="action" value="Add control"> 
+
+    <div class="inline fields">
+      <div class="field">
+        <input class="mini ui button" type="submit" name="action" value="Add control"> 
+      </div>
+
+      <div class="field">
+        <select class="ui search dropdown" name="control_id"> 
+          <option selected>
+          </option>
+          {% for c in controllib %}
+          <option value="{{c._id}}"> 
+          {{c._id}} {{c.name}} 
+          </option> 
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
     </form>
     </td>
     </tr>
   {% endfor %}
   </table>
 
-  <form action="prepare_threat_query" method="POST">
-  <select name="container_id">
-  <option selected>
-  </option>
-  {% for lcontainer in containerlib|sort(attribute='name') %}
-     <option value={{lcontainer._id}}> {{lcontainer.name}} </option>
-  {% endfor%}
-  <input type="hidden" name="process_id" value={{process_id}}>
-  <input type="hidden" name="threat_id" value={{threat._id}}>
-  <input type="submit" name="action" value="Add container">
+  <form class="ui form" action="prepare_threat_query" method="POST">
+    <input type="hidden" name="process_id" value={{process_id}}>
+    <input type="hidden" name="threat_id" value={{threat._id}}>
+
+    <div class="inline fields">
+      <div class="field">
+        <input class="ui button" type="submit" name="action" value="Add container">
+      </div>
+
+      <div class="field">
+        <select class="ui dropdown" name="container_id">
+          <option selected></option>
+          {% for lcontainer in containerlib|sort(attribute='name') %}
+          <option value={{lcontainer._id}}> {{lcontainer.name}} </option>
+          {% endfor%}
+        <select>
+      </div>
+    </div>
   </form>
 {% endfor %}
 
-<form action="prepare_threat_query" method="POST">
+<hr>
+
+<form class="ui form" action="prepare_threat_query" method="POST">
   <input type="hidden" name="process_id" value={{process_id}}>
-  <input type="submit" name="action" value="Add threat">
+  <input class="ui button" type="submit" name="action" value="Add threat">
 </form>
 </fieldset>
 
