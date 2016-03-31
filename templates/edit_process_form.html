@@ -712,4 +712,21 @@
 </form>
 </fieldset>
 
+<script>
+  // Will handle the case where scrollPosition is 0 since !!0 === true
+  var scrollPosition = Number(sessionStorage.getItem('scroll'));
+  if (scrollPosition) {
+    window.scroll(0, scrollPosition);
+    // We only need this when we get back so set it to 0 so we don't keep
+    // jumping down on the page
+    sessionStorage.setItem('scroll', 0);
+  }
+
+  // Remember the position when the user submits a form
+  // This way we can automatically jump down the page to where they were
+  $('input[type=submit]').click(function() {
+    sessionStorage.setItem('scroll', document.body.scrollTop);
+  });
+</script>
+
 {% endblock %}
