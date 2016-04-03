@@ -1355,5 +1355,11 @@
             "critical": "Less than 4 employees work hours are increased for more than 2 months", 
             "low": "Less than 4 employees work hours are increased for less than a month"
         }
-    } 
+    },
+"documents":[
+{"_id":"D0001",
+"title":"ISMS Scope",
+"control_references":["Clause 4.1"]
+}
+]
 }

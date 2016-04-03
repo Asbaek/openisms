@@ -400,6 +400,8 @@ def load_list(query, process_index, aspect_index, data, filename, inputdata):
         elif aspect == "threatlib":
             load_list = data.get(
                 'threatlib', 'error running load_list on threatlib')
+        elif aspect == "documents":
+            load_list = data('documents', 'error loading documents list')
     except:
         load_list = ['load_list encountered an error']
     return load_list
@@ -638,6 +640,12 @@ def alignment():
     query = {'action': 'load_item', 'aspect': 'impact_description'}
     impact_description = storage_processor(query)
     return render_template('alignment.html', impact_description=impact_description)
+
+@app.route("/documents", methods=['GET'])
+def documents():
+    query = {'action': 'load_list', 'aspect': 'documents'}
+    documents = storage_processor(query)
+    return render_template('documents.html', documents=documents)
 
 @app.route("/reports", methods=['GET'])
 def reports():
