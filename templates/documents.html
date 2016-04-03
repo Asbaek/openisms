@@ -2,4 +2,11 @@
 {% block body %}
 <H3>Documents</H3>
 This page is an inventory of documents used to implement the ISMS.
+<table>
+<tr><td>Document name</td> <td>Type</td><td>Link</td><td>Maturity current</td><td>Maturity planned</td></tr>
+{% for document in documents %}
+	  <tr><td>{{ document.name }} </td><td> {{ document.type}} </td> <td> {{ document.link }} </td><td> {{ document.maturity_current}} </td><td> {{ document.maturity_planned }} </td></tr>
+{% endfor %}
+</table>
+
 {% endblock %} 

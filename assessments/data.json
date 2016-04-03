@@ -46,6 +46,26 @@
             ]
         }
     ], 
+    "documents": [
+        {
+            "maturity_current": "", 
+            "name": "ISMS Scope", 
+            "maturity_planned": "", 
+            "link": "", 
+            "control_references": [], 
+            "_id": "D0001", 
+            "type": "Document"
+        }, 
+        {
+            "maturity_current": "", 
+            "name": "Information Security Policy", 
+            "maturity_planned": "", 
+            "link": "Intraweb", 
+            "control_references": [], 
+            "_id": "D0002", 
+            "type": "Document"
+        }
+    ], 
     "containertypes": [
         "Physical", 
         "Human", 
@@ -57,6 +77,14 @@
         "Overf\u00f8r risiko", 
         "Udskyd beslutning"
     ], 
+    "document_maturity": {
+        "1": "Initial. Awareness of need to study is present, but no documentation", 
+        "0": "Non-existent. Absence of awareness and documentation", 
+        "3": "Defined. Standardized and communicated documents exist. No detection of failure. Low level of sophistication in documents", 
+        "2": "Managed. Documentation exists and is being followed. Lack of training and standards. Rely on indviduals", 
+        "5": "Optimised. High level of automation. Process can be adjusted quickly to business needs.", 
+        "4": "Quantitavely managed. Compliance with document is monitored and measured. Action can be taken errors are detected. Good practice alignment and continual improvement is in place. Automation is lacking"
+    }, 
     "scoreweights": {
         "score_operational": 2, 
         "score_safety": 3, 
@@ -242,6 +270,48 @@
         "3": "H\u00f8j", 
         "2": "Medium", 
         "4": "Meget h\u00f8j"
+    }, 
+    "impact_description": {
+        "safety": {
+            "high": "More than 4 days of degrade in employee or customer health.", 
+            "medium": "Maximum 4 days of degrade in employee or customer health.", 
+            "description": "Health and safety risks", 
+            "priority": "4", 
+            "critical": "Permenent degrade in employee or customer health", 
+            "low": "No significant threats to health and safety"
+        }, 
+        "reputation": {
+            "high": "Damage to reputation and few stakholders confidence is irrevokable", 
+            "medium": "Damage to reputation and stakeholders confidence will cost time and effort to recover", 
+            "description": "Reputation and stakeholder confidence", 
+            "priority": "1", 
+            "critical": "Damage to reputation and all stakeholders confidence is irrevokable", 
+            "low": "Damage to reputation and stakeholder confidence is minimal"
+        }, 
+        "financial": {
+            "high": "Yearly revenue or one time loss of 200.000-500.000 euros", 
+            "medium": "Yearly revenue or one time loss of 50.000-200.000 euros", 
+            "description": "Financial", 
+            "priority": "3", 
+            "critical": "Yearly revenue or one time loss of more than 500.000 euros", 
+            "low": "Yearly revenue or one time loss of less than 50.000 euros"
+        }, 
+        "legal": {
+            "high": "Fines, non-frivolous lawsuits or investigations do exceed 200.000 euro", 
+            "medium": "Fines, non-frivolous lawsuits or investigations do not exceed 200.000 euro", 
+            "description": "Fines and legal Penialties", 
+            "priority": "2", 
+            "critical": "Fines, non-frivoulous lawsuits or investigations exceed 200.000 euro and serious, visible investigation of organisational practices is made", 
+            "low": "Fines, non-frivolous lawsuits or investigations do not exceed 50.000 euro"
+        }, 
+        "productivity": {
+            "high": "More than 4 employees work hours are increased for 1-2 months", 
+            "medium": "Less than 4 employees work hours are increased for 1-2 months", 
+            "description": "Productivity", 
+            "priority": "5", 
+            "critical": "Less than 4 employees work hours are increased for more than 2 months", 
+            "low": "Less than 4 employees work hours are increased for less than a month"
+        }
     }, 
     "threatlib": [
         {
@@ -1313,53 +1383,5 @@
         "3": "H\u00e6nder", 
         "2": "Sj\u00e6ldent", 
         "4": "Ofte"
-    },
-"impact_description": {
-        "safety": {
-            "high": "More than 4 days of degrade in employee or customer health.", 
-            "medium": "Maximum 4 days of degrade in employee or customer health.", 
-            "description": "Health and safety risks", 
-            "priority": "4", 
-            "critical": "Permenent degrade in employee or customer health", 
-            "low": "No significant threats to health and safety"
-        }, 
-        "reputation": {
-            "high": "Damage to reputation and few stakholders confidence is irrevokable", 
-            "medium": "Damage to reputation and stakeholders confidence will cost time and effort to recover", 
-            "description": "Reputation and stakeholder confidence", 
-            "priority": "1", 
-            "critical": "Damage to reputation and all stakeholders confidence is irrevokable", 
-            "low": "Damage to reputation and stakeholder confidence is minimal"
-        }, 
-        "financial": {
-            "high": "Yearly revenue or one time loss of 200.000-500.000 euros", 
-            "medium": "Yearly revenue or one time loss of 50.000-200.000 euros", 
-            "description": "Financial", 
-            "priority": "3", 
-            "critical": "Yearly revenue or one time loss of more than 500.000 euros", 
-            "low": "Yearly revenue or one time loss of less than 50.000 euros"
-        }, 
-        "legal": {
-            "high": "Fines, non-frivolous lawsuits or investigations do exceed 200.000 euro", 
-            "medium": "Fines, non-frivolous lawsuits or investigations do not exceed 200.000 euro", 
-            "description": "Fines and legal Penialties", 
-            "priority": "2", 
-            "critical": "Fines, non-frivoulous lawsuits or investigations exceed 200.000 euro and serious, visible investigation of organisational practices is made", 
-            "low": "Fines, non-frivolous lawsuits or investigations do not exceed 50.000 euro"
-        }, 
-        "productivity": {
-            "high": "More than 4 employees work hours are increased for 1-2 months", 
-            "medium": "Less than 4 employees work hours are increased for 1-2 months", 
-            "description": "Productivity", 
-            "priority": "5", 
-            "critical": "Less than 4 employees work hours are increased for more than 2 months", 
-            "low": "Less than 4 employees work hours are increased for less than a month"
-        }
-    },
-"documents":[
-{"_id":"D0001",
-"title":"ISMS Scope",
-"control_references":["Clause 4.1"]
-}
-]
+    }
 }

@@ -401,7 +401,7 @@ def load_list(query, process_index, aspect_index, data, filename, inputdata):
             load_list = data.get(
                 'threatlib', 'error running load_list on threatlib')
         elif aspect == "documents":
-            load_list = data('documents', 'error loading documents list')
+            load_list = data.get('documents', 'error loading documents list')
     except:
         load_list = ['load_list encountered an error']
     return load_list
