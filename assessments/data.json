@@ -1313,5 +1313,47 @@
         "3": "H\u00e6nder", 
         "2": "Sj\u00e6ldent", 
         "4": "Ofte"
-    }
+    },
+"impact_description": {
+        "safety": {
+            "high": "More than 4 days of degrade in employee or customer health.", 
+            "medium": "Maximum 4 days of degrade in employee or customer health.", 
+            "description": "Health and safety risks", 
+            "priority": "4", 
+            "critical": "Permenent degrade in employee or customer health", 
+            "low": "No significant threats to health and safety"
+        }, 
+        "reputation": {
+            "high": "Damage to reputation and few stakholders confidence is irrevokable", 
+            "medium": "Damage to reputation and stakeholders confidence will cost time and effort to recover", 
+            "description": "Reputation and stakeholder confidence", 
+            "priority": "1", 
+            "critical": "Damage to reputation and all stakeholders confidence is irrevokable", 
+            "low": "Damage to reputation and stakeholder confidence is minimal"
+        }, 
+        "financial": {
+            "high": "Yearly revenue or one time loss of 200.000-500.000 euros", 
+            "medium": "Yearly revenue or one time loss of 50.000-200.000 euros", 
+            "description": "Financial", 
+            "priority": "3", 
+            "critical": "Yearly revenue or one time loss of more than 500.000 euros", 
+            "low": "Yearly revenue or one time loss of less than 50.000 euros"
+        }, 
+        "legal": {
+            "high": "Fines, non-frivolous lawsuits or investigations do exceed 200.000 euro", 
+            "medium": "Fines, non-frivolous lawsuits or investigations do not exceed 200.000 euro", 
+            "description": "Fines and legal Penialties", 
+            "priority": "2", 
+            "critical": "Fines, non-frivoulous lawsuits or investigations exceed 200.000 euro and serious, visible investigation of organisational practices is made", 
+            "low": "Fines, non-frivolous lawsuits or investigations do not exceed 50.000 euro"
+        }, 
+        "productivity": {
+            "high": "More than 4 employees work hours are increased for 1-2 months", 
+            "medium": "Less than 4 employees work hours are increased for 1-2 months", 
+            "description": "Productivity", 
+            "priority": "5", 
+            "critical": "Less than 4 employees work hours are increased for more than 2 months", 
+            "low": "Less than 4 employees work hours are increased for less than a month"
+        }
+    } 
 }

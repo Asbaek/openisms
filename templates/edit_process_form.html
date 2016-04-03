@@ -171,10 +171,10 @@
   {% if threat.score_legal == 2 %} {% set check2="checked"  %} {% endif %}
   {% if threat.score_legal == 3 %} {% set check3="checked"  %} {% endif %}
   {% if threat.score_legal == 4 %} {% set check4="checked"  %} {% endif %}
-  <input type="radio" name="score_legal" value="1" required {{ check1 }} /> Low   
-  <input type="radio" name="score_legal" value="2" required {{ check2 }} /> Medium
-  <input type="radio" name="score_legal" value="3" required {{ check3 }} /> High
-  <input type="radio" name="score_legal" value="4" required {{ check4 }} /> Very high
+  <input type="radio" name="score_legal" value="1" required {{ check1 }} /> Low {{impact_description.legal.low}} <br>
+  <input type="radio" name="score_legal" value="2" required {{ check2 }} /> Medium {{impact_description.legal.medium}} <br>
+  <input type="radio" name="score_legal" value="3" required {{ check3 }} /> High {{impact_description.legal.high}} <br>
+  <input type="radio" name="score_legal" value="4" required {{ check4 }} /> Critical {{impact_description.legal.critical}} <br>
   </td>
   </tr>
   <tr>
@@ -190,10 +190,10 @@
   {% if threat.score_financial == 2 %} {% set check2="checked"  %} {% endif %}
   {% if threat.score_financial == 3 %} {% set check3="checked"  %} {% endif %}
   {% if threat.score_financial == 4 %} {% set check4="checked"  %} {% endif %}
-  <input type="radio" name="score_financial" value="1" required {{ check1 }} > Low   
-  <input type="radio" name="score_financial" value="2" required {{ check2 }} > Medium
-  <input type="radio" name="score_financial" value="3" required {{ check3 }} > High
-  <input type="radio" name="score_financial" value="4" required {{ check4 }} > Very high
+  <input type="radio" name="score_financial" value="1" required {{ check1 }} > Low {{impact_description.financial.low}} <br> 
+  <input type="radio" name="score_financial" value="2" required {{ check2 }} > Medium {{impact_description.financial.medium}} <br>
+  <input type="radio" name="score_financial" value="3" required {{ check3 }} > High {{impact_description.financial.high}} <br>
+  <input type="radio" name="score_financial" value="4" required {{ check4 }} > Critical {{impact_description.financial.critical}} <br>
   </td>
   </tr>
   <tr>
@@ -210,10 +210,10 @@
   {% if threat.score_reputation == 2 %} {% set check2="checked"  %} {% endif %}
   {% if threat.score_reputation == 3 %} {% set check3="checked"  %} {% endif %}
   {% if threat.score_reputation == 4 %} {% set check4="checked"  %} {% endif %}
-  <input type="radio" name="score_reputation" value="1" required {{ check1 }} > Low   
-  <input type="radio" name="score_reputation" value="2" required {{ check2 }} > Medium
-  <input type="radio" name="score_reputation" value="3" required {{ check3 }} > High
-  <input type="radio" name="score_reputation" value="4" required {{ check4 }} > Very high
+  <input type="radio" name="score_reputation" value="1" required {{ check1 }} > Low {{impact_description.reputation.low }} <br>  
+  <input type="radio" name="score_reputation" value="2" required {{ check2 }} > Medium {{impact_description.reputation.medium }} <br>
+  <input type="radio" name="score_reputation" value="3" required {{ check3 }} > High {{impact_description.reputation.high }} <br>
+  <input type="radio" name="score_reputation" value="4" required {{ check4 }} > Critical {{impact_description.reputation.critical }} <br>
   </td>
   </tr>
   <tr>
@@ -229,15 +229,15 @@
   {% if threat.score_safety == 2 %} {% set check2="checked"  %} {% endif %}
   {% if threat.score_safety == 3 %} {% set check3="checked"  %} {% endif %}
   {% if threat.score_safety == 4 %} {% set check4="checked"  %} {% endif %}
-  <input type="radio" name="score_safety" value="1" required {{ check1 }} > Low   
-  <input type="radio" name="score_safety" value="2" required {{ check2 }} > Medium
-  <input type="radio" name="score_safety" value="3" required {{ check3 }} > High
-  <input type="radio" name="score_safety" value="4" required {{ check4 }} > Very high
+  <input type="radio" name="score_safety" value="1" required {{ check1 }} > Low {{impact_description.safety.low }} <br>
+  <input type="radio" name="score_safety" value="2" required {{ check2 }} > Medium {{impact_description.safety.medium }} <br>
+  <input type="radio" name="score_safety" value="3" required {{ check3 }} > High {{impact_description.safety.high }} <br>
+  <input type="radio" name="score_safety" value="4" required {{ check4 }} > Critical {{impact_description.safety.critical }} <br>
   </td>
   </tr>
   <tr>
   <td>
-  Operational:
+  Productivity:
   </td>
   <td>
   {% set check1=""  %}
@@ -248,29 +248,10 @@
   {% if threat.score_operational == 2 %} {% set check2="checked"  %} {% endif %}
   {% if threat.score_operational == 3 %} {% set check3="checked"  %} {% endif %}
   {% if threat.score_operational == 4 %} {% set check4="checked"  %} {% endif %}
-  <input type="radio" name="score_operational" value="1" required {{ check1 }}> Low   
-  <input type="radio" name="score_operational" value="2" required {{ check2 }}> Medium
-  <input type="radio" name="score_operational" value="3" required {{ check3 }}> High
-  <input type="radio" name="score_operational" value="4" required {{ check4 }}> Very high
-  </td>
-  </tr>
-  <tr>
-  <td>
-  Other:
-  </td>
-  <td>
-  {% set check1=""  %}
-  {% set check2=""  %}
-  {% set check3=""  %}
-  {% set check4=""  %}
-  {% if threat.score_other == 1 %} {% set check1="checked"  %} {% endif %}
-  {% if threat.score_other == 2 %} {% set check2="checked"  %} {% endif %}
-  {% if threat.score_other == 3 %} {% set check3="checked"  %} {% endif %}
-  {% if threat.score_other == 4 %} {% set check4="checked"  %} {% endif %}
-  <input type="radio" name="score_other" value="1" required {{ check1 }}> Low   
-  <input type="radio" name="score_other" value="2" required {{ check2 }}> Medium
-  <input type="radio" name="score_other" value="3" required {{ check3 }}> High
-  <input type="radio" name="score_other" value="4" required {{ check4 }}> Very high
+  <input type="radio" name="score_operational" value="1" required {{ check1 }}> Low {{impact_description.productivity.low }} <br>
+  <input type="radio" name="score_operational" value="2" required {{ check2 }}> Medium {{impact_description.productivity.medium }} <br>
+  <input type="radio" name="score_operational" value="3" required {{ check3 }}> High {{impact_description.productivity.high }} <br>
+  <input type="radio" name="score_operational" value="4" required {{ check4 }}> Very high {{impact_description.productivity.critical }} <br>
   </td>
   </tr>
  </table>

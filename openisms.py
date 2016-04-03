@@ -97,10 +97,15 @@ def change_service(datafile=DATAFILE):
 
             query = {'action': 'load_list', 'aspect': 'threatlib'}
             threatlib = storage_processor(query)
+
+            query = {'action': 'load_item', 'aspect': 'impact_description'}
+            impact_description = storage_processor(query)
+
         except Exception as e:
             print "Error code recieved: " + str(e)
         return render_template('edit_process_form.html', process_data=process_data, process_id=process_id,
-                               containerlib=containerlib, controllib=controllib, threatlib=threatlib)
+                               containerlib=containerlib, controllib=controllib, threatlib=threatlib,
+			       impact_description=impact_description)
 
 
 def storage_processor(query, filename=DATAFILE):
@@ -361,6 +366,8 @@ def load_item(query, process_index, aspect_index, data, filename, inputdata):
                 process_index]['threats'][aspect_index]
         elif aspect == "scoreweights":
             load_item = data['scoreweights']
+        elif aspect == "impact_description":
+            load_item = data['impact_description']
     except Exception as e:
         load_item = "Error in function load_item: " + str(e)
     return load_item
@@ -626,6 +633,11 @@ def show_json():
     data = import_jsondata(DATAFILE)
     return jsonify(data)
 
+@app.route("/alignment", methods=['GET'])
+def alignment():
+    query = {'action': 'load_item', 'aspect': 'impact_description'}
+    impact_description = storage_processor(query)
+    return render_template('alignment.html', impact_description=impact_description)
 
 @app.route("/configs", methods=['GET'])
 def configs():
