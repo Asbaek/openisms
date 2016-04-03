@@ -639,11 +639,6 @@ def alignment():
     impact_description = storage_processor(query)
     return render_template('alignment.html', impact_description=impact_description)
 
-@app.route("/configs", methods=['GET'])
-def configs():
-    return render_template('configs.html')
-
-
 @app.route("/reports", methods=['GET'])
 def reports():
     return render_template('reports.html')
