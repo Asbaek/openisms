@@ -263,6 +263,16 @@
             "_id": "C034", 
             "description": "", 
             "name": "Cables"
+        },
+        {
+            "_id": "C035", 
+            "description": "", 
+            "name": "Employees - Vendor"
+        },
+        {
+            "_id": "C036", 
+            "description": "", 
+            "name": "Administrators - Vendor"
         }
     ], 
     "impact_levels": {
