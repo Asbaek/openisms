@@ -64,6 +64,42 @@
             "control_references": [], 
             "_id": "D0002", 
             "type": "Document"
+        },
+        {
+            "maturity_current": "", 
+            "name": "Statement of Applicability", 
+            "maturity_planned": "", 
+            "link": "", 
+            "control_references": [], 
+            "_id": "D0003", 
+            "type": "Document"
+        },
+        {
+            "maturity_current": "", 
+            "name": "Risk Treatment Plan", 
+            "maturity_planned": "", 
+            "link": "", 
+            "control_references": [], 
+            "_id": "D0004", 
+            "type": "Document"
+        },
+        {
+            "maturity_current": "", 
+            "name": "Management Review Memos", 
+            "maturity_planned": "", 
+            "link": "", 
+            "control_references": [], 
+            "_id": "D0005", 
+            "type": "Record"
+        },
+        {
+            "maturity_current": "", 
+            "name": "Acceptable Use Policy", 
+            "maturity_planned": "", 
+            "link": "", 
+            "control_references": [], 
+            "_id": "D0006", 
+            "type": "Document"
         }
     ], 
     "containertypes": [
