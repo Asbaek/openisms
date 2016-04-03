@@ -17,6 +17,8 @@
   <input type="submit" name="action" value="Back">
 </form>
 </fieldset>
+<br>
+<br>
 
 {# FORM TO SELECT ASSET TO UPDATE, ADD OR DELETE #}
 <fieldset>
@@ -67,42 +69,9 @@
   <input type="submit" name="action" value="Add asset">
 </form>
 </fieldset>
+<br>
+<br>
 
-
-{# FORM TO SELECT CONTAINER TO UPDATE, ADD OR DELETE 
-<fieldset>
-<H3>Containers in organisation </H3>
-
-<table>
-<tr><td>Id</td><td>Container name</td><td>Container description</td><td>Actions</td></tr>
-{% for container in containerlib %}
-<tr>
-<form action="/prepare_containerlib_query" method="POST">
-  <td>
-    {{container._id}}
-    <input type="hidden" name="_id" value="{{ container._id }}">
-    <input type="hidden" name="process_id" value="{{ process_id }}">
-  </td>
-  <td>
-    <input type="text" name="name" value="{{container.name}}" size="40"><br>
-  </td>
-  <td>
-  <textarea rows="4" name="description" cols=50>
-    {{ container.description }}
-  </textarea><br>
-  </td>
-  <td>
-  <input type="submit" name="action" value="Apply container changes">
-  </td>
-</form>
-</tr>
-{% endfor %}
-</table>
-<form action="/prepare_containerlib_query" method="POST">
-  <input type="submit" name="action" value="Add container">
-</form>
-</fieldset>
-#}
 
 {# FORM TO SELECT THREAT TO UPDATE, ADD OR DELETE #}
 <fieldset>
