@@ -5,7 +5,7 @@ This page is an inventory of documents used to implement the ISMS.<br>
 NOTE: You can assess and add documents in the documents  section of the assessments/data.json file. <br>
 <br>
 
-<table>
+<table class="ui celled table">
 <tr><td>Document name</td> <td>Type</td><td>Link</td><td>Maturity current</td><td>Maturity planned</td></tr>
 {% for document in documents %}
 	  <tr><td>{{ document.name }} </td><td> {{ document.type}} </td> <td> {{ document.link }} </td><td> {{ document.maturity_current}} </td><td> {{ document.maturity_planned }} </td></tr>
