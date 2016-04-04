@@ -6,7 +6,12 @@ NOTE: You can assess and add documents in the documents  section of the assessme
 <br>
 
 <table class="ui celled table">
-<tr><td>Document name</td> <td>Type</td><td>Link</td><td>Maturity current</td><td>Maturity planned</td></tr>
+<tr>
+<td><b>Document name</b></td> 
+<td><b>Type</b></td>
+<td><b>Link</b></td>
+<td><b>Maturity current</b></td>
+<td><b>Maturity planned</b></td></tr>
 {% for document in documents %}
 	  <tr><td>{{ document.name }} </td><td> {{ document.type}} </td> <td> {{ document.link }} </td><td> {{ document.maturity_current}} </td><td> {{ document.maturity_planned }} </td></tr>
 {% endfor %}
