@@ -226,25 +226,25 @@
     <div class="field">
       <div class="ui radio checkbox">
         <input type="radio" name="score_legal" value="1" required {{ check1 }} />
-        <label>Low</label>
+        <label>Low:<br>{{impact_description.legal.low}}</label>
       </div>
     </div>
     <div class="field">
       <div class="ui radio checkbox">
         <input type="radio" name="score_legal" value="2" required {{ check2 }} />
-        <label>Medium</label>
+        <label>Medium:<br>{{impact_description.legal.medium}}</label>
       </div>
     </div>
     <div class="field">
       <div class="ui radio checkbox">
         <input type="radio" name="score_legal" value="3" required {{ check3 }} />
-        <label>High</label>
+        <label>High:<br>{{impact_description.legal.high}} </label>
       </div>
     </div>
     <div class="field">
       <div class="ui radio checkbox">
         <input type="radio" name="score_legal" value="4" required {{ check4 }} />
-        <label>Very high</label>
+        <label>Critical:<br>{{impact_description.legal.critical}} </label>
       </div>
     </div>
   </div>
@@ -266,25 +266,25 @@
     <div class="field">
       <div class="ui radio checkbox">
         <input type="radio" name="score_financial" value="1" required {{ check1 }} >
-        <label>Low</label>
+        <label>Low:<br>{{impact_description.financial.low}}</label>
       </div>
     </div>
     <div class="field">
       <div class="ui radio checkbox">
         <input type="radio" name="score_financial" value="2" required {{ check2 }} >
-        <label>Medium</label>
+        <label>Medium:<br>{{impact_description.financial.medium}}</label>
       </div>
     </div>
     <div class="field">
       <div class="ui radio checkbox">
         <input type="radio" name="score_financial" value="3" required {{ check3 }} >
-        <label>High</label>
+        <label>High:<br>{{impact_description.financial.high}}</label>
       </div>
     </div>
     <div class="field">
       <div class="ui radio checkbox">
         <input type="radio" name="score_financial" value="4" required {{ check4 }} >
-        <label>Very high</label>
+        <label>Critical:<br>{{impact_description.financial.critical}}</label>
       </div>
     </div>
   </div>
@@ -306,25 +306,25 @@
     <div class="field">
       <div class="ui radio checkbox">
         <input type="radio" name="score_reputation" value="1" required {{ check1 }} >
-        <label>Low   </label>
+        <label>Low<br>{{impact_description.reputation.low }}</label>
       </div>
     </div>
     <div class="field">
       <div class="ui radio checkbox">
         <input type="radio" name="score_reputation" value="2" required {{ check2 }} >
-        <label>Medium</label>
+        <label>Medium:<br>{{impact_description.reputation.medium }}</label>
       </div>
     </div>
     <div class="field">
       <div class="ui radio checkbox">
         <input type="radio" name="score_reputation" value="3" required {{ check3 }} >
-        <label>High</label>
+        <label>High:<br>{{impact_description.reputation.high }}</label>
       </div>
     </div>
     <div class="field">
       <div class="ui radio checkbox">
         <input type="radio" name="score_reputation" value="4" required {{ check4 }} >
-        <label>Very high</label>
+        <label>Critical:<br>{{impact_description.reputation.critical }}</label>
       </div>
     </div>
   </div>
@@ -346,25 +346,25 @@
     <div class="field">
       <div class="ui radio checkbox">
         <input type="radio" name="score_safety" value="1" required {{ check1 }} >
-        <label>Low   </label>
+        <label>Low:<br>{{impact_description.safety.low }}</label>
       </div>
     </div>
     <div class="field">
       <div class="ui radio checkbox">
         <input type="radio" name="score_safety" value="2" required {{ check2 }} >
-        <label>Medium</label>
+        <label>Medium:<br>{{impact_description.safety.medium }}</label>
       </div>
     </div>
     <div class="field">
       <div class="ui radio checkbox">
         <input type="radio" name="score_safety" value="3" required {{ check3 }} >
-        <label>High</label>
+        <label>High<br>{{impact_description.safety.high }}</label>
       </div>
     </div>
     <div class="field">
       <div class="ui radio checkbox">
         <input type="radio" name="score_safety" value="4" required {{ check4 }} >
-        <label>Very high</label>
+        <label>Critical:<br>{{impact_description.safety.critical }}</label>
       </div>
     </div>
   </div>
@@ -386,67 +386,27 @@
     <div class="field">
       <div class="ui radio checkbox">
         <input type="radio" name="score_operational" value="1" required {{ check1 }}>
-        <label>Low</label>
+        <label>Low:<br>{{impact_description.productivity.low }}</label>
       </div>
     </div>
     <div class="field">
       <div class="ui radio checkbox">
         <input type="radio" name="score_operational" value="2" required {{ check2 }}>
-        <label>Medium</label>
+        <label>Medium:<br>{{impact_description.productivity.medium }}</label>
       </div>
     </div>
     <div class="field">
       <div class="ui radio checkbox">
         <input type="radio" name="score_operational" value="3" required {{ check3 }}>
-        <label>High</label>
+        <label>High:<br>{{impact_description.productivity.high }}</label>
       </div>
     </div>
     <div class="field">
       <div class="ui radio checkbox">
         <input type="radio" name="score_operational" value="4" required {{ check4 }}>
-        <label>Very high</label>
+        <label>Critical:<br>{{impact_description.productivity.critical }} </label>
       </div>
       </div>
-  </div>
-  </td>
-  </tr>
-
-  <tr>
-  <td>Other</td>
-  <td>
-  {% set check1=""  %}
-  {% set check2=""  %}
-  {% set check3=""  %}
-  {% set check4=""  %}
-  {% if threat.score_other == 1 %} {% set check1="checked"  %} {% endif %}
-  {% if threat.score_other == 2 %} {% set check2="checked"  %} {% endif %}
-  {% if threat.score_other == 3 %} {% set check3="checked"  %} {% endif %}
-  {% if threat.score_other == 4 %} {% set check4="checked"  %} {% endif %}
-  <div class="inline fields">
-    <div class="field">
-      <div class="ui radio checkbox">
-        <input type="radio" name="score_other" value="1" required {{ check1 }} class="hidden">
-        <label>Low</label>
-      </div>
-    </div>
-    <div class="field">
-      <div class="ui radio checkbox">
-        <input type="radio" name="score_other" value="2" required {{ check2 }} class="hidden">
-        <label>Medium</label>
-      </div>
-    </div>
-    <div class="field">
-      <div class="ui radio checkbox">
-        <input type="radio" name="score_other" value="3" required {{ check3 }} class="hidden">
-        <label>High</label>
-      </div>
-    </div>
-    <div class="field">
-      <div class="ui radio checkbox">
-        <input type="radio" name="score_other" value="4" required {{ check4 }} class="hidden">
-        <label>Very high</label>
-      </div>
-    </div>
   </div>
   </td>
   </tr>
