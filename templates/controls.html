@@ -3,11 +3,15 @@
 
 <H3>All Controls</H3>
 This list shows all controls implemented or to be implemented.
-<table>
-<tr><td>Control ID</td><td>Control Name</td></tr>
-{% for control in controls|sort(attribute='_id') %}
-<tr><td>{{ control._id }}</td><td>{{control.name}}</td></tr>
-{% endfor %}
+<table class="ui celled table">
+<thead>
+  <tr><th>Control ID</th><th>Control Name</th></tr>
+</thead>
+<tbody>
+  {% for control in controls|sort(attribute='_id') %}
+  <tr><td>{{ control._id }}</td><td>{{control.name}}</td></tr>
+  {% endfor %}
+</tbody>
 </table>
 {% endblock %}
 

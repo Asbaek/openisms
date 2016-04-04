@@ -1,14 +1,21 @@
 {% extends "layout.html" %}
 {% block body %}
-<H3>Processes</H3>
-<form action="/load_process_form" method=GET>
+
+<h2>Processes</h2>
+
+<form class="ui form" action="/load_process_form" method=GET>
 {% for process in process_list|sort(attribute='name') %}
-<input type="radio" name="process_id" value="{{process._id}}" required > {{process.name}}<br>
+<div class="field">
+  <div class="ui radio checkbox">
+    <input type="radio" name="process_id" value="{{process._id}}" required>
+    <label>{{process.name}}</label>
+  </div>
+</div>
 {% endfor %}
-<br>
-<input type=submit name="action" value="New process">
-<input type=submit name="action" value="Update process">
-<input type=submit name="action" value="Delete process">
+
+<input class="ui button" type=submit name="action" value="New process">
+<input class="ui button" type=submit name="action" value="Update process">
+<input class="ui button" type=submit name="action" value="Delete process">
 </form>
 {% endblock %}
 

@@ -1,37 +1,23 @@
 {% extends "layout.html" %}
 {% block body %}
 
-<H3>Unmitigated Threats</H3>
-This list show threats that lacks proper control
-
-<table>
-<tr><td><b>Threat name</b></td><td><b>Threat score (0-10)</b></td></tr>
-{% for threat in threats|sort(attribute='score_risk', reverse = True) %}
-{% if threat.is_controlled=="False" %}
-<tr><td>
-   {{threat.threat_name}} in {{threat.process_name}}
-</td><td>
-   {{threat.score_risk}}
-</td><tr>
-{% endif %}
-{% endfor %}
-</table>
-
-
-
-
-
-<H3>All Threats</H3>
-This list show all threats (mitigated and unmitigated)  recorded in OpenISMS.
-<table>
-<tr><td><b>Threat name</b></td><td><b>Threat score (0-10)</b></td></tr>
-{% for threat in threats|sort(attribute='score_risk', reverse = True) %}
-<tr><td>
-   {{threat.threat_name}} in {{threat.process_name}}
-</td><td>
-   {{threat.score_risk}}
-</td><tr>
-{% endfor %}
+<h3>All Threats</h3>
+This list show all threats (mitigated and unmitigated) recorded in OpenISMS.
+<table class="ui celled table">
+<thead>
+  <tr><th>Threat name</th><th>Threat score (0-10)</th><th>Mitigated?</th></tr>
+</thead>
+<tbody>
+  {% for threat in threats|sort(attribute='score_risk', reverse = True) %}
+  <tr><td>
+     {{threat.threat_name}} in {{threat.process_name}}
+  </td><td>
+     {{threat.score_risk}}
+  </td><td class="center aligned">
+  {% if threat.is_controlled=="True" %} <i class="large green checkmark icon"> {% endif %}
+  </td><tr>
+  {% endfor %}
+</tbody>
 </table>
 {% endblock %}
 
