@@ -78,11 +78,12 @@ def change_service(datafile=DATAFILE):
                 process_ids.append(int(process.get('_id', '10000')))
             except ValueError as ve:
                 return "Error occured in add function: " + str(ve)
-        input_data['_id'] = max(process_ids) + 1
+        process_id = max(process_ids) + 1
+        input_data['_id'] = process_id
         data["processes"].append(input_data)
         output = json.dumps(data, indent=4)
         write_file(datafile, output)
-        return "New process added."
+        return redirect(url_for('change_service', process_id=process_id, action='Update process'))
     if action == "Update process":
         try:
             query = {'action': 'load_item', 'aspect': 'process',
