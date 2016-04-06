@@ -10,6 +10,26 @@
     <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='semantic.min.js') }}"></script>
 
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <div class="flashes">
+        <div class="ui negative message">
+          <i class="close icon"></i>
+          {% if messages | length == 1 %}
+          <div class="header">Error</div>
+          {% else %}
+          <div class="header">Errors</div>
+          {% endif %}
+          <ul class="list">
+            {% for message in messages %}
+            <li>{{message}}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      {% endif %}
+    {% endwith %}
+
     <div class="pusher">
       <div class="site-menu ui attached inverted segment">
         <div class="ui container">
@@ -41,6 +61,13 @@
       $('.checkbox.ui').checkbox();
       $('.checkbox.radio.ui').checkbox();
       $('select.dropdown').dropdown();
+
+      $('.message .close')
+        .on('click', function() {
+          $(this)
+            .closest('.message')
+            .transition('fade');
+        });
     </script>
   </body>
 </html>

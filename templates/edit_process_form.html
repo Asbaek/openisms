@@ -4,6 +4,7 @@
 <fieldset>
   <form class="ui form" action="/prepare_process_query" method="POST">
     <input type="hidden" name="process_id" value="{{process_id}}">
+    <input type="hidden" name="lock_id" value="{{lock_id}}">
     <h2>Process {{process_data.name}}</h2>
     <div class="field">
       Process ID: {{process_id}}
@@ -29,6 +30,7 @@
 <form class="ui form" action="/prepare_asset_query" method="POST">
   <h2>Critical Information {{asset.name}}</h2>
   <input type="hidden" name="asset_id" value="{{ asset._id }}">
+  <input type="hidden" name="lock_id" value="{{lock_id}}">
 
   <div class="field">
     Asset ID: {{asset._id}}
@@ -108,6 +110,7 @@
 {% endfor %}
 <form class="ui form" action="/prepare_asset_query" method="POST">
   <input type="hidden" name="process_id" value="{{ process_id }}">
+  <input type="hidden" name="lock_id" value="{{lock_id}}">
 
   <input class="ui button" type="submit" name="action" value="Add asset">
 </form>
@@ -123,6 +126,7 @@
     {% if item._id == threat.threat_lib_reference %}
       <form class="ui form" action="prepare_threat_query" method="POST">
       <input type="hidden" value="{{process_data._id}}" name="process_id" />
+      <input type="hidden" name="lock_id" value="{{lock_id}}">
       <h2>Threat: {{item.name}}</h2>
 
       <h3>General description</h3>
@@ -171,6 +175,7 @@
   <form class="ui form" action="prepare_threat_query" method="POST">
     <input type="hidden" value="{{process_data._id}}" name="process_id" />
     <input type="hidden" name="threat_id" value="{{ threat._id }}">
+    <input type="hidden" name="lock_id" value="{{lock_id}}">
     {% if asset._id in threat.asset_ids %}
 
     <div class="inline field">
@@ -198,6 +203,7 @@
   <h3>Unmitigated risk score</h3>
 
   <form class="ui form" action="prepare_threat_query" method="POST">
+  <input type="hidden" name="lock_id" value="{{lock_id}}">
   <div class="field">
     Select worst case impact
   </div>
@@ -455,6 +461,7 @@
 
  <h3>Risk decisions</h3>
   <form class="ui form" action="prepare_threat_query" method="POST">
+  <input type="hidden" name="lock_id" value="{{lock_id}}">
   <table class="ui celled table">
   <tr>
     <td>Treatment decision </td>
@@ -550,6 +557,7 @@
       <input type="hidden" name="process_id" value="{{process_id}}">
       <input type="hidden" name="threat_id" value="{{threat._id}}">
       <input type="hidden" name="container_id" value="{{container.reference}}">
+      <input type="hidden" name="lock_id" value="{{lock_id}}">
 
       <input class="red mini ui button" type="submit" name="action" value="Delete container">
     </form>
@@ -566,6 +574,7 @@
       <input type="hidden" name="threat_id" value="{{threat._id}}">
       <input type="hidden" name="container_id" value="{{container.reference}}">
       <input type="hidden" name="control_id" value="{{item._id}}">
+      <input type="hidden" name="lock_id" value="{{lock_id}}">
 
       <input class="red mini ui button" type="submit" name="action" value="Delete control">
     </form>
@@ -577,6 +586,7 @@
     <input type="hidden" name="process_id" value={{process_id}}>
     <input type="hidden" name="threat_id" value={{threat._id}}>
     <input type="hidden" name="containerlib_id" value={{container.reference}}>
+    <input type="hidden" name="lock_id" value="{{lock_id}}">
 
     <div class="inline fields">
       <div class="field">
@@ -605,6 +615,7 @@
   <form class="ui form" action="prepare_threat_query" method="POST">
     <input type="hidden" name="process_id" value={{process_id}}>
     <input type="hidden" name="threat_id" value={{threat._id}}>
+    <input type="hidden" name="lock_id" value="{{lock_id}}">
 
     <div class="inline fields">
       <div class="field">
@@ -627,6 +638,7 @@
 
 <form class="ui form" action="prepare_threat_query" method="POST">
   <input type="hidden" name="process_id" value={{process_id}}>
+  <input type="hidden" name="lock_id" value="{{lock_id}}">
   <input class="ui button" type="submit" name="action" value="Add threat">
 </form>
 </fieldset>

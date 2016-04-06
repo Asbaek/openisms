@@ -1,16 +1,29 @@
 #/usr/bin/env python
 # -*- coding: utf-8 -*-
-from flask import Flask, request, render_template, jsonify, redirect, url_for
+from flask import Flask, request, render_template, jsonify, redirect, url_for, \
+                  flash
 import json
 import codecs
 import os
+import string
+import random
 
 DATAFILE = "assessments/data.json"
 SCHEMADATA = "assessments/schema.json"
 
 app = Flask(__name__)
+app.secret_key = 'secret key'
 
 # general functions
+
+def generate_id(size=6, chars=string.ascii_lowercase + string.ascii_uppercase + string.digits):
+    """
+    Generates a random id used for locking
+    Arguments:
+        size: The amount of characters (defaults to 6)
+        chars: The characters to use for the random id (defaults to a-zA-Z0-9)
+    """
+    return ''.join(random.choice(chars) for _ in range(size))
 
 
 def import_jsondata(selected_file):
@@ -33,6 +46,18 @@ def write_file(filename, contents, charset='utf-8'):
         contents: String, such as output form json.dumps()
         charset: Must be utf-8 to allow special characters
     """
+
+    # The idea here is that each time the DATAFILE (database/store) gets written
+    # to we want to update the lock. This makes sure that two users cannot
+    # update the store at the same time. First to update gets saved only.
+
+    # The reason to do it here is that this should cover _all_ the cases where
+    # the database is being updated.
+    if filename == DATAFILE:
+        data = json.loads(contents)
+        data['lock_id'] = generate_id()
+        contents = json.dumps(data, indent=4)
+
     with open(filename, 'w') as f:
         f.write(contents.encode(charset))
 
@@ -65,9 +90,7 @@ def change_service(datafile=DATAFILE):
         query = {'action': 'delete', 'aspect': 'process',
                  'processid': process_id, 'aspectid': None, 'inputdata': None}
         process_data = storage_processor(query)
-        return "Process " + \
-            str(process_id) + \
-            " was deleted"
+        return "Process " + str(process_id) + " was deleted"
     if action == "New process":
         data = import_jsondata(datafile)
         schema = import_jsondata(SCHEMADATA)
@@ -83,7 +106,9 @@ def change_service(datafile=DATAFILE):
         data["processes"].append(input_data)
         output = json.dumps(data, indent=4)
         write_file(datafile, output)
-        return redirect(url_for('change_service', process_id=process_id, action='Update process'))
+        return redirect(url_for('change_service',
+                                process_id=process_id,
+                                action='Update process'))
     if action == "Update process":
         try:
             query = {'action': 'load_item', 'aspect': 'process',
@@ -104,9 +129,16 @@ def change_service(datafile=DATAFILE):
 
         except Exception as e:
             print "Error code recieved: " + str(e)
-        return render_template('edit_process_form.html', process_data=process_data, process_id=process_id,
-                               containerlib=containerlib, controllib=controllib, threatlib=threatlib,
-			       impact_description=impact_description)
+
+        lock_id = data['lock_id']
+        return render_template('edit_process_form.html',
+                               process_data=process_data,
+                               process_id=process_id,
+                               containerlib=containerlib,
+                               controllib=controllib,
+                               threatlib=threatlib,
+                               impact_description=impact_description,
+                               lock_id=lock_id)
 
 
 def storage_processor(query, filename=DATAFILE):
@@ -114,9 +146,13 @@ def storage_processor(query, filename=DATAFILE):
     """
     # load all data from file
     try:
-        f = codecs.open(filename, mode='r', encoding='utf-8')
-        data = json.load(f)
-        f.close()
+        data = import_jsondata(filename)
+
+        if 'inputdata' in query and query['inputdata'] != None:
+            inputdata = query['inputdata']
+            if 'lock_id' in inputdata:
+                if inputdata['lock_id'] != data['lock_id']:
+                    return { 'error': 'A process has been updated by another party.' }
 
         # extract standard variables
         aspect = query.get('aspect', 'error')
@@ -428,6 +464,7 @@ def edit(query, process_index, aspect_index, data, filename, inputdata):
 
         outputdata = json.dumps(data, indent=4)
         write_file(filename, outputdata)
+
         return True
     except Exception as e:
         print 'edit function returned error: ' + str(e)
@@ -469,6 +506,9 @@ def prepare_process_query():
             query = {'action': 'edit', 'aspect': 'process',
                      'processid': process_id, 'aspectid': threat_id, 'inputdata': output}
             result = storage_processor(query)
+            if isinstance(result, dict):
+                if 'error' in result:
+                    flash(result['error'])
             return redirect(url_for('change_service', process_id=process_id, action='Update process'))
     except Exception as e:
         return "Error occured in prepare_process_query: " + str(e)
@@ -691,5 +731,9 @@ def report_full():
 if __name__ == '__main__':
     # Try and get SERVER_NAME env variable, defaults to 127.0.0.1
     host = os.getenv('HOSTNAME', '127.0.0.1')
+
+    # Make sure a random generated lock_id exists when starting the application
+    # This is arguably not a very clean solution but it works
+    write_file(DATAFILE, json.dumps(import_jsondata(DATAFILE)))
 
     app.run(host=host)

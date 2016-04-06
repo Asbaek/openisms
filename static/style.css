@@ -9,3 +9,11 @@ fieldset {
 .site-menu {
     margin-bottom: 20px !important;
 }
+
+.flashes {
+    z-index: 999;
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+}
