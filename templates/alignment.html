@@ -15,7 +15,7 @@ NOTE: You change the impact priorities and levels by manually editing the impact
 {# SHOW IMPACT PRIORITIES FROM data.json file #}
 <H3> Impact Priorities </H3>
 <table class="ui celled table">
-<tr><td><b>Organisations priority</b></td><td><b>Impact description</b></td><tr>
+<thead><tr><th>Organisations priority</th><th>Impact description</th><tr></thead>
 {% set numbers=["1","2","3","4","5"] %}
 {% for number in numbers %}
 {% for key, impact in impact_description.items() %}
@@ -30,7 +30,7 @@ NOTE: You change the impact priorities and levels by manually editing the impact
 {# SHOW INDIVIDUAL IMPACT LEVELS #}
 <H3>Impact Levels </H3>
 <table class="ui celled table">
-<tr><td><b>Impact description</b></td><td><b>Impact level</b></td><td><b>Level description</b></td></tr>
+<thead><tr><th>Impact description</th><th>Impact level</th><th>Level description</th></tr></thead>
 {% for key, impact in impact_description.items() %}
   <tr><td> {{ impact.description }} </td><td> Low  </td><td> {{ impact.low }} </td></tr>
   <tr><td> {{ impact.description }} </td><td> Medium  </td><td> {{ impact.medium }} </td></tr>
