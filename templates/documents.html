@@ -11,9 +11,23 @@ NOTE: You can assess and add documents in the documents  section of the assessme
 <td><b>Type</b></td>
 <td><b>Link</b></td>
 <td><b>Maturity current</b></td>
-<td><b>Maturity planned</b></td></tr>
-{% for document in documents %}
-	  <tr><td>{{ document.name }} </td><td> {{ document.type}} </td> <td> {{ document.link }} </td><td> {{ document.maturity_current}} </td><td> {{ document.maturity_planned }} </td></tr>
+<td><b>Maturity planned</b></td>
+<td><b>Maturity progress</b></td>
+<td><b>ISO27001:2013 References</b></td></tr>
+{% for document in documents|sort(attribute='type') %}
+  <tr>
+  <td> {{ document.name }} </td>
+  <td> {{ document.type}} </td> 
+  <td> {{ document.link }} </td>
+  <td> {{ document.maturity_current}} </td>
+  <td> {{ document.maturity_planned }} </td>
+  <td> <progress value="{{ document.maturity_current|int }}" max="{{ document.maturity_planned|int}}"></progress> </td>
+  <td> 
+  {% for control in document.control_references %}
+    {{ control }} <br>
+  {% endfor %}
+  </td>
+  </tr>
 {% endfor %}
 </table>
 

@@ -3,103 +3,321 @@
         {
             "threats": [
                 {
-                    "is_controlled": "False", 
                     "asset_ids": [
                         20001
                     ], 
                     "risk_decision": "Modify", 
-                    "project_owner": "None", 
                     "short_name": "", 
                     "score_safety": 1, 
-                    "score_financial": 1, 
-                    "score_other": 1, 
-                    "score_probability": 1, 
-                    "score_operational": 1, 
-                    "score_impact": 27, 
-                    "score_reputation": 4, 
-                    "score_risk": 0.53, 
+                    "score_operational": 2, 
+                    "score_reputation": 3, 
+                    "score_impact": 22, 
+                    "score_legal": 3, 
+                    "project_deadline_iso": "None", 
+                    "action_decided": "False", 
+                    "threat_lib_reference": "T002", 
+                    "is_controlled": "False", 
+                    "score_risk": 2.27, 
+                    "project_owner": "None", 
+                    "score_probability": 3, 
+                    "score_financial": 3, 
+                    "score_other": 0, 
+                    "project_names": "None", 
+                    "_id": 40001, 
+                    "containers": [
+                        {
+                            "control_ids": [
+                                "AC-02", 
+                                "AC-11"
+                            ], 
+                            "reference": "C011"
+                        }, 
+                        {
+                            "control_ids": [
+                                "AC-01"
+                            ], 
+                            "reference": "C021"
+                        }, 
+                        {
+                            "control_ids": [], 
+                            "reference": "C032"
+                        }, 
+                        {
+                            "control_ids": [], 
+                            "reference": ""
+                        }, 
+                        {
+                            "control_ids": [], 
+                            "reference": "C029"
+                        }
+                    ]
+                }, 
+                {
+                    "is_controlled": "False", 
+                    "asset_ids": [], 
+                    "project_owner": "None", 
+                    "short_name": "", 
+                    "score_safety": 0, 
+                    "score_financial": 0, 
+                    "score_other": 0, 
+                    "score_probability": 0, 
+                    "score_operational": 0, 
+                    "score_impact": 0, 
+                    "score_reputation": 0, 
+                    "score_risk": 0, 
                     "project_names": "None", 
                     "containers": [], 
-                    "score_legal": 1, 
-                    "_id": 40001, 
+                    "score_legal": 0, 
+                    "_id": 40002, 
                     "project_deadline_iso": "None", 
                     "action_decided": "False", 
                     "threat_lib_reference": "T001"
+                }, 
+                {
+                    "is_controlled": "False", 
+                    "asset_ids": [], 
+                    "project_owner": "None", 
+                    "short_name": "", 
+                    "score_safety": 0, 
+                    "score_financial": 0, 
+                    "score_other": 0, 
+                    "score_probability": 0, 
+                    "score_operational": 0, 
+                    "project_names": "None", 
+                    "score_reputation": 0, 
+                    "score_risk": 0, 
+                    "score_impact": 0, 
+                    "threat_lib_reference": "T005", 
+                    "score_legal": 0, 
+                    "_id": 40003, 
+                    "project_deadline_iso": "None", 
+                    "action_decided": "False", 
+                    "containers": []
                 }
             ], 
-            "description": "Test description", 
-            "name": "Test process", 
-            "process_id": "10001", 
-            "_id": 10001, 
             "assets": [
                 {
                     "criticality_a": "False", 
-                    "name": "Test data", 
+                    "name": "Sensitive Personal Information", 
                     "criticality_c": "True", 
                     "rpo_days": "0", 
-                    "criticality_i": "False", 
+                    "criticality_i": "True", 
                     "rto_days": "0", 
-                    "owner": "", 
+                    "owner": "CEO", 
                     "_id": 20001, 
-                    "description": "Test"
+                    "description": "Employees may occationally share informations with their manager or with HR, which is sensitive in nature. Examples are medical conditions, personality tests, political orientation or reasons for terminations in this or in other companies."
+                }, 
+                {
+                    "criticality_a": "False", 
+                    "name": "Non-Sensitive Personal Information", 
+                    "criticality_c": "False", 
+                    "rpo_days": 0, 
+                    "criticality_i": "True", 
+                    "rto_days": 0, 
+                    "owner": "", 
+                    "_id": 20002, 
+                    "description": "Personal information that is needed to run the company, like email, phone number, home address, IP addresses, training records, account numbers for salary payments, etc."
                 }
-            ]
+            ], 
+            "description": "Human Resources department and people managers are taking care of on boarding, day-to-day management and training and termination of employments.", 
+            "process_id": "10002", 
+            "_id": 10002, 
+            "name": "Human Resource Management"
         }
     ], 
     "documents": [
         {
-            "maturity_current": "", 
+            "maturity_current": "0", 
             "name": "ISMS Scope", 
-            "maturity_planned": "", 
-            "link": "", 
-            "control_references": [], 
+            "maturity_planned": "3", 
+            "link": "ISMS fileshare", 
+            "control_references": [
+                "Clause 4"
+            ], 
             "_id": "D0001", 
             "type": "Document"
         }, 
         {
-            "maturity_current": "", 
+            "maturity_current": "0", 
             "name": "Information Security Policy", 
-            "maturity_planned": "", 
+            "maturity_planned": "3", 
             "link": "Intraweb", 
-            "control_references": [], 
+            "control_references": [
+                "Clause 5.2", 
+                "Clause 6.2", 
+                "A.16.1.2", 
+                "A.16.1.3"
+            ], 
             "_id": "D0002", 
-            "type": "Document"
-        },
+            "type": "Policy"
+        }, 
         {
-            "maturity_current": "", 
-            "name": "Statement of Applicability", 
-            "maturity_planned": "", 
-            "link": "", 
-            "control_references": [], 
-            "_id": "D0003", 
-            "type": "Document"
-        },
+            "maturity_current": "0", 
+            "name": "Roles and Responsibilities", 
+            "maturity_planned": "3", 
+            "link": "Intraweb", 
+            "control_references": [
+                "Clause 5.3"
+            ], 
+            "_id": "D0015", 
+            "type": "Policy"
+        }, 
         {
-            "maturity_current": "", 
+            "maturity_current": "0", 
+            "name": "Risk Assessment Procedure", 
+            "maturity_planned": "3", 
+            "link": "Intraweb", 
+            "control_references": [
+                "Clause 6.1.2"
+            ], 
+            "_id": "D0012", 
+            "type": "Procedure"
+        }, 
+        {
+            "maturity_current": "0", 
             "name": "Risk Treatment Plan", 
-            "maturity_planned": "", 
-            "link": "", 
-            "control_references": [], 
+            "maturity_planned": "3", 
+            "link": "ISMS fileshare", 
+            "control_references": [
+                "Clause 6.1.3"
+            ], 
             "_id": "D0004", 
             "type": "Document"
-        },
+        }, 
         {
-            "maturity_current": "", 
-            "name": "Management Review Memos", 
-            "maturity_planned": "", 
-            "link": "", 
-            "control_references": [], 
+            "maturity_current": "0", 
+            "name": "Statement of Applicability", 
+            "maturity_planned": "3", 
+            "link": "ISMS fileshare", 
+            "control_references": [
+                "Clause 6.1.3.d"
+            ], 
+            "_id": "D0003", 
+            "type": "Document"
+        }, 
+        {
+            "maturity_current": "0", 
+            "name": "Backup Policy", 
+            "maturity_planned": "3", 
+            "link": "Intraweb", 
+            "control_references": [
+                "A.12.3.1"
+            ], 
             "_id": "D0005", 
-            "type": "Record"
-        },
+            "type": "Policy"
+        }, 
         {
-            "maturity_current": "", 
+            "maturity_current": "0", 
             "name": "Acceptable Use Policy", 
-            "maturity_planned": "", 
-            "link": "", 
+            "maturity_planned": "3", 
+            "link": "Intraweb", 
             "control_references": [], 
             "_id": "D0006", 
-            "type": "Document"
+            "type": "Policy"
+        }, 
+        {
+            "maturity_current": "0", 
+            "name": "Training and Awareness  Records", 
+            "maturity_planned": "3", 
+            "link": "ISMS fileshare", 
+            "control_references": [], 
+            "_id": "D0007", 
+            "type": "Record"
+        }, 
+        {
+            "maturity_current": "0", 
+            "name": "Monitoring and Measurement Evidence", 
+            "maturity_planned": "3", 
+            "link": "ISMS fileshare", 
+            "control_references": [
+                "Clause 9.1"
+            ], 
+            "_id": "D0008", 
+            "type": "Record"
+        }, 
+        {
+            "maturity_current": "0", 
+            "name": "Audit Program", 
+            "maturity_planned": "3", 
+            "link": "ISMS fileshare", 
+            "control_references": [
+                "Clause 9.2"
+            ], 
+            "_id": "D0009", 
+            "type": "Record"
+        }, 
+        {
+            "maturity_current": "0", 
+            "name": "Audit Reports", 
+            "maturity_planned": "3", 
+            "link": "ISMS fileshare", 
+            "control_references": [
+                "Clause 9.2"
+            ], 
+            "_id": "D0010", 
+            "type": "Record"
+        }, 
+        {
+            "maturity_current": "0", 
+            "name": "Log Review Records", 
+            "maturity_planned": "3", 
+            "link": "ISMS fileshare", 
+            "control_references": [], 
+            "_id": "D0011", 
+            "type": "Record"
+        }, 
+        {
+            "maturity_current": "0", 
+            "name": "Corrective Actions Records", 
+            "maturity_planned": "3", 
+            "link": "ISMS fileshare", 
+            "control_references": [], 
+            "_id": "D0012", 
+            "type": "Record"
+        }, 
+        {
+            "maturity_current": "0", 
+            "name": "Incident Management Procedure", 
+            "maturity_planned": "3", 
+            "link": "Intraweb", 
+            "control_references": [
+                "A.16.1.5"
+            ], 
+            "_id": "D0013", 
+            "type": "Procedure"
+        }, 
+        {
+            "maturity_current": "0", 
+            "name": "Business Continuity Procedure", 
+            "maturity_planned": "3", 
+            "link": "Intraweb", 
+            "control_references": [
+                "A.17.1.2"
+            ], 
+            "_id": "D0014", 
+            "type": "Procedure"
+        }, 
+        {
+            "maturity_current": "0", 
+            "name": "Nonconformity records", 
+            "maturity_planned": "3", 
+            "link": "ISMS fileshare", 
+            "control_references": [
+                "Clause 10.1"
+            ], 
+            "_id": "D0015", 
+            "type": "Records"
+        }, 
+        {
+            "maturity_current": "0", 
+            "name": "Management Review Results", 
+            "maturity_planned": "3", 
+            "link": "ISMS fileshare", 
+            "control_references": [
+                "Clause 9.3"
+            ], 
+            "_id": "D0015", 
+            "type": "Records"
         }
     ], 
     "containertypes": [
@@ -299,12 +517,12 @@
             "_id": "C034", 
             "description": "", 
             "name": "Cables"
-        },
+        }, 
         {
             "_id": "C035", 
             "description": "", 
             "name": "Employees - Vendor"
-        },
+        }, 
         {
             "_id": "C036", 
             "description": "", 
