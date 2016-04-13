@@ -36,9 +36,11 @@
                     "criticality_a": "False", 
                     "name": "Test data", 
                     "criticality_c": "True", 
-                    "rpo_days": "0", 
+                    "rpo_amount": "0", 
+                    "rpo_unit": "Hours", 
                     "criticality_i": "False", 
-                    "rto_days": "0", 
+                    "rto_amount": "0", 
+                    "rto_unit": "Hours", 
                     "owner": "", 
                     "_id": 20001, 
                     "description": "Test"

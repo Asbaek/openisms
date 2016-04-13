@@ -80,25 +80,45 @@
     </div>
   </div>
 
-  <div class="field">
-    Recovery point objective
-    <select class="ui fluid dropdown" name="rpo_days">
-      <option>{{asset.rpo_days}}</option>
-      {% for element in [1,3,7,14,30,60,90,180,365] %}
-      <option>{{element}} </option>
-      {% endfor %} 
-    </select>
-  </div>
+  {% with units = ["Hours", "Days"] %}
 
-  <div class="field">
+    Recovery point objective
+    <div class="fields">
+      <div class="eight wide field">
+        <input value="{{asset.rpo_amount}}" type="number" name="rpo_amount">
+      </div>
+      <div class="eight wide field">
+        <select class="ui fluid dropdown" name="rpo_unit">
+          {% for unit in units %}
+            {% if unit == asset.rpo_unit %}
+              <option value="{{unit}}" selected="selected">{{unit}}</option>
+            {% else %}
+              <option value="{{unit}}">{{unit}}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
     Recovery time objective
-    <select class="ui fluid dropdown" name="rto_days">
-      <option>{{asset.rto_days}}</option>
-      {% for element in [1,3,7,14,30,60,90,180,365] %}
-        <option>{{element}} </option>
-      {% endfor %}
-    </select>
-  </div>
+    <div class="fields">
+      <div class="eight wide field">
+        <input value="{{asset.rto_amount}}" type="number" name="rto_amount">
+      </div>
+      <div class="eight wide field">
+        <select class="ui fluid dropdown" name="rto_unit">
+          {% for unit in units %}
+            {% if unit == asset.rto_unit %}
+              <option value="{{unit}}" selected="selected">{{unit}}</option>
+            {% else %}
+              <option value="{{unit}}">{{unit}}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+  {% endwith %}
 
   <input type="hidden" name="process_id" value="{{ process_id }}">
 
