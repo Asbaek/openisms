@@ -731,9 +731,11 @@ def report_full():
 if __name__ == '__main__':
     # Try and get SERVER_NAME env variable, defaults to 127.0.0.1
     host = os.getenv('HOSTNAME', '127.0.0.1')
+    # If DEBUG is set to anything it will be True, defaults to False
+    debug = not not (os.getenv('DEBUG', False))
 
     # Make sure a random generated lock_id exists when starting the application
     # This is arguably not a very clean solution but it works
     write_file(DATAFILE, json.dumps(import_jsondata(DATAFILE)))
 
-    app.run(host=host)
+    app.run(host=host,debug=debug)
