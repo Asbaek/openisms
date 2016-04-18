@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <title>OpenISMS</title>
+  </head>
+  <body>
+    <link rel="stylesheet" href="{{ url_for('static', filename='semantic.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='semantic.min.js') }}"></script>
+
+    <div class="pusher">
+      <div class="site-menu ui attached inverted segment">
+        <div class="ui container">
+          <div class="ui inverted secondary pointing menu">
+	    <a class="item" href="/">Home</a>
+            <a class="item" href="/alignment">Alignment</a>
+            <a class="item" href="/assessment">Assessments</a>
+            <a class="item" href="/deliverables">Deliverables</a>
+            <a class="item" href="/reports">Reports</a>
+            <a class="item" href="/about">About</a>
+
+            <script>
+              $('a.item').each(function(index, a) {
+                if (a.href === document.location.href) {
+                  $(a).addClass('active');
+                }
+              });
+            </script>
+          </div>
+        </div>
+      </div>
+
+      <div class="ui container">
+        <h1>OpenISMS</h1>
+
+        {% block body %}{% endblock %}
+      </div>
+    </div>
+
+    <script>
+      $('.checkbox.ui').checkbox();
+      $('.checkbox.radio.ui').checkbox();
+      $('select.dropdown').dropdown();
+    </script>
+  </body>
+</html>

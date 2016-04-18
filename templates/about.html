@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h2>What is OpenISMS?</h2>
+OpenISMS is a tool for information security management.<br>
+You can use OpenISMS to perform structured risk assessments.<br>
+When you have some risk assessments, you can create various reports.<br>
+It also allows you to track security document deliverables.<br>
+
+<h2>What is the Data Model?</h2>
+OpenISMS is inspired the security model OCTAVE Allegro. <br>
+This model fulfills the requirement for risk assessment from many different security standards. <br>
+OpenISMS is build around the fundamental risk concepts described below.<br>
+<img src={{ url_for('static', filename = 'model.png') }} width="80%"> 
+
+<h2>What is a Risk?</h2>
+Risk is potential harm to your organization.<br>
+An Information Security Risk contains these elements:
+<ul>
+<li> An asset of value to your organisation. In OpenISMS we call the asset <b>critical Information</b></li>
+<li> Someone or something that can harm your critical information. We call this a <b>threat</b>.  </li>
+<li> Conditions in the environment allows a threat to affect your asset. We call such conditions <b>vulnerabilities</b></li>
+<li> A response that eases the impact of the threat on your asset. This response is called a <b>control</b></li>
+</ul>
+Real Life Example: <br>
+You have a vase of value to you (an asset). <br>
+The neigbours son has a football (threat). <br>
+In the summer you open your windows (vulnerability). <br>
+You instruct the kid not to play football up against your walls or you move the vase to a safer spot (control). <br>
+<br>
+Technical Example: <br>
+Your organisation runs a popular blog (blog posts are critical information).<br>
+Some people do not like the blog content and run DDoS attacks against it (threats) <br>
+Your webserver is an easy target on the internet and everybody can attack it (vulnerability).<br>
+You ask your ISP to ratelimit everything else than webtraffic (control). <br>
+
+
+<h2>What is a Risk Assessment?</h2>
+Risk assessment consists of two parts. <br>
+Risk analysis to understand the risks to your organisation and a decision on how to threat that risk<br>
+OpenISMS can be used to do risk assessment.
+
+<h2>How do I Perform a Risk Assessment?</h2>
+Take a look at the data model of OpenISMS on this page. <br>
+You perform a risk assessment by describing each element of the model.<br>
+By selecting "Assessment" in the menu, you can find forms to assist this process. 
+ 
+{% endblock %}
+
