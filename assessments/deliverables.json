@@ -1,0 +1,66 @@
+{
+  "deliverables": [
+    {
+      "maturity_current": "",
+      "name": "ISMS Scope",
+      "maturity_planned": "",
+      "link": "",
+      "control_references": [],
+      "_id": "D0001",
+      "type": "Document"
+    },
+    {
+      "maturity_current": "",
+      "name": "Information Security Policy",
+      "maturity_planned": "",
+      "link": "Intraweb",
+      "control_references": [],
+      "_id": "D0002",
+      "type": "Document"
+    },
+    {
+      "maturity_current": "",
+      "name": "Statement of Applicability",
+      "maturity_planned": "",
+      "link": "",
+      "control_references": [],
+      "_id": "D0003",
+      "type": "Document"
+    },
+    {
+      "maturity_current": "",
+      "name": "Risk Treatment Plan",
+      "maturity_planned": "",
+      "link": "",
+      "control_references": [],
+      "_id": "D0004",
+      "type": "Document"
+    },
+    {
+      "maturity_current": "",
+      "name": "Management Review Memos",
+      "maturity_planned": "",
+      "link": "",
+      "control_references": [],
+      "_id": "D0005",
+      "type": "Record"
+    },
+    {
+      "maturity_current": "",
+      "name": "Acceptable Use Policy",
+      "maturity_planned": "",
+      "link": "",
+      "control_references": [],
+      "_id": "D0006",
+      "type": "Document"
+    }
+  ],
+  "deliverable_maturity": {
+    "0": "Non-existent. Absence of awareness and documentation",
+    "1": "Initial. Awareness of need to study is present, but no documentation",
+    "2": "Managed. Documentation exists and is being followed. Lack of training and standards. Rely on indviduals",
+    "3": "Defined. Standardized and communicated documents exist. No detection of failure. Low level of sophistication in documents",
+    "4": "Quantitavely managed. Compliance with document is monitored and measured. Action can be taken errors are detected. Good practice alignment and continual improvement is in place. Automation is lacking",
+    "5": "Optimised. High level of automation. Process can be adjusted quickly to business needs."
+  }
+}
