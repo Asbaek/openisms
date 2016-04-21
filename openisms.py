@@ -4,9 +4,10 @@ from flask import Flask, request, render_template, jsonify, redirect, url_for
 import json
 import codecs
 import os
+import re
 
-DATAFILE = "assessments/data.json"
-SCHEMADATA = "assessments/schema.json"
+DATA = "assessments/data.json"
+SCHEMA = "assessments/schema.json"
 
 app = Flask(__name__)
 
@@ -36,7 +37,6 @@ def write_file(filename, contents, charset='utf-8'):
     with open(filename, 'w') as f:
         f.write(contents.encode(charset))
 
-
 @app.route("/", methods=['GET'])
 def index():
     """
@@ -51,9 +51,19 @@ def about():
     """
     return render_template('about.html')
 
+@app.route("/assessments", methods=['GET'])
+def assessments():
+    """
+    Displays list of processes to analyse or delete 
+    """
+    # create process_table
+    data=import_jsondata(DATA)
+    process_table=data['processes']
+    return render_template('assessments.html',process_table=process_table)
+
 @app.route("/show_json", methods=['GET'])
 def show_json():
-    data = import_jsondata(DATAFILE)
+    data = import_jsondata(DATA)
     return jsonify(data)
 
 

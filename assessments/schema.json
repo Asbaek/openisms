@@ -1,0 +1,41 @@
+{
+  "processes": [
+    {
+      "process_id": "",
+      "process_name": "",
+      "process_description": ""
+    }
+  ],
+  "assets": [
+    {
+      "asset_id": "",
+      "asset_name": "",
+      "asset_description": ""
+    }
+  ],
+  "containers": [
+    {
+      "container_id": "",
+      "container_name": "",
+      "container_description": ""
+    }
+  ],
+  "threats": [
+    {
+      "threat_id": "",
+      "threat_name": "",
+      "threat_description": "",
+      "threat_control_status": "",
+      "threat_control_decision": ""
+    }
+  ],
+  "risktable": [
+    {
+      "control_id": "",
+      "container_id": "",
+      "document_id": "",
+      "process_id": "",
+      "threat_id": ""
+    }
+  ]
+}

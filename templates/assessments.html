@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h2>Processes</h2>
+<form class="ui form" action="/analyse_process" method=GET>
+{% for process in process_table|sort(attribute='process_name') %}
+<div class="field">
+  <div class="ui radio checkbox">
+    <input type="radio" name="process_id" value="{{process.process_id}}">
+    <label>{{process.process_name}}</label>
+  </div>
+</div>
+{% endfor %}
+<br>
+<input class="ui button" type=submit name="action" value="Analyse process">
+<input class="ui button" type=submit name="action" value="Delete process">
+</form>
+{% endblock %}
+

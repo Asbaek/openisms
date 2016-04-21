@@ -1,41 +1,51 @@
 {
-  "processes": [
-    {
-      "process_id": "",
-      "process_name": "",
-      "process_description": ""
-    }
-  ],
-  "assets": [
-    {
-      "asset_id": "",
-      "asset_name": "",
-      "asset_description": ""
-    }
-  ],
-  "containers": [
-    {
-      "container_id": "",
-      "container_name": "",
-      "container_description": ""
-    }
-  ],
-  "threats": [
-    {
-      "threat_id": "",
-      "threat_name": "",
-      "threat_description": "",
-      "threat_control_status": "",
-      "threat_control_decision": ""
-    }
-  ],
-  "risktable": [
-    {
-      "control_id": "",
-      "container_id": "",
-      "document_id": "",
-      "process_id": "",
-      "threat_id": ""
-    }
-  ]
+    "processes": [
+        {
+            "process_description": "Authorities and key stakeholders requires timely and correct financial reporting", 
+            "process_name": "Finance - Financial reporting", 
+            "process_id": "P00002"
+        }, 
+        {
+            "process_description": "Hirering process ensures skilled resources when needed", 
+            "process_name": "Human Resources - Hirering", 
+            "process_id": "P00001"
+        },
+        {
+            "process_description": "IT Development provides business processes automation", 
+            "process_name": "IT - Development", 
+            "process_id": "P00003"
+        }
+    ], 
+    "threats": [
+        {
+            "threat_control_decision": "", 
+            "threat_id": "", 
+            "threat_control_status": "", 
+            "threat_description": "", 
+            "threat_name": ""
+        }
+    ], 
+    "assets": [
+        {
+            "asset_id": "", 
+            "asset_name": "", 
+            "asset_description": ""
+        }
+    ], 
+    "containers": [
+        {
+            "container_id": "", 
+            "container_description": "", 
+            "container_name": ""
+        }
+    ], 
+    "risktable": [
+        {
+            "threat_id": "", 
+            "process_id": "", 
+            "control_id": "", 
+            "document_id": "", 
+            "container_id": ""
+        }
+    ]
 }
