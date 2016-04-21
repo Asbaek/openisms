@@ -61,6 +61,14 @@ def assessments():
     process_table=data['processes']
     return render_template('assessments.html',process_table=process_table)
 
+@app.route("/analyse_process", methods=['GET'])
+def analyse_process():
+    """
+    Displays forms to analyse processes 
+    """
+    # create process_table
+    return render_template('analyse_process.html')
+
 @app.route("/show_json", methods=['GET'])
 def show_json():
     data = import_jsondata(DATA)
