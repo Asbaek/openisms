@@ -1,5 +1,9 @@
-#usr/bin/env python
+#sr/bin/env python
 # -*- coding: utf-8 -*-
+
+#########################
+# External dependencies #
+#########################
 from flask import Flask, request, render_template, jsonify, redirect, url_for
 import json
 import codecs
@@ -8,12 +12,12 @@ import re
 
 DATA = "assessments/data.json"
 SCHEMA = "assessments/schema.json"
-
+CONTROL_LIBRARY = "assessments/control_library.json"
 app = Flask(__name__)
 
-# general functions
-
-
+###########################
+# Multi purpose functions #
+###########################
 def import_jsondata(selected_file):
     """
     Returns dictionary loaded from specified json file
@@ -24,7 +28,6 @@ def import_jsondata(selected_file):
     data = json.load(f)
     f.close()
     return data
-
 
 def write_file(filename, contents, charset='utf-8'):
     """
@@ -37,6 +40,56 @@ def write_file(filename, contents, charset='utf-8'):
     with open(filename, 'w') as f:
         f.write(contents.encode(charset))
 
+##################
+# Risk functions #
+##################
+def get_table(aspect_ids):
+    """
+    get_details returns a list of dictionaries where each
+    list row is a dictionary with details about  aspect_ids.
+    Arguments:
+    - aspect_ids must be a list with strings. The aspects 
+      must be of the same kind.
+    """
+    #Check and collect input
+    assert(type(aspect_ids) is list),"Function get_table only accepts lists"
+    data=import_jsondata(DATA)
+    control_library=import_jsondata(CONTROL_LIBRARY)
+    #Prepare output
+    if "process" in aspect_ids[0]:
+        aspect_type="process"
+        aspect_data = data["processes"]
+    elif "asset" in aspect_ids[0]:
+        aspect_type="asset"
+        aspect_data = data["assets"]
+    elif "threat" in aspect_ids[0]:
+        aspect_type="threat"
+        aspect_data = data["threats"]
+    elif "container" in aspect_ids[0]:
+        aspect_type="container"
+        aspect_data = data["containers"] 
+    else:
+        aspect_type="control"
+        aspect_data = control_library["control_library"]
+    
+    result=[]
+    for aspect_id in aspect_ids:
+       result_row = {}
+       id_identifier = aspect_type + "_id"
+       for item in aspect_data:
+           row_id = item.get(id_identifier, None)
+           if row_id and (row_id in aspect_id):
+               result.append(item) 
+    if not result:
+        print "get_table returned an empty list"
+    #Output validation
+    assert(type(result) is list)
+    return result
+
+
+##########################
+# Web Application Output #
+##########################
 @app.route("/", methods=['GET'])
 def index():
     """
@@ -66,17 +119,25 @@ def analyse_process():
     """
     Displays forms to analyse processes 
     """
-    # create process_table
-    return render_template('analyse_process.html')
+    #get input data
+    process_ids = []
+    process_ids.append(request.args['process_id'])
+    process_table = get_table(process_ids)
+
+    #process_table = get_table("process",process_id,data)
+    #asset_table   = get_table("asset",process_id,data)
+    #threat_table  = get_table("threat",process_id,data)
+    return render_template('analyse_process.html', process_table=process_table)
 
 @app.route("/show_json", methods=['GET'])
 def show_json():
     data = import_jsondata(DATA)
     return jsonify(data)
 
-
+#############
+# Main code #
+#############
 if __name__ == '__main__':
     # Try and get SERVER_NAME env variable, defaults to 127.0.0.1
     host = os.getenv('HOSTNAME', '127.0.0.1')
-
     app.run(host=host)

@@ -2,5 +2,30 @@
 {% block body %}
 
 <h2>Risk Analysis</h2>
+
+{# FORM TO UPDATE PROCESS DETAILS #}
+<fieldset>
+<h2>Process<h2>
+{% for process in process_table %}
+<form class="ui form" action="/update_process" method="POST">
+    <input type="hidden" name="process_id" value="{{process_id}}">
+    <h2>{{process.process_name}}</h2>
+    <div class="field">
+      <label>Process id</label>{{process.process_id}}
+    </div>
+    <div class="field">
+      <label>Process name</label>
+      <input type="text" name="process_name" value="{{process.process_name}}">
+    </div>
+    <div class="field">
+      <label>Process description</label>
+      <textarea rows="4" name="description" cols=50>{{process.process_description}}</textarea>
+    </div>
+    <input class="ui button" type="submit" name="action" value="Apply process changes">
+  </form>
+{% endfor %}
+</fieldset>
+
+
 {% endblock %}
 

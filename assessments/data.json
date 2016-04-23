@@ -3,49 +3,65 @@
         {
             "process_description": "Authorities and key stakeholders requires timely and correct financial reporting", 
             "process_name": "Finance - Financial reporting", 
-            "process_id": "P00002"
+            "process_id": "process000002"
         }, 
         {
             "process_description": "Hirering process ensures skilled resources when needed", 
             "process_name": "Human Resources - Hirering", 
-            "process_id": "P00001"
+            "process_id": "process000001"
         },
         {
             "process_description": "IT Development provides business processes automation", 
             "process_name": "IT - Development", 
-            "process_id": "P00003"
+            "process_id": "process000003"
         }
     ], 
     "threats": [
         {
-            "threat_control_decision": "", 
-            "threat_id": "", 
-            "threat_control_status": "", 
-            "threat_description": "", 
-            "threat_name": ""
+            "threat_id": "threat000001", 
+            "threat_description": "Information is lost", 
+            "threat_name": "Availability",
+	    "threat_action": "Mitigate",
+	    "threat_action_executed":"False",
+	    "threat_score":{
+		"legal":1,
+		"financial":2,
+		"operational":3,
+		"reputational":0
+		}
         }
     ], 
+    "priority":{
+        "1":{
+		"description":"",
+		"name":"Legal",
+		"low":"",	
+		"medium":"",
+		"high":"",
+		"critical":""
+	}	
+	},
     "assets": [
         {
-            "asset_id": "", 
-            "asset_name": "", 
+            "asset_id": "asset000001", 
+            "asset_name": "Financial database", 
             "asset_description": ""
         }
     ], 
     "containers": [
         {
-            "container_id": "", 
-            "container_description": "", 
-            "container_name": ""
+            "container_id": "container000001", 
+            "container_description": "A database server is software and hardware needed to operate the database", 
+            "container_name": "Server - Database"
         }
     ], 
     "risktable": [
         {
-            "threat_id": "", 
-            "process_id": "", 
-            "control_id": "", 
-            "document_id": "", 
-            "container_id": ""
+            "threat_id": "threat000001", 
+            "process_id": "process000002", 
+            "control_id": "A.5.1.1", 
+            "deliverable_id": "deliverable000001", 
+            "container_id": "container000001"
         }
     ]
 }
