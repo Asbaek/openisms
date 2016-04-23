@@ -61,7 +61,8 @@
             "process_id": "process000002", 
             "control_id": "A.5.1.1", 
             "deliverable_id": "deliverable000001", 
-            "container_id": "container000001"
+            "container_id": "container000001",
+            "asset_id":"asset000001"
         }
     ]
 }

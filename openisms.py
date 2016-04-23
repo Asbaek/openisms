@@ -86,7 +86,25 @@ def get_table(aspect_ids):
     assert(type(result) is list)
     return result
 
+def get_process_assets(process_ids):
+    """
+    get_process_assets returns a list of ids for assets with a given process name
+    Arguments:
+    - process_id. A string like "process0000001"
+    """
+    assert(type(process_ids) is list), "get_process_assets got wrong input. Must be list"
+    data=import_jsondata(DATA)
+    result = []
+    for risk in data["risktable"]:
+        temp_process_id = risk.get("process_id", None) 
+        temp_asset_id   = risk.get("asset_id", None)
+        if temp_process_id in process_ids:
+            result.append(temp_asset_id)
+    assert(type(result) is list), "get_process_assets encountered an error in result variable"
+    return result
+ 
 
+    
 ##########################
 # Web Application Output #
 ##########################
@@ -124,9 +142,12 @@ def analyse_process():
     process_ids.append(request.args['process_id'])
     process_table = get_table(process_ids)
 
-    #process_table = get_table("process",process_id,data)
-    #asset_table   = get_table("asset",process_id,data)
-    #threat_table  = get_table("threat",process_id,data)
+    asset_ids = get_process_assets(process_ids)
+    asset_table = get_table(asset_ids)
+
+    #threat_ids = get_asset_threats(asset_ids)
+    #threat_table = get_table(threat_ids)
+
     return render_template('analyse_process.html', process_table=process_table)
 
 @app.route("/show_json", methods=['GET'])
