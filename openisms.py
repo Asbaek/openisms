@@ -145,10 +145,17 @@ def analyse_process():
     asset_ids = get_process_assets(process_ids)
     asset_table = get_table(asset_ids)
 
+    data = import_jsondata(DATA)
+    rxo_values = data["rxo_values"]
+
     #threat_ids = get_asset_threats(asset_ids)
     #threat_table = get_table(threat_ids)
 
-    return render_template('analyse_process.html', process_table=process_table)
+    #container_control_table = get_container_controls(threat_ids)
+
+    return render_template('analyse_process.html', process_table=process_table,
+						   asset_table=asset_table,
+						   rxo_values=rxo_values)
 
 @app.route("/show_json", methods=['GET'])
 def show_json():

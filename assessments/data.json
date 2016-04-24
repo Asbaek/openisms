@@ -44,8 +44,14 @@
     "assets": [
         {
             "asset_id": "asset000001", 
-            "asset_name": "Financial database", 
-            "asset_description": ""
+            "asset_name": "Internal Financial Database", 
+            "asset_description": "Financial database containing record of all transactions is stored the internal database hotel",
+            "asset_owner": "CFO",
+	    "asset_criticality_c":"True",
+	    "asset_criticality_i":"True",
+	    "asset_criticality_a":"True",
+            "asset_rpo_days":"Not selected",
+            "asset_rto_days":"Not selected"
         }
     ], 
     "containers": [
@@ -64,5 +70,22 @@
             "container_id": "container000001",
             "asset_id":"asset000001"
         }
+    ],
+    "rxo_values":[
+    "Not selected",
+    "less than 1 hour",
+    "4 hours",
+    "8 hours",
+    "1 day",
+    "3 days",
+    "5 days",
+    "7 days",
+    "14 days",
+    "1 month",
+    "2 months",
+    "3 months",
+    "6 months",
+    "more than 1 year"
     ]
+    
 }

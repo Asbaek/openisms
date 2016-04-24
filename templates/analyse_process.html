@@ -7,12 +7,15 @@
 <fieldset>
 <h2>Process<h2>
 {% for process in process_table %}
+{% set process_id = process.process_id %}
 <form class="ui form" action="/update_process" method="POST">
     <input type="hidden" name="process_id" value="{{process_id}}">
+{#
     <h2>{{process.process_name}}</h2>
     <div class="field">
       <label>Process id</label>{{process.process_id}}
     </div>
+#}
     <div class="field">
       <label>Process name</label>
       <input type="text" name="process_name" value="{{process.process_name}}">
@@ -25,7 +28,92 @@
   </form>
 {% endfor %}
 </fieldset>
+<br>
+<br>
 
+{# FORM TO SELECT ASSET TO UPDATE, ADD OR DELETE #}
+<fieldset>
+{% for asset in asset_table %}
+{% set asset_id = asset.asset_id %}
+<form class="ui form" action="/update_asset" method="POST">
+  <h2>Critical Information/Asset Details</h2>
+
+    <div class="field">
+    <label>Asset name</label>
+    <div class="ui input">
+      <input type="text" name="asset_name" value="{{asset.asset_name}}">
+    </div>
+   </div>
+
+    <div class="field">
+    <label>Asset description</label>
+    <textarea rows="4" name="asset_description" cols=50>{{asset.asset_description}}</textarea>
+    </div>
+
+    <div class="field">
+    <label>Asset owner</label>
+    <div class="ui input">
+      <input type="text" name="asset_owner" value="{{asset.asset_owner}}">
+    </div>
+   </div>
+
+   {% set check_c="" %}
+   {% set check_i="" %}
+   {% set check_a="" %}
+   {% if asset.asset_criticality_c == "True" %} {% set check_c="checked" %} {% endif %}
+   {% if asset.asset_criticality_i == "True" %} {% set check_i="checked" %} {% endif %}
+   {% if asset.asset_criticality_a == "True" %} {% set check_a="checked" %} {% endif %}
+   <div class="inline field">
+     <div class="ui checkbox">
+       <input type="checkbox" name="asset_criticality_c" value ="True" {{ check_c }} tabindex="0" class="hidden">
+       <label>Confidentiality critical</label>
+     </div>
+    </div>
+
+    <div class="inline field">
+      <div class="ui checkbox">
+        <input type="checkbox" name="asset_criticality_i" value ="True" {{ check_i }} tabindex="0" class="hidden">
+        <label>Integrity critical</label>
+      </div>
+    </div>
+
+    <div class="inline field">
+      <div class="ui checkbox">
+        <input type="checkbox" name="asset_criticality_a" value ="True" {{ check_a }} tabindex="0" class="hidden">
+        <label>Availability critical</label>
+      </div>
+    </div>
+
+     <div class="field">
+    Recovery point objective
+    <select class="ui fluid dropdown" name="asset_rpo_days">
+      <option>{{asset.asset_rpo_days}}</option>
+      {% for element in rxo_values %}
+      <option>{{element}} </option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="field">
+    Recovery time objective
+    <select class="ui fluid dropdown" name="asset_rto_days">
+      <option>{{asset.asset_rto_days}}</option>
+      {% for element in rxo_values %}
+        <option>{{element}} </option>
+      {% endfor %}
+    </select>
+  </div>
+
+
+
+
+
+  <input type="hidden" name="process_id" value="{{ process_id }}">
+  <input type="hidden" name="asset_id" value="{{ asset_id }}">
+  <input class="ui button" type="submit" name="action" value="Apply asset changes">
+
+</form>
+{% endfor %}
 
 {% endblock %}
 
