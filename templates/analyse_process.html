@@ -36,7 +36,7 @@
 {% for asset in asset_table %}
 {% set asset_id = asset.asset_id %}
 <form class="ui form" action="/update_asset" method="POST">
-  <h2>Critical Information/Asset Details</h2>
+  <h2>Critical Information</h2>
 
     <div class="field">
     <label>Asset name</label>
@@ -104,16 +104,38 @@
     </select>
   </div>
 
-
-
-
-
   <input type="hidden" name="process_id" value="{{ process_id }}">
   <input type="hidden" name="asset_id" value="{{ asset_id }}">
   <input class="ui button" type="submit" name="action" value="Apply asset changes">
 
 </form>
 {% endfor %}
+</fieldset>
+<br>
+<br>
+
+
+{# #}
+<fieldset>
+<h2>Threats</h2>
+{% for threat in threat_table %}
+<form class="ui form" action="/update_threat" method="POST">
+    <input type="hidden" name="process_id" value="{{process_id}}">
+
+    <div class="field">
+      <label>Threat name</label>
+      <input type="text" name="threat_name" value="{{threat.threat_name}}">
+    </div>
+    <div class="field">
+      <label>Threat description</label>
+      <textarea rows="4" name="description" cols=50>{{threat.threat_description}}</textarea>
+    </div>
+    <input class="ui button" type="submit" name="action" value="Apply threat changes">
+  </form>
+{% endfor %}
+</fieldset>
+
+
 
 {% endblock %}
 
