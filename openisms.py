@@ -88,7 +88,7 @@ def get_table(aspect_ids):
 
 def get_process_assets(process_ids):
     """
-    get_process_assets returns a list of ids for assets with a given process name
+    get_process_assets returns a list of asset ids for assets with a given process name
     Arguments:
     - process_id. A string like "process0000001"
     """
@@ -102,8 +102,175 @@ def get_process_assets(process_ids):
             result.append(temp_asset_id)
     assert(type(result) is list), "get_process_assets encountered an error in result variable"
     return result
- 
 
+def get_asset_threats(asset_ids):
+    """
+    Returns a list of threat dictionaries. Each dictionary contains needed information to describe the threat, affected containers and security controls. 
+    Arguments:
+    - asset_ids: A list of strings in the format "asset" followed by a unique integer number.
+    """
+    assert(type(asset_ids) is list), "get_asset_threats got wrong input. Must be list"
+    data=import_jsondata(DATA)
+    result = []
+    for risk in data["risktable"]:
+        temp_asset_id = risk.get("asset_id",None)
+        temp_threat_id = risk.get("threat_id",None)
+        if temp_asset_id in asset_ids:
+            result.append(temp_threat_id)
+    assert(type(result) is list), "get_asset_threats encountered an error in result variable"
+    return result
+
+def get_control_dict(search_control_id):
+    """
+    Returns a dict with control_id and control_name if searc_control_id is found in control_library.json 
+    Returns an empty dict if nothing is found.
+    Arguments:
+    - search_control_id: string with a control_id
+    """
+    assert(type(search_control_id) is str)
+    control_library=import_jsondata(CONTROL_LIBRARY)
+    result = {}
+    for index, control in enumerate(control_library["control_library"]):
+        control_id = control.get("control_id", None)
+        if search_control_id in control_id:
+            control_name = control.get("control_name", None)
+            result.update({"control_id":control_id,"control_name":control_name})
+    assert(type(result) is dict)
+    return result
+
+def get_container_dict(search_container_id):
+    """
+    Returns a dict with container_id and container_name from the table containers in data.json
+    Returns an empty dict if nothgin is found.
+    Arguments:
+    - search_container_id: string with container_id
+    """
+    assert(type(search_container_id) is str)
+    data=import_jsondata(DATA)
+    result={}
+    for index, container in enumerate(data["containers"]):
+        container_id = container.get("container_id", None)
+        print container_id
+        if search_container_id in container_id:
+            container_name = container.get("container_name", None)
+            result.update({"container_id":container_id, "container_name":container_name})
+    assert(type(result) is dict)
+    return result
+
+def get_risk_score(threat_dict):
+    """
+    Returns a risk score as a string with 2 decimals. 
+    Returns "No risk score" string if an error is encountered 
+    The method is based on octave allegro.
+    Arguments:
+    - threat_dict: A dict loaded from threats in data.json 
+    """
+    data=import_jsondata(DATA)
+    priority=data.get("priority", None)
+    ERROR = False
+    
+    priority_1= priority.get("1",None)
+    if priority_1:
+        priority_1_name = priority_1.get("name", None)
+    else:
+        ERROR = True
+
+    priority_2= priority.get("2",None)
+    if priority_2:
+        priority_2_name = priority_2.get("name", None)
+    else:
+        ERROR = True
+
+    priority_3= priority.get("3",None)
+    if priority_3:
+        priority_3_name = priority_3.get("name", None)
+    else:
+        ERROR = True
+
+    priority_4= priority.get("4",None)
+    if priority_4:
+        priority_4_name = priority_4.get("name", None)
+    else:
+        ERROR = True
+
+    priority_5= priority.get("5",None)
+    if priority_5:
+        priority_5_name = priority_5.get("name", None)
+    else:
+        ERROR = True
+
+    threat_score = threat_dict.get("threat_score",None)
+    risk_score = 0.0
+    #Assign a large risk_score to high priorities
+    if ERROR:
+        result="No risk score"
+    else:
+        for name, score in threat_score.items():
+            fscore = float(score)
+            assert(fscore in [0.0,1.0,2.0,3.0])
+            if name in priority_1_name:
+                risk_score += 5*fscore
+            elif name in priority_2_name:
+                risk_score += 4*fscore
+            elif name in priority_3_name:
+                risk_score += 3*fscore
+            elif name in priority_4_name:
+                risk_score += 2*fscore
+            elif name in priority_5_name:
+                risk_score += 1*fscore
+	risk_score=risk_score*10.0/45.0      
+    	result = str('{0:.2f}'.format(risk_score))
+    assert(type(result) is str)
+    return result
+
+
+def inject_risk_scores(threat_table):
+    """
+    Returns an a threat table with a new or updated row named "risk score"
+    Arguments:
+    - threat_table: A list of threat dicts. 
+    """
+    assert(type(threat_table) is list)
+    for index,threat_dict in enumerate(threat_table):
+        risk_score=get_risk_score(threat_dict)
+	threat_table[index].update({"risk_score":risk_score})
+    assert(type(threat_table) is list)
+    return threat_table  
+
+def inject_containers_and_controls(threat_table):
+    """
+    Returns an extended threat_table (list of threat dicts). Each threat dict gets container element injected:
+    "containers":[
+     {"container_id":"",
+     "container_name":"",
+     "container_controls":[{"control_id":"","control_name"}]
+     }]
+    Arguments:
+    - threat_table: is a list of threat dicts.
+    """
+    control_library = import_jsondata(CONTROL_LIBRARY)
+    data=import_jsondata(DATA)
+    for index,threat_dict in enumerate(threat_table):
+        containers=[]
+        threat_table_id = threat_dict.get("threat_id",None)
+        for risk in data["risktable"]:
+            temp_threat_id = risk.get("threat_id", None)
+            if temp_threat_id in threat_table_id:
+                temp_container_id=risk.get("container_id", None)
+                temp_control_id  =risk.get("control_id", None)
+                new_data = {}
+                new_data["container_controls"]=[]
+                if temp_container_id:
+                    container_dict ={}
+                    container_dict=get_container_dict(str(temp_container_id))
+		    new_data.update(container_dict)
+                    if temp_control_id:
+                        control_dict = {}
+                        control_dict = get_control_dict(str(temp_control_id))
+                        new_data["container_controls"].append(control_dict)
+                containers.append(new_data)
+    	threat_table[index]["containers"]=containers
+    return threat_table        
     
 ##########################
 # Web Application Output #
@@ -148,14 +315,15 @@ def analyse_process():
     data = import_jsondata(DATA)
     rxo_values = data["rxo_values"]
 
-    #threat_ids = get_asset_threats(asset_ids)
-    #threat_table = get_table(threat_ids)
-
-    #container_control_table = get_container_controls(threat_ids)
+    threat_ids = get_asset_threats(asset_ids)
+    threat_table = get_table(threat_ids)
+    threat_table = inject_containers_and_controls(threat_table)
+    threat_table = inject_risk_scores(threat_table)
 
     return render_template('analyse_process.html', process_table=process_table,
 						   asset_table=asset_table,
-						   rxo_values=rxo_values)
+						   rxo_values=rxo_values,
+						   threat_table=threat_table)
 
 @app.route("/show_json", methods=['GET'])
 def show_json():

@@ -24,22 +24,56 @@
 	    "threat_action": "Mitigate",
 	    "threat_action_executed":"False",
 	    "threat_score":{
-		"legal":1,
-		"financial":2,
-		"operational":3,
-		"reputational":0
+		"legal":"0",
+		"financial":"0",
+		"operational":"0",
+		"reputational":"0",
+		"productivity":"0",
+		"health":"0"
 		}
         }
     ], 
     "priority":{
         "1":{
 		"description":"",
-		"name":"Legal",
+		"name":"reputational",
 		"low":"",	
 		"medium":"",
 		"high":"",
 		"critical":""
-	}	
+	},
+        "2":{
+		"description":"",
+		"name":"legal",
+		"low":"",	
+		"medium":"",
+		"high":"",
+		"critical":""
+	},
+        "3":{
+		"description":"",
+		"name":"financial",
+		"low":"",	
+		"medium":"",
+		"high":"",
+		"critical":""
+	},
+        "4":{
+		"description":"",
+		"name":"health",
+		"low":"",	
+		"medium":"",
+		"high":"",
+		"critical":""
+	},
+        "5":{
+		"description":"",
+		"name":"productivity",
+		"low":"",	
+		"medium":"",
+		"high":"",
+		"critical":""
+	}
 	},
     "assets": [
         {
@@ -65,7 +99,7 @@
         {
             "threat_id": "threat000001", 
             "process_id": "process000002", 
-            "control_id": "A.5.1.1", 
+            "control_id": "AC-02", 
             "deliverable_id": "deliverable000001", 
             "container_id": "container000001",
             "asset_id":"asset000001"
