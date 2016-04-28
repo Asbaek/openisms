@@ -23,58 +23,77 @@
             "threat_name": "Availability",
 	    "threat_action": "Mitigate",
 	    "threat_action_executed":"False",
-	    "threat_score":{
-		"legal":"0",
-		"financial":"0",
-		"operational":"0",
-		"reputational":"0",
-		"productivity":"0",
-		"health":"0"
+	    "impact_scores":[
+                {
+		"type":"legal",
+                "score":"0"
+		},
+		{
+		"type":"financial",
+		"score":"0"
+ 		},
+		{
+		"type":"productivity",
+		"score":"0"
+		},
+		{
+		"type":"reputational",
+		"score":"0"
+		},
+		{
+		"type":"health",
+		"score":"0"
 		}
+		]
         }
     ], 
-    "priority":{
-        "1":{
-		"description":"",
-		"name":"reputational",
-		"low":"",	
-		"medium":"",
-		"high":"",
-		"critical":""
+    "global_impact_details":[
+        {
+		"description":"Reputation and stakeholder confidence",
+		"type":"reputational",
+		"low":"Minimal damage to reputation and stakeholder confidence",	
+		"medium":"Revokable damage to reputation and stakeholders confidence",
+		"high":"Irrevokable damage to less important stakholders confidence",
+		"critical":"Irrevokable damage to key stakholders confidence or public reputation",
+                "priority":"1"
 	},
-        "2":{
-		"description":"",
-		"name":"legal",
-		"low":"",	
-		"medium":"",
-		"high":"",
-		"critical":""
+        {
+		"description":"Fines and legal penialties",
+		"type":"legal",
+		"low":"Fines, non-frivolous lawsuits or investigations do not exceed 50.000 euro",	
+		"medium":"Fines, non-frivolous lawsuits or investigations do not exceed 200.000 euro",
+		"high":"Fines, non-frivolous lawsuits or investigations exceed 200.000 euro",
+		"critical":"Public investigations of organisational practices is made",
+                "priority":"2"
 	},
-        "3":{
-		"description":"",
-		"name":"financial",
-		"low":"",	
-		"medium":"",
-		"high":"",
-		"critical":""
+        {
+		"description":"Financial",
+		"type":"financial",
+		"low":"Yearly revenue reduction or one time loss of less than 50.000 euros",	
+		"medium":"Yearly revenue reduction or one time loss of 50.000-200.000 euros",
+		"high":"Yearly revenue reduction or one time loss of 200.000-500.000 euros",
+		"critical":"Yearly revenue reduction or one time loss of more than 500.000 euros",
+                "priority":"3"
 	},
-        "4":{
-		"description":"",
-		"name":"health",
-		"low":"",	
-		"medium":"",
-		"high":"",
-		"critical":""
+        {
+		"description":"Health and safety",
+		"type":"health",
+		"low":"No significant threats to health and safety",	
+		"medium":"Maximum 4 days of degrade in employee or customer health.",
+		"high":"More than 4 days of degrade in employee or customer health.",
+		"critical":"Permenent degrade in employee or customer health",
+                "priority":"4"
 	},
-        "5":{
-		"description":"",
-		"name":"productivity",
-		"low":"",	
-		"medium":"",
-		"high":"",
-		"critical":""
+        {
+		"description":"Productivity",
+		"type":"productivity",
+		"low":"Less than 1 full time employee is required for less than 1 month",	
+		"medium":"Less than 1 full time employee is required for less than 2 months",
+		"high":"Less than 4 full time employees are requred for less than 6 months",
+		"critical":"More than 4 full time employees are required for more than 6 months",
+                "priority":"5"
 	}
-	},
+	],
     "assets": [
         {
             "asset_id": "asset000001", 
@@ -93,6 +112,152 @@
             "container_id": "container000001", 
             "container_description": "A database server is software and hardware needed to operate the database", 
             "container_name": "Server - Database"
+        }
+    ], 
+    "container_library": [
+        {
+            "container_description": "", 
+            "container_name": "Network appliances"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Network appliances - Routers"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Network appliances - Swithces"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Network appliances - Firewalls"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Servers - Web External"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Servers - Database"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Servers - Infrastructure"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Servers - Web Internal"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Servers - Virtualisation infrastructure"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Servers"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Laptops - HR"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Laptops - Finance"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Laptops - Management"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Laptops - Operations"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Laptops - Research & Development"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Laptops"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Managers"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "End-users"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Employees - Operations"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Employees - Research & Development"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Employees - Human Resources"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Employees - Finance"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Employees"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Administrators - Servers"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Administrators - Network"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Administrators"
+        }, 
+        {
+            "container_description": "USB keys, flash cards, DVDs or external harddrives", 
+            "container_name": "Removable media"
+        }, 
+        {
+            "container_description": "Storage Area Networks and other shared storage", 
+            "container_name": "Shared storage"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Printouts"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Offices"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Datacenters"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Safes"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Private homes"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Cables"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Employees - Vendor"
+        }, 
+        {
+            "container_description": "", 
+            "container_name": "Administrators - Vendor"
         }
     ], 
     "risktable": [

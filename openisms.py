@@ -71,7 +71,6 @@ def get_table(aspect_ids):
     else:
         aspect_type="control"
         aspect_data = control_library["control_library"]
-    
     result=[]
     for aspect_id in aspect_ids:
        result_row = {}
@@ -150,7 +149,6 @@ def get_container_dict(search_container_id):
     result={}
     for index, container in enumerate(data["containers"]):
         container_id = container.get("container_id", None)
-        print container_id
         if search_container_id in container_id:
             container_name = container.get("container_name", None)
             result.update({"container_id":container_id, "container_name":container_name})
@@ -166,60 +164,30 @@ def get_risk_score(threat_dict):
     - threat_dict: A dict loaded from threats in data.json 
     """
     data=import_jsondata(DATA)
-    priority=data.get("priority", None)
-    ERROR = False
-    
-    priority_1= priority.get("1",None)
-    if priority_1:
-        priority_1_name = priority_1.get("name", None)
-    else:
-        ERROR = True
+    global_impact_details=data.get("global_impact_details", None)
+    risk_score = -1.0 
+    impact_scores = threat_dict.get("impact_scores",None)
+    try:
+        for global_impact in global_impact_details: 
+            for impact_score in impact_scores:
+                global_impact_type = global_impact.get("type", None)
+	        impact_score_type = impact_score.get("type", None)
+                if global_impact_type in impact_score_type:
+                    # note that priority 1 is weighted 5 and 
+                    # priority 5 is weigted 1.
+		    # the weight is therefore weight=6-priority
+		    priority = global_impact.get("priority", None)
+		    weight = 6.0-float(priority)
+		    score = float(impact_score.get("score", None))
+                    risk_score += weight*score
+    except KeyError,e:
+	print "get_risk_score error: "+str(e)
 
-    priority_2= priority.get("2",None)
-    if priority_2:
-        priority_2_name = priority_2.get("name", None)
-    else:
-        ERROR = True
-
-    priority_3= priority.get("3",None)
-    if priority_3:
-        priority_3_name = priority_3.get("name", None)
-    else:
-        ERROR = True
-
-    priority_4= priority.get("4",None)
-    if priority_4:
-        priority_4_name = priority_4.get("name", None)
-    else:
-        ERROR = True
-
-    priority_5= priority.get("5",None)
-    if priority_5:
-        priority_5_name = priority_5.get("name", None)
-    else:
-        ERROR = True
-
-    threat_score = threat_dict.get("threat_score",None)
-    risk_score = 0.0
-    #Assign a large risk_score to high priorities
-    if ERROR:
-        result="No risk score"
-    else:
-        for name, score in threat_score.items():
-            fscore = float(score)
-            assert(fscore in [0.0,1.0,2.0,3.0])
-            if name in priority_1_name:
-                risk_score += 5*fscore
-            elif name in priority_2_name:
-                risk_score += 4*fscore
-            elif name in priority_3_name:
-                risk_score += 3*fscore
-            elif name in priority_4_name:
-                risk_score += 2*fscore
-            elif name in priority_5_name:
-                risk_score += 1*fscore
-	risk_score=risk_score*10.0/45.0      
+    risk_score=risk_score*10.0/45.0      
+    if risk_score>0.0:
     	result = str('{0:.2f}'.format(risk_score))
+    else:
+	result = "No risk calculated"
     assert(type(result) is str)
     return result
 
@@ -311,19 +279,56 @@ def analyse_process():
 
     asset_ids = get_process_assets(process_ids)
     asset_table = get_table(asset_ids)
-
     data = import_jsondata(DATA)
     rxo_values = data["rxo_values"]
+    global_impact_details = data["global_impact_details"]
 
     threat_ids = get_asset_threats(asset_ids)
     threat_table = get_table(threat_ids)
     threat_table = inject_containers_and_controls(threat_table)
     threat_table = inject_risk_scores(threat_table)
 
+    control_library = import_jsondata(CONTROL_LIBRARY)
+    print str(type(control_library))
+    container_library = data.get("container_library", None)
     return render_template('analyse_process.html', process_table=process_table,
 						   asset_table=asset_table,
 						   rxo_values=rxo_values,
-						   threat_table=threat_table)
+						   global_impact_details=global_impact_details,
+						   threat_table=threat_table,
+						   control_library=control_library,
+						   container_library=container_library)
+
+@app.route("/update_process", methods=['POST'])
+def update_process():
+    formdata = {}
+    f = request.form
+    output = {}
+    for key in f.keys():
+        for value in f.getlist(key):
+            output[key] = value.strip() 
+    return jsonify(output)
+
+@app.route("/update_asset", methods=['POST'])
+def update_asset():
+    formdata = {}
+    f = request.form
+    output = {}
+    for key in f.keys():
+        for value in f.getlist(key):
+            output[key] = value.strip() 
+    return jsonify(output)
+
+@app.route("/update_threat", methods=['POST'])
+def update_threat():
+    formdata = {}
+    f = request.form
+    output = {}
+    for key in f.keys():
+        for value in f.getlist(key):
+            output[key] = value.strip() 
+    return jsonify(output)
+
 
 @app.route("/show_json", methods=['GET'])
 def show_json():

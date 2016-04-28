@@ -115,6 +115,11 @@
 <br>
 
 
+
+
+
+
+
 {# #}
 <fieldset>
 <h2>Threats</h2>
@@ -126,16 +131,187 @@
       <label>Threat name</label>
       <input type="text" name="threat_name" value="{{threat.threat_name}}">
     </div>
+
     <div class="field">
       <label>Threat description</label>
       <textarea rows="4" name="description" cols=50>{{threat.threat_description}}</textarea>
     </div>
+
+  <h4>Impact analysis</h4>
+    <table class="ui celled table">
+    <tr>
+    <td>Impact area</td>
+    <td>Low</td>
+    <td>Medium</td>
+    <td>High</td>
+    <td>Critical</td>
+    </tr>
+    {% for impact_score in threat.impact_scores %}
+       {% set check0=""  %}
+       {% set check1=""  %}
+       {% set check2=""  %}
+       {% set check3=""  %}
+       {% if impact_score.score == 0 %}{% set check0="checked"%}{% endif %}
+       {% if impact_score.score == 1 %}{% set check1="checked"%}{% endif %}
+       {% if impact_score.score == 2 %}{% set check2="checked"%}{% endif %}
+       {% if impact_score.score == 3 %}{% set check3="checked"%}{% endif %}
+    <tr>
+    <td>
+        {% for global_impact in global_impact_details %}
+        {% if global_impact.type == impact_score.type %}
+        {{global_impact.description}}
+	{% endif %}
+        {% endfor %}
+    </td>
+     <td>   
+        </div>
+        </div>
+        </div>
+       <input type="radio" name="{{impact_score.type}}" value="0" required {{ check0 }}>
+        {% for global_impact in global_impact_details %}
+        {% if global_impact.type == impact_score.type %}
+         <label>{{global_impact.low}}</label>
+	{% endif %}
+        {% endfor %}
+        </div>
+        </div>
+        </div>
+     </td>
+     <td>
+       <div class="inline fields">
+       <div class="field">
+       <div class="ui radio checkbox">
+       <input type="radio" name="{{impact_score.type}}" value="1" required {{ check1 }}>
+        {% for global_impact in global_impact_details %}
+        {% if global_impact.type == impact_score.type %}
+         <label>{{global_impact.medium}}</label>
+	{% endif %}
+        {% endfor %}
+        </div>
+        </div>
+        </div>
+     </td>
+     <td>
+       <div class="inline fields">
+       <div class="field">
+       <div class="ui radio checkbox">
+       <input type="radio" name="{{impact_score.type}}" value="2" required {{ check2 }}>
+        {% for global_impact in global_impact_details %}
+        {% if global_impact.type == impact_score.type %}
+         <label>{{global_impact.high}}</label>
+	{% endif %}
+        {% endfor %}
+        </div>
+        </div>
+        </div>
+     </td>
+     <td>
+       <div class="inline fields">
+       <div class="field">
+       <div class="ui radio checkbox">
+       <input type="radio" name="{{impact_score.type}}" value="3" required {{ check3 }}>
+        {% for global_impact in global_impact_details %}
+        {% if global_impact.type == impact_score.type %}
+         <label>{{global_impact.critical}}</label>
+	{% endif %}
+        {% endfor %}
+        </div>
+        </div>
+        </div>
+     </td>
+     <td>
+    </td>
+    </tr>
+    {% endfor %}
+    </table>
+
     <input class="ui button" type="submit" name="action" value="Apply threat changes">
-  </form>
+
+<h4>Probability Analysis</h4>
+MISSING!
+
+<h4>Risk Treatment Decision</h4>
+Latest recorded threat score is: {{threat.risk_score}} 
+<br>
+The threat score is a number between 0 and 10.
+
+The available risk treatment options are:
+<ul>
+<li>Modify: Implement or change security controls (see Control Selection below)</li>
+<li>Retention: Management are accepting the risk</li>
+<li>Avoid: The process and critical information are avoided</li>
+<li>Share: Share the risk with external parties like insurance companies or outsourcing partners</li>
+</ul>
+<br>
+
+Risk treatment selection:
+{{ threat.threat_action}}
+<br>
+Risk treatment status
+{{ threat.threat_action_executed}}
+
+
+<h4>Control selection</h4>
+  <table class="ui celled table">
+  <thead>
+    <tr>
+      <th>Container</th>
+      <th>Controls</th>
+    </tr>
+    {% for container in threat.containers %}
+    <tr>
+  </thead>
+  <td> 
+    <form class="ui form" action="/update_threat" method="POST">
+      {{container.container_name}} 
+      <input class="red mini ui button" type="submit" name="action" value="Delete container">
+    </form>
+  </td>
+  <td>
+    {% for control in container.container_controls %}
+    <form action="update_threat" method="POST">
+      {{control.control_id}} {{control.control_name}}
+      <input class="red mini ui button" type="submit" name="action" value="Delete control">
+    </form>
+    {% endfor %}
+        <div class="field">
+        <select class="ui search dropdown" name="control_id"> 
+          <option selected></option>
+          {% for control_lib_item in control_library.control_library %}
+            <option value="{{control_lib_item.control_id}}"> 
+              {{control_lib_item.control_id}} {{control_lib_item.control_name}} 
+            </option> 
+          {% endfor %}
+        </select>
+        </div>
+        <div class="inline fields">
+        <div class="field">
+        <input class="ui button" type="submit" name="action" value="Add control">
+        </div>
+
+    </div>
+  </td>
+    {% endfor %}
+  </tr>  
+
+  <div class="inline fields">
+  <div class="field">
+  <input class="ui button" type="submit" name="action" value="Add container">
+  </div>
+  <div class="field">
+   <select class="ui dropdown" name="container_name">
+          <option selected></option>
+          {% for container in container_library|sort(attribute='container_name') %}
+          <option value={{container.container_name}}> {{container.container_name}} </option>
+          {% endfor%}
+        <select>
+      </div>
+  </div>
+
+{# Threat loop ends here#}
+</form>
 {% endfor %}
 </fieldset>
-
-
 
 {% endblock %}
 
