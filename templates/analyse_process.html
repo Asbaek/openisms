@@ -225,13 +225,17 @@
     {% endfor %}
     </table>
 
-    <input class="ui button" type="submit" name="action" value="Apply threat changes">
 
 <h4>Probability Analysis</h4>
-MISSING!
-
+<table>
+<tr>
+<td><input type="radio" name="threat_pribability" value="0" required {{ check0 }}> Unlikely </td>
+<td><input type="radio" name="threat_pribability" value="1" required {{ check1 }}> Rare </td>
+<td><input type="radio" name="threat_pribability" value="2" required {{ check2 }}> Frequent </td>
+<td><input type="radio" name="threat_pribability" value="3" required {{ check3 }}> Almost certain </td>
+<tr>
 <h4>Risk Treatment Decision</h4>
-Latest recorded threat score is: {{threat.risk_score}} 
+Threat score is: {{threat.risk_score}} 
 <br>
 The threat score is a number between 0 and 10.
 
@@ -245,11 +249,23 @@ The available risk treatment options are:
 <br>
 
 Risk treatment selection:
-{{ threat.threat_action}}
+<select name="threat_action"> 
+   <option value="{{threat.threat_action}}" selected>{{threat.threat_action}}</option>
+   <option value="Modify">Modify</option>
+   <option value="Retire">Retention</option>
+   <option value="Avoid">Avoid</option>
+   <option value="Share">Share</option>
+</select>
 <br>
-Risk treatment status
-{{ threat.threat_action_executed}}
+Risk treatment actions are executed?:
+<select name="threat_action_executed"> 
+   <option selected>{{threat.threat_action_executed}}</option>
+   <option value="False">False</option>
+   <option value="True">True</option>
+</select>
+<br>
 
+<input class="ui button" type="submit" name="action" value="Apply threat changes">
 
 <h4>Control selection</h4>
   <table class="ui celled table">
@@ -288,7 +304,6 @@ Risk treatment status
         <div class="field">
         <input class="ui button" type="submit" name="action" value="Add control">
         </div>
-
     </div>
   </td>
     {% endfor %}

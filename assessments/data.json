@@ -21,7 +21,8 @@
             "threat_id": "threat000001", 
             "threat_description": "Information is lost", 
             "threat_name": "Availability",
-	    "threat_action": "Mitigate",
+	    "threat_probability":"0",
+	    "threat_action": "Modify",
 	    "threat_action_executed":"False",
 	    "impact_scores":[
                 {
