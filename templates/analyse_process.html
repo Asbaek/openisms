@@ -9,13 +9,6 @@
 {% for process in process_table %}
 {% set process_id = process.process_id %}
 <form class="ui form" action="/update_process" method="POST">
-    <input type="hidden" name="process_id" value="{{process_id}}">
-{#
-    <h2>{{process.process_name}}</h2>
-    <div class="field">
-      <label>Process id</label>{{process.process_id}}
-    </div>
-#}
     <div class="field">
       <label>Process name</label>
       <input type="text" name="process_name" value="{{process.process_name}}">
@@ -33,10 +26,10 @@
 
 {# FORM TO SELECT ASSET TO UPDATE, ADD OR DELETE #}
 <fieldset>
+<h2>Critical Information</h2>
 {% for asset in asset_table %}
 {% set asset_id = asset.asset_id %}
 <form class="ui form" action="/update_asset" method="POST">
-  <h2>Critical Information</h2>
 
     <div class="field">
     <label>Asset name</label>
@@ -65,6 +58,7 @@
    {% if asset.asset_criticality_a == "True" %} {% set check_a="checked" %} {% endif %}
    <div class="inline field">
      <div class="ui checkbox">
+       <input type="hidden"  name="asset_criticality_c" value ="False" {{ check_c }} tabindex="0" class="hidden">
        <input type="checkbox" name="asset_criticality_c" value ="True" {{ check_c }} tabindex="0" class="hidden">
        <label>Confidentiality critical</label>
      </div>
@@ -72,6 +66,7 @@
 
     <div class="inline field">
       <div class="ui checkbox">
+        <input type="hidden" name="asset_criticality_i" value ="False" {{ check_i }} tabindex="0" class="hidden">
         <input type="checkbox" name="asset_criticality_i" value ="True" {{ check_i }} tabindex="0" class="hidden">
         <label>Integrity critical</label>
       </div>
@@ -79,6 +74,7 @@
 
     <div class="inline field">
       <div class="ui checkbox">
+        <input type="hidden" name="asset_criticality_a" value ="False" {{ check_a }} tabindex="0" class="hidden">
         <input type="checkbox" name="asset_criticality_a" value ="True" {{ check_a }} tabindex="0" class="hidden">
         <label>Availability critical</label>
       </div>
@@ -104,23 +100,23 @@
     </select>
   </div>
 
-  <input type="hidden" name="process_id" value="{{ process_id }}">
+  <input type="hidden" name="process_id" value="{{process_id}}">
   <input type="hidden" name="asset_id" value="{{ asset_id }}">
   <input class="ui button" type="submit" name="action" value="Apply asset changes">
 
 </form>
 {% endfor %}
+
+<form action="update_asset" method="POST">
+<input class="ui button" type="submit" name="action" value="Add threat">
+<input type="hidden" name="process_id" value={{ process_id }}>
+</form>
 </fieldset>
 <br>
 <br>
 
 
-
-
-
-
-
-{# #}
+{# Threat form #}
 <fieldset>
 <h2>Threats</h2>
 {% for threat in threat_table %}
@@ -155,6 +151,10 @@
        {% if impact_score.score == 1 %}{% set check1="checked"%}{% endif %}
        {% if impact_score.score == 2 %}{% set check2="checked"%}{% endif %}
        {% if impact_score.score == 3 %}{% set check3="checked"%}{% endif %}
+       {{ check0 }}
+       {{ check1 }}
+       {{ check2 }}
+       {{ check3 }}
     <tr>
     <td>
         {% for global_impact in global_impact_details %}
@@ -227,37 +227,33 @@
 
 
 <h4>Probability Analysis</h4>
+How frequently is the critical information exposed to the threat?
+{% set check0=""  %}
+{% set check1=""  %}
+{% set check2=""  %}
+{% set check3=""  %}
+{% if threat.threat_probability == 0 %}{% set check0="checked"%}{% endif %}
+{% if threat.threat_probability == 1 %}{% set check1="checked"%}{% endif %}
+{% if threat.threat_probability == 2 %}{% set check2="checked"%}{% endif %}
+{% if threat.threat_probability == 3 %}{% set check3="checked"%}{% endif %}
 <table>
-<tr>
-<td><input type="radio" name="threat_pribability" value="0" required {{ check0 }}> Unlikely </td>
-<td><input type="radio" name="threat_pribability" value="1" required {{ check1 }}> Rare </td>
-<td><input type="radio" name="threat_pribability" value="2" required {{ check2 }}> Frequent </td>
-<td><input type="radio" name="threat_pribability" value="3" required {{ check3 }}> Almost certain </td>
-<tr>
+<tr><td><input type="radio" name="threat_probability" value="0" required {{ check0 }}> Unlikely </td></tr>
+<tr><td><input type="radio" name="threat_probability" value="1" required {{ check1 }}> Rare </td></tr>
+<tr><td><input type="radio" name="threat_probability" value="2" required {{ check2 }}> Frequent </td></tr>
+<tr><td><input type="radio" name="threat_probability" value="3" required {{ check3 }}> Almost certain </td></tr>
+</table>
+
 <h4>Risk Treatment Decision</h4>
-Threat score is: {{threat.risk_score}} 
-<br>
-The threat score is a number between 0 and 10.
-
-The available risk treatment options are:
-<ul>
-<li>Modify: Implement or change security controls (see Control Selection below)</li>
-<li>Retention: Management are accepting the risk</li>
-<li>Avoid: The process and critical information are avoided</li>
-<li>Share: Share the risk with external parties like insurance companies or outsourcing partners</li>
-</ul>
-<br>
-
-Risk treatment selection:
+Select one of the following options:
 <select name="threat_action"> 
    <option value="{{threat.threat_action}}" selected>{{threat.threat_action}}</option>
-   <option value="Modify">Modify</option>
-   <option value="Retire">Retention</option>
-   <option value="Avoid">Avoid</option>
-   <option value="Share">Share</option>
+   <option value="Modify">Modify - implement or change security controls</option>
+   <option value="Retire">Retention - document managements acceptance of the risk</option>
+   <option value="Avoid">Avoid - avoid having the critical information at all </option>
+   <option value="Share">Share - share the risk with external parties like insurance companies or outsourcing partners</option>
 </select>
 <br>
-Risk treatment actions are executed?:
+Is risk treatment done?:
 <select name="threat_action_executed"> 
    <option selected>{{threat.threat_action_executed}}</option>
    <option value="False">False</option>
@@ -278,7 +274,7 @@ Risk treatment actions are executed?:
     <tr>
   </thead>
   <td> 
-    <form class="ui form" action="/update_threat" method="POST">
+    <form action="/update_threat" method="POST">
       {{container.container_name}} 
       <input class="red mini ui button" type="submit" name="action" value="Delete container">
     </form>
@@ -299,33 +295,28 @@ Risk treatment actions are executed?:
             </option> 
           {% endfor %}
         </select>
-        </div>
-        <div class="inline fields">
-        <div class="field">
         <input class="ui button" type="submit" name="action" value="Add control">
         </div>
-    </div>
   </td>
     {% endfor %}
   </tr>  
-
-  <div class="inline fields">
-  <div class="field">
+</table>
   <input class="ui button" type="submit" name="action" value="Add container">
-  </div>
-  <div class="field">
    <select class="ui dropdown" name="container_name">
           <option selected></option>
           {% for container in container_library|sort(attribute='container_name') %}
           <option value={{container.container_name}}> {{container.container_name}} </option>
           {% endfor%}
         <select>
-      </div>
-  </div>
 
 {# Threat loop ends here#}
 </form>
 {% endfor %}
+
+<form action="update_threat" method="POST">
+<input class="ui button" type="submit" name="action" value="Add threat">
+<input type="hidden" name="process_id" value={{ process_id }}>
+</form>
 </fieldset>
 
 {% endblock %}

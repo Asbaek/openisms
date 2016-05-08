@@ -239,6 +239,57 @@ def inject_containers_and_controls(threat_table):
                 containers.append(new_data)
     	threat_table[index]["containers"]=containers
     return threat_table        
+
+def apply_to_risktable(risk_dict):
+    """
+    update_risktable updates the risktable element in data.json to contain a specified reference.
+    Arguments:
+    - risk_dict contains a dictionary of the format used in risktable.
+      Example: 
+      X is a unique 6 digit number
+      {
+          "asset_id": "assetX", 
+          "container_id": "containerX", 
+          "control_id": "AC-02", 
+          "deliverable_id": "deliverableX", 
+          "process_id": "processX", 
+          "threat_id": "threatX"
+      }
+    """
+    assert(type(risk_dict) is dict)
+    assert(len(risk_dict)>1)
+    data=import_jsondata(DATA)
+    data["risktable"].append(risk_dict)
+    write_file(DATA, data, charset='utf-8')
+    return jsonify(risk_dict)
+
+def apply_to_aspect(aspect, new_aspect_detail):
+    """
+    update_aspect_details():
+    Arguments:
+    - aspect to update. 
+    - details to update. Must be in a compliant dict format.
+    """
+    assert(type(aspect) is str)
+    assert(type(new_aspect_detail) is dict)
+    data=import_jsondata(DATA)
+    if aspect in "asset":
+        asset_id_new= new_aspect_detail.get("asset_id", None)
+        if asset_id_new:
+            asset_found=False
+            for index,asset in enumerate(data['assets']):
+                asset_id_existing=asset.get("asset_id", None)
+                if asset_id_new in asset_id_existing:
+                    data["assets"][index].update(new_aspect_detail)  
+                    asset_found=True
+            if not asset_found:
+                data["assets"].append(new_aspect_detail)
+        else:
+            return False
+    outputdata = json.dumps(data)
+    write_file(DATA, outputdata, charset='utf-8')
+    return jsonify(new_aspect_detail)
+
     
 ##########################
 # Web Application Output #
@@ -289,7 +340,6 @@ def analyse_process():
     threat_table = inject_risk_scores(threat_table)
 
     control_library = import_jsondata(CONTROL_LIBRARY)
-    print str(type(control_library))
     container_library = data.get("container_library", None)
     return render_template('analyse_process.html', process_table=process_table,
 						   asset_table=asset_table,
@@ -298,6 +348,7 @@ def analyse_process():
 						   threat_table=threat_table,
 						   control_library=control_library,
 						   container_library=container_library)
+
 
 @app.route("/update_process", methods=['POST'])
 def update_process():
@@ -313,11 +364,13 @@ def update_process():
 def update_asset():
     formdata = {}
     f = request.form
-    output = {}
+    new_asset_data = {}
     for key in f.keys():
         for value in f.getlist(key):
-            output[key] = value.strip() 
-    return jsonify(output)
+            new_asset_data[key] = value.strip() 
+    new_asset_data.pop("action",None)
+    apply_to_aspect("asset", new_asset_data)
+    return jsonify(new_asset_data)
 
 @app.route("/update_threat", methods=['POST'])
 def update_threat():
