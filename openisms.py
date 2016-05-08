@@ -257,10 +257,19 @@ def apply_to_risktable(risk_dict):
       }
     """
     assert(type(risk_dict) is dict)
-    assert(len(risk_dict)>1)
+    assert(len(risk_dict)>0) # Min. 1 keys
+    assert(len(risk_dict)<3) # Max. 2 keys
     data=import_jsondata(DATA)
-    data["risktable"].append(risk_dict)
-    write_file(DATA, data, charset='utf-8')
+    risk_dict_already_exists=False
+    for var_dict in data["risktable"]:
+        if cmp(var_dict, risk_dict)==0:
+            risk_dict_already_exists=True
+    if risk_dict_already_exists:
+        pass
+    else:   
+        data["risktable"].append(risk_dict)
+        output = json.dumps(data)
+        write_file(DATA, output, charset='utf-8')
     return jsonify(risk_dict)
 
 def apply_to_aspect(aspect, new_aspect_detail):
@@ -362,14 +371,22 @@ def update_process():
 
 @app.route("/update_asset", methods=['POST'])
 def update_asset():
+    #extract form data
     formdata = {}
     f = request.form
     new_asset_data = {}
     for key in f.keys():
         for value in f.getlist(key):
             new_asset_data[key] = value.strip() 
+    process_id = new_asset_data.get("process_id",None)
+    asset_id = new_asset_data.get("asset_id",None)
+    #clean data before storage
+    new_asset_data.pop("process_id",None)
     new_asset_data.pop("action",None)
     apply_to_aspect("asset", new_asset_data)
+    #store id comination
+    risk_ids = {'process_id':process_id,'asset_id':asset_id}
+    apply_to_risktable(risk_ids)
     return jsonify(new_asset_data)
 
 @app.route("/update_threat", methods=['POST'])
