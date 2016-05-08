@@ -7,7 +7,7 @@
 <fieldset>
 <h2>Process<h2>
 {% for process in process_table %}
-{% set process_id = process.process_id %}
+{% set global_process_id = process.process_id %}
 <form class="ui form" action="/update_process" method="POST">
     <div class="field">
       <label>Process name</label>
@@ -85,7 +85,7 @@
     <select class="ui fluid dropdown" name="asset_rpo_days">
       <option>{{asset.asset_rpo_days}}</option>
       {% for element in rxo_values %}
-      <option>{{element}} </option>
+      <option value="{{element}}">{{element}} </option>
       {% endfor %}
     </select>
   </div>
@@ -95,12 +95,12 @@
     <select class="ui fluid dropdown" name="asset_rto_days">
       <option>{{asset.asset_rto_days}}</option>
       {% for element in rxo_values %}
-        <option>{{element}} </option>
+        <option value="{{element}}">{{element}} </option>
       {% endfor %}
     </select>
   </div>
 
-  <input type="hidden" name="process_id" value="{{process_id}}">
+  <input type="hidden" name="process_id" value="{{ global_process_id }}">
   <input type="hidden" name="asset_id" value="{{ asset_id }}">
   <input class="ui button" type="submit" name="action" value="Apply asset changes">
 
