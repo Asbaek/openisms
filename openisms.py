@@ -46,7 +46,7 @@ def write_file(filename, contents, charset='utf-8'):
 def get_table(aspect_ids):
     """
     get_details returns a list of dictionaries where each
-    list row is a dictionary with details about  aspect_ids.
+    list row is a dictionary with details about aspect_ids.
     Arguments:
     - aspect_ids must be a list with strings. The aspects 
       must be of the same kind.
@@ -54,20 +54,26 @@ def get_table(aspect_ids):
     #Check and collect input
     assert(type(aspect_ids) is list),"Function get_table only accepts lists"
     data=import_jsondata(DATA)
+    aspect_ids = [x for x in aspect_ids if x is not None]
+    aspect_ids = sorted(set(aspect_ids))
     control_library=import_jsondata(CONTROL_LIBRARY)
+    if len(aspect_ids)>0:
+        aspect_id_sample = aspect_ids[0]
+    else:
+        return []
     #Prepare output
-    if "process" in aspect_ids[0]:
+    if "process" in aspect_id_sample:
         aspect_type="process"
         aspect_data = data["processes"]
-    elif "asset" in aspect_ids[0]:
+    elif "asset" in aspect_id_sample:
         aspect_type="asset"
         aspect_data = data["assets"]
-    elif "threat" in aspect_ids[0]:
+    elif "threat" in aspect_id_sample:
         aspect_type="threat"
         aspect_data = data["threats"]
-    elif "container" in aspect_ids[0]:
+    elif "container" in aspect_id_sample:
         aspect_type="container"
-        aspect_data = data["containers"] 
+        aspect_data = data["containers"]
     else:
         aspect_type="control"
         aspect_data = control_library["control_library"]
@@ -77,10 +83,9 @@ def get_table(aspect_ids):
        id_identifier = aspect_type + "_id"
        for item in aspect_data:
            row_id = item.get(id_identifier, None)
-           if row_id and (row_id in aspect_id):
-               result.append(item) 
-    if not result:
-        print "get_table returned an empty list"
+           if (row_id and aspect_id):
+               if (row_id==aspect_id):
+                   result.append(item) 
     #Output validation
     assert(type(result) is list)
     return result
@@ -92,6 +97,7 @@ def get_process_assets(process_ids):
     - process_id. A string like "process0000001"
     """
     assert(type(process_ids) is list), "get_process_assets got wrong input. Must be list"
+    process_ids = sorted(set(process_ids))
     data=import_jsondata(DATA)
     result = []
     for risk in data["risktable"]:
@@ -99,6 +105,7 @@ def get_process_assets(process_ids):
         temp_asset_id   = risk.get("asset_id", None)
         if temp_process_id in process_ids:
             result.append(temp_asset_id)
+    result = sorted(set(result))
     assert(type(result) is list), "get_process_assets encountered an error in result variable"
     return result
 
@@ -109,13 +116,15 @@ def get_asset_threats(asset_ids):
     - asset_ids: A list of strings in the format "asset" followed by a unique integer number.
     """
     assert(type(asset_ids) is list), "get_asset_threats got wrong input. Must be list"
+    asset_ids = sorted(set(asset_ids))
     data=import_jsondata(DATA)
     result = []
     for risk in data["risktable"]:
         temp_asset_id = risk.get("asset_id",None)
         temp_threat_id = risk.get("threat_id",None)
-        if temp_asset_id in asset_ids:
+        if temp_asset_id and (temp_asset_id in asset_ids):
             result.append(temp_threat_id)
+    result = sorted(set(result))
     assert(type(result) is list), "get_asset_threats encountered an error in result variable"
     return result
 
@@ -223,7 +232,7 @@ def inject_containers_and_controls(threat_table):
         threat_table_id = threat_dict.get("threat_id",None)
         for risk in data["risktable"]:
             temp_threat_id = risk.get("threat_id", None)
-            if temp_threat_id in threat_table_id:
+            if temp_threat_id and (temp_threat_id in threat_table_id):
                 temp_container_id=risk.get("container_id", None)
                 temp_control_id  =risk.get("control_id", None)
                 new_data = {}
@@ -347,7 +356,7 @@ def analyse_process():
     threat_table = get_table(threat_ids)
     threat_table = inject_containers_and_controls(threat_table)
     threat_table = inject_risk_scores(threat_table)
-
+    
     control_library = import_jsondata(CONTROL_LIBRARY)
     container_library = data.get("container_library", None)
     return render_template('analyse_process.html', process_table=process_table,
@@ -411,4 +420,5 @@ def show_json():
 if __name__ == '__main__':
     # Try and get SERVER_NAME env variable, defaults to 127.0.0.1
     host = os.getenv('HOSTNAME', '127.0.0.1')
+    app.run(debug=True)
     app.run(host=host)
