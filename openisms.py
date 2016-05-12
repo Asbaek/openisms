@@ -229,12 +229,14 @@ def inject_containers_and_controls(threat_table):
     data=import_jsondata(DATA)
     for index,threat_dict in enumerate(threat_table):
         containers=[]
+        asset_id = ""
         threat_table_id = threat_dict.get("threat_id",None)
         for risk in data["risktable"]:
             temp_threat_id = risk.get("threat_id", None)
             if temp_threat_id and (temp_threat_id in threat_table_id):
                 temp_container_id=risk.get("container_id", None)
                 temp_control_id  =risk.get("control_id", None)
+                asset_id = risk.get("asset_id", None) or asset_id
                 new_data = {}
                 new_data["container_controls"]=[]
                 if temp_container_id:
@@ -247,6 +249,7 @@ def inject_containers_and_controls(threat_table):
                         new_data["container_controls"].append(control_dict)
                 containers.append(new_data)
     	threat_table[index]["containers"]=containers
+        threat_table[index]["asset_id"]=asset_id
     return threat_table        
 
 def apply_to_risktable(risk_dict):

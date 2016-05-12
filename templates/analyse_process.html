@@ -117,6 +117,7 @@
 <h2>Threats to Critical Information</h2>
 <fieldset>
 {% for threat in threat_table %}
+{% if threat.asset_id == asset.asset_id %}
 <h2>Threat</h2>
 <form class="ui form" action="/update_threat" method="POST">
     <input type="hidden" name="process_id" value="{{process_id}}">
@@ -309,6 +310,7 @@ Is risk treatment done?:
 
 {# Threat loop ends here#}
 </form>
+{% endif %}
 {% endfor %}
 
 <form action="/add_threat" method="POST">
@@ -318,7 +320,7 @@ Is risk treatment done?:
 </fieldset>
 </fieldset>
 
-{% endfor %}
+{% endfor %} {# asset loop ends here #}
 {% endfor %} {# proccess loop ends here#}
 
 {% endblock %}
