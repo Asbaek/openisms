@@ -16,6 +16,7 @@
       <label>Process description</label>
       <textarea rows="4" name="description" cols=50>{{process.process_description}}</textarea>
     </div>
+    <input type="hidden" name="process_id" value="{{ process.process_id }}">
     <input class="ui button" type="submit" name="action" value="Apply process changes">
   </form>
 </fieldset>

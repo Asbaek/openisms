@@ -290,6 +290,7 @@ def apply_to_aspect(aspect, new_aspect_detail):
     """
     assert(type(aspect) is str)
     assert(type(new_aspect_detail) is dict)
+    print "apply_aspect_details triggered"
     data=import_jsondata(DATA)
     if aspect in "asset":
         asset_id_new= new_aspect_detail.get("asset_id", None)
@@ -302,6 +303,20 @@ def apply_to_aspect(aspect, new_aspect_detail):
                     asset_found=True
             if not asset_found:
                 data["assets"].append(new_aspect_detail)
+        else:
+            return False
+    elif aspect in "process":
+        print "process change triggered"
+        process_id_new = new_aspect_detail.get("process_id", None)
+        if process_id_new:
+            process_found=False
+            for index, process in enumerate(data['processes']):
+	        process_id_existing = process.get("process_id", None)
+                if process_id_new in process_id_existing:
+                    data["processes"][index].update(new_aspect_detail)
+                    process_found = True
+            if not process_found:
+                data["processes"].append(new_aspect_detail)
         else:
             return False
     outputdata = json.dumps(data)
@@ -372,11 +387,16 @@ def analyse_process():
 def update_process():
     formdata = {}
     f = request.form
-    output = {}
+    new_process_data = {}
     for key in f.keys():
         for value in f.getlist(key):
-            output[key] = value.strip() 
-    return jsonify(output)
+            new_process_data[key] = value.strip() 
+    process_id = new_process_data.get("process_id",None)
+    new_process_data.pop("action", None)
+    apply_to_aspect("process", new_process_data)
+    risk_ids = {'process_id':process_id}
+    apply_to_risktable(risk_ids)
+    return jsonify(new_process_data)
 
 @app.route("/update_asset", methods=['POST'])
 def update_asset():
@@ -407,7 +427,6 @@ def update_threat():
         for value in f.getlist(key):
             output[key] = value.strip() 
     return jsonify(output)
-
 
 @app.route("/show_json", methods=['GET'])
 def show_json():
