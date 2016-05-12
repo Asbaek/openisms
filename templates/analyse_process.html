@@ -114,9 +114,10 @@
 
 
 {# Threat form #}
+<h2>Threats to Critical Information</h2>
 <fieldset>
-<h2>Threats</h2>
 {% for threat in threat_table %}
+<h2>Threat</h2>
 <form class="ui form" action="/update_threat" method="POST">
     <input type="hidden" name="process_id" value="{{process_id}}">
 
@@ -310,9 +311,9 @@ Is risk treatment done?:
 </form>
 {% endfor %}
 
-<form action="update_threat" method="POST">
+<form action="/add_threat" method="POST">
+  <input type="hidden" name="asset_id" value="{{ asset.asset_id }}">
 <input class="ui button" type="submit" name="action" value="Add threat">
-<input type="hidden" name="process_id" value={{ process_id }}>
 </form>
 </fieldset>
 </fieldset>

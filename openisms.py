@@ -277,7 +277,7 @@ def apply_to_risktable(risk_dict):
         pass
     else:   
         data["risktable"].append(risk_dict)
-        output = json.dumps(data)
+        output = json.dumps(data, indent=4)
         write_file(DATA, output, charset='utf-8')
     return jsonify(risk_dict)
 
@@ -317,7 +317,20 @@ def apply_to_aspect(aspect, new_aspect_detail):
                 data["processes"].append(new_aspect_detail)
         else:
             return False
-    outputdata = json.dumps(data)
+    elif aspect in "threat":
+        threat_id_new = new_aspect_detail.get("threat_id", None)
+        if threat_id_new:
+            threat_found=False
+            for index, threat in enumerate(data['threats']):
+	        threat_id_existing = threat.get("threat_id", None)
+                if threat_id_new in threat_id_existing:
+                    data["threats"][index].update(new_aspect_detail)
+                    threat_found = True
+            if not threat_found:
+                data["threats"].append(new_aspect_detail)
+        else:
+            return False
+    outputdata = json.dumps(data, indent=4)
     write_file(DATA, outputdata, charset='utf-8')
     return jsonify(new_aspect_detail)
 
@@ -407,6 +420,22 @@ def get_next_id(aspect_id_type):
             asset_ids.append("asset000000")
         int_ids = [int(a[5:]) for a in asset_ids]
         return "asset" + str(max(int_ids)+1).zfill(6)   
+    elif aspect_id_type is "threat_id":
+        threats=data.get("threats",None)
+        threat_ids = []
+        for threat in threats:
+            threat_id = threat.get("threat_id", None)
+            if threat_id: 
+                threat_ids.append(threat_id)    
+        risktable=data.get("risktable", None)
+        for risk in risktable:
+            threat_id = risk.get("threat_id", None)
+            if threat_id:
+                threat_ids.append(threat_id)
+        if not threat_ids:
+            threat_ids.append("threat000000")
+        int_ids = [int(a[6:]) for a in threat_ids]
+        return "threat" + str(max(int_ids)+1).zfill(6)   
 
 
 @app.route("/add_asset", methods=['POST'])
@@ -427,6 +456,24 @@ def add_asset():
     apply_to_risktable(risk_ids)
     return jsonify(asset_template)    
 
+@app.route("/add_threat", methods=['POST'])
+def add_threat():
+    schema=import_jsondata(SCHEMA)
+    threat_template = schema['threats'][0]
+    threat_id = get_next_id("threat_id")
+    threat_template.update({"threat_id":threat_id}) 
+
+    formdata = {}
+    f = request.form
+    for key in f.keys():
+        for value in f.getlist(key):
+            formdata[key] = value.strip() 
+    asset_id = formdata.get("asset_id",None)
+
+    apply_to_aspect("threat", threat_template)
+    risk_ids = {'asset_id':asset_id,'threat_id':threat_id}
+    apply_to_risktable(risk_ids)
+    return jsonify(threat_template)    
 
 
 @app.route("/update_process", methods=['POST'])
