@@ -259,8 +259,11 @@ Is risk treatment done?:
    <option value="True">True</option>
 </select>
 <br>
-
+<input type="hidden" name="process_id" value="{{ process.process_id }}">
+<input type="hidden" name="threat_id" value="{{ threat.threat_id }}">
+<input type="hidden" name="asset_id" value="{{ asset.asset_id }}">
 <input class="ui button" type="submit" name="action" value="Apply threat changes">
+</form>
 
 <h4>Control selection</h4>
   <table class="ui celled table">
@@ -273,43 +276,56 @@ Is risk treatment done?:
     <tr>
   </thead>
   <td> 
-    <form action="/update_threat" method="POST">
+
+    <form action="/delete_container" method="POST">
       {{container.container_name}} 
       <input class="red mini ui button" type="submit" name="action" value="Delete container">
     </form>
   </td>
   <td>
+
     {% for control in container.container_controls %}
-    <form action="update_threat" method="POST">
+    <form action="delete_control" method="POST">
       {{control.control_id}} {{control.control_name}}
-      <input class="red mini ui button" type="submit" name="action" value="Delete control">
+    <input class="red mini ui button" type="submit" name="action" value="Delete control">
     </form>
     {% endfor %}
-        <div class="field">
-        <select class="ui search dropdown" name="control_id"> 
-          <option selected></option>
-          {% for control_lib_item in control_library.control_library %}
-            <option value="{{control_lib_item.control_id}}"> 
-              {{control_lib_item.control_id}} {{control_lib_item.control_name}} 
-            </option> 
-          {% endfor %}
-        </select>
-        <input class="ui button" type="submit" name="action" value="Add control">
-        </div>
+
+    <div class="field">
+    <form action="/add_control" method="POST">
+      <select class="ui search dropdown" name="control_id"> 
+      <option selected></option>
+      {% for control_lib_item in control_library.control_library %}
+      <option value="{{control_lib_item.control_id}}"> 
+        {{control_lib_item.control_id}} {{control_lib_item.control_name}} 
+      </option> 
+      {% endfor %}
+      </select>
+    <input type="hidden" name="threat_id" value="{{ threat.threat_id }}">
+    <input type="hidden" name="container_id" value="{{ container.container_id }}">
+    <input class="ui button" type="submit" name="action" value="Add control">
+    </form>
+    </div>
   </td>
     {% endfor %}
   </tr>  
 </table>
-  <input class="ui button" type="submit" name="action" value="Add container">
-   <select class="ui dropdown" name="container_name">
-          <option selected></option>
-          {% for container in container_library|sort(attribute='container_name') %}
-          <option value={{container.container_name}}> {{container.container_name}} </option>
-          {% endfor%}
-        <select>
+
+<div class="field">
+  <form action="/add_container" method="POST">
+    <select class="ui dropdown" name="container_name">
+      <option selected></option>
+      {% for container in container_library|sort(attribute='container_name') %}
+      <option value="{{container.container_name}}"> {{container.container_name}} 
+      </option>
+      {% endfor%}
+    </select>
+    <input type="hidden" name="threat_id" value="{{ threat.threat_id }}">
+    <input class="ui button" type="submit" name="action" value="Add container">
+  </form>
+</div>
 
 {# Threat loop ends here#}
-</form>
 {% endif %}
 {% endfor %}
 

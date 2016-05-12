@@ -239,14 +239,14 @@ def inject_containers_and_controls(threat_table):
                 asset_id = risk.get("asset_id", None) or asset_id
                 new_data = {}
                 new_data["container_controls"]=[]
+                temp_control_ids=[]
                 if temp_container_id:
                     container_dict ={}
                     container_dict=get_container_dict(str(temp_container_id))
 		    new_data.update(container_dict)
-                    if temp_control_id:
-                        control_dict = {}
-                        control_dict = get_control_dict(str(temp_control_id))
-                        new_data["container_controls"].append(control_dict)
+                    control_dict = {}
+                    control_dict = get_control_dict(str(temp_control_id))
+                    new_data["container_controls"].append(control_dict)
                 containers.append(new_data)
     	threat_table[index]["containers"]=containers
         threat_table[index]["asset_id"]=asset_id
@@ -270,7 +270,7 @@ def apply_to_risktable(risk_dict):
     """
     assert(type(risk_dict) is dict)
     assert(len(risk_dict)>0) # Min. 1 keys
-    assert(len(risk_dict)<3) # Max. 2 keys
+    assert(len(risk_dict)<4) # Max. 3 keys
     data=import_jsondata(DATA)
     risk_dict_already_exists=False
     for var_dict in data["risktable"]:
@@ -331,6 +331,19 @@ def apply_to_aspect(aspect, new_aspect_detail):
                     threat_found = True
             if not threat_found:
                 data["threats"].append(new_aspect_detail)
+        else:
+            return False
+    elif aspect in "container":
+        container_id_new = new_aspect_detail.get("container_id", None)
+        if container_id_new:
+            container_found=False
+            for index, container in enumerate(data['containers']):
+	        container_id_existing = container.get("container_id", None)
+                if container_id_new in container_id_existing:
+                    data["containers"][index].update(new_aspect_detail)
+                    container_found = True
+            if not container_found:
+                data["containers"].append(new_aspect_detail)
         else:
             return False
     outputdata = json.dumps(data, indent=4)
@@ -439,6 +452,22 @@ def get_next_id(aspect_id_type):
             threat_ids.append("threat000000")
         int_ids = [int(a[6:]) for a in threat_ids]
         return "threat" + str(max(int_ids)+1).zfill(6)   
+    elif aspect_id_type is "container_id":
+        containers=data.get("containers",None)
+        container_ids = []
+        for container in containers:
+            container_id = container.get("container_id", None)
+            if container_id: 
+                container_ids.append(container_id)    
+        risktable=data.get("risktable", None)
+        for risk in risktable:
+            container_id = risk.get("container_id", None)
+            if container_id:
+                container_ids.append(container_id)
+        if not container_ids:
+            container_ids.append("container000000")
+        int_ids = [int(a[9:]) for a in container_ids]
+        return "container" + str(max(int_ids)+1).zfill(6)   
 
 
 @app.route("/add_asset", methods=['POST'])
@@ -478,6 +507,38 @@ def add_threat():
     apply_to_risktable(risk_ids)
     return jsonify(threat_template)    
 
+@app.route("/add_container", methods=['POST'])
+def add_container():
+    formdata = {}
+    f = request.form
+    for key in f.keys():
+        for value in f.getlist(key):
+            formdata[key] = value.strip() 
+    threat_id = formdata.get("threat_id",None)
+    container_id = get_next_id("container_id")
+    schema=import_jsondata(SCHEMA)
+    container_template = schema['containers'][0]
+    container_template.update(formdata) 
+    container_template.update({'container_id':container_id})
+    container_name = container_template.get("container_name",None)
+    if container_name:
+        apply_to_aspect("container", container_template)
+        risk_ids = {'threat_id':threat_id,'container_id':container_id}
+        apply_to_risktable(risk_ids)
+        return jsonify(formdata)    
+    else:
+        return "Select a name"
+
+@app.route("/add_control", methods=['POST'])
+def add_control():
+    formdata = {}
+    f = request.form
+    for key in f.keys():
+        for value in f.getlist(key):
+            formdata[key] = value.strip() 
+    formdata.pop("action",None)
+    apply_to_risktable(formdata)
+    return jsonify(formdata)    
 
 @app.route("/update_process", methods=['POST'])
 def update_process():
