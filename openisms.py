@@ -290,7 +290,6 @@ def apply_to_aspect(aspect, new_aspect_detail):
     """
     assert(type(aspect) is str)
     assert(type(new_aspect_detail) is dict)
-    print "apply_aspect_details triggered"
     data=import_jsondata(DATA)
     if aspect in "asset":
         asset_id_new= new_aspect_detail.get("asset_id", None)
@@ -306,7 +305,6 @@ def apply_to_aspect(aspect, new_aspect_detail):
         else:
             return False
     elif aspect in "process":
-        print "process change triggered"
         process_id_new = new_aspect_detail.get("process_id", None)
         if process_id_new:
             process_found=False
@@ -381,6 +379,54 @@ def analyse_process():
 						   threat_table=threat_table,
 						   control_library=control_library,
 						   container_library=container_library)
+def get_next_id(aspect_id_type):
+    """
+    get_next_id returns next unique available ID number, depending on aspect_name.
+    The function will search data dict for any occurences. 
+    If none is found, the first number in the sequence is returned.
+    Arguments:
+    - aspect_id_type is one of the keys defined in schema["risktable"].
+    """
+    schema=import_jsondata(SCHEMA)
+    risktable_template = schema.get("risktable",None)
+    aspect_id_types = list(risktable_template[0].keys())
+    data = import_jsondata(DATA)
+    if aspect_id_type is "asset_id":
+        assets=data.get("assets",None)
+        asset_ids = []
+        for asset in assets:
+            asset_id = asset.get("asset_id", None)
+            if asset_id: 
+                asset_ids.append(asset_id)    
+        risktable=data.get("risktable", None)
+        for risk in risktable:
+            asset_id = risk.get("asset_id", None)
+            if asset_id:
+                asset_ids.append(asset_id)
+        if not asset_ids:
+            asset_ids.append("asset000000")
+        int_ids = [int(a[5:]) for a in asset_ids]
+        return "asset" + str(max(int_ids)+1).zfill(6)   
+
+
+@app.route("/add_asset", methods=['POST'])
+def add_asset():
+    schema=import_jsondata(SCHEMA)
+    asset_template = schema['assets'][0]
+    asset_id = get_next_id("asset_id")
+    asset_template.update({"asset_id":asset_id}) 
+
+    formdata = {}
+    f = request.form
+    for key in f.keys():
+        for value in f.getlist(key):
+            formdata[key] = value.strip() 
+    process_id = formdata.get("process_id",None)
+    apply_to_aspect("asset", asset_template)
+    risk_ids = {'process_id':process_id,'asset_id':asset_id}
+    apply_to_risktable(risk_ids)
+    return jsonify(asset_template)    
+
 
 
 @app.route("/update_process", methods=['POST'])

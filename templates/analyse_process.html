@@ -20,13 +20,14 @@
     <input class="ui button" type="submit" name="action" value="Apply process changes">
   </form>
 </fieldset>
-<br>
-<br>
 
 {# FORM TO SELECT ASSET TO UPDATE, ADD OR DELETE #}
+{% for asset in asset_table %} {# ends at end of template!#}
+<br>
+<br>
+<fieldset>
 <fieldset>
 <h2>Critical Information</h2>
-{% for asset in asset_table %} {# ends at end of template!#}
 <form class="ui form" action="/update_asset" method="POST">
 
     <div class="field">
@@ -101,11 +102,11 @@
   <input type="hidden" name="process_id" value="{{ process.process_id }}">
   <input type="hidden" name="asset_id" value="{{ asset.asset_id }}">
   <input class="ui button" type="submit" name="action" value="Apply asset changes">
-
 </form>
 
-<form action="update_asset" method="POST">
-<input class="ui button" type="submit" name="action" value="Add threat">
+<form action="/add_asset" method="POST">
+  <input type="hidden" name="process_id" value="{{ process.process_id }}">
+  <input class="ui button" type="submit" name="action" value="Add asset">
 </form>
 </fieldset>
 <br>
@@ -313,6 +314,7 @@ Is risk treatment done?:
 <input class="ui button" type="submit" name="action" value="Add threat">
 <input type="hidden" name="process_id" value={{ process_id }}>
 </form>
+</fieldset>
 </fieldset>
 
 {% endfor %}
