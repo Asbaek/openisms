@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block body %}
+
+{# EXPLAINATION: WHAT IS IMPACT, PRIORITY, LEVELS USED FOR AND HOW IS IT CHANGED #}
+
+<H3>Alignment</H3>
+<b>Important: You should update values shown on this page to fit your organisation.</b> <br><br>
+
+Key priorities made by your organisation is outlined on this page. This must be done to ensure alignment between your organisation and your risk management efforts. The prioities will affect how all your risks are prioritised, so chose them carefully.  
+
+<i>Impact priority</i> is the organisations priorities of different risk types. Changing the priority will change how threats are scored and prioritised. Higher priority means higher weight in the risk score.<br><br>
+
+<i>Impact levels</i>  are used when assessing threats. Impact levels describes the differences between low, medium, high and critical levels. <br><br>
+
+NOTE: You change the impact priorities and levels by manually editing the impact_description section of the assessments/data.json file. <br><br>
+
+{# SHOW IMPACT PRIORITIES FROM data.json file #}
+<H3> Impact Priorities </H3>
+<table class="ui celled table">
+<tr><td><b>Organisations priority</b></td><td><b>Impact description</b></td><tr>
+{% set numbers=["1","2","3","4","5"] %}
+{% for number in numbers %}
+{% for impact in global_impact_details %}
+{% if number==impact.priority %}
+<tr><td><center> {{ impact.priority }} </center></td>
+<td>{{ impact.description }} </td></tr>
+{% endif %}
+{% endfor %}
+{% endfor %}
+</table>
+
+{# SHOW INDIVIDUAL IMPACT LEVELS #}
+<H3>Impact Levels </H3>
+<table class="ui celled table">
+<tr><td><b>Impact description</b></td><td><b>Impact level</b></td><td><b>Level description</b></td></tr>
+{% for impact in global_impact_details %}
+  <tr><td> {{ impact.description }} </td><td> Low  </td><td> {{ impact.low }} </td></tr>
+  <tr><td> {{ impact.description }} </td><td> Medium  </td><td> {{ impact.medium }} </td></tr>
+  <tr><td> {{ impact.description }} </td><td> High  </td><td> {{ impact.high }} </td></tr>
+  <tr><td> {{ impact.description }} </td><td> Critical  </td><td> {{ impact.critical }} </td></tr>
+{% endfor %}
+</table>
+
+{% endblock %}

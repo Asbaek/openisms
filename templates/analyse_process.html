@@ -272,7 +272,7 @@ Is risk treatment done?:
       <th>Container</th>
       <th>Controls</th>
     </tr>
-    {% for container in threat.containers %}
+    {% for container in threat.containers|sort(attribute='container_name') %}
     <tr>
   </thead>
   <td> 

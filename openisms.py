@@ -368,6 +368,12 @@ def about():
     """
     return render_template('about.html')
 
+@app.route("/alignment", methods=['GET'])
+def alignment():
+    data=import_jsondata(DATA)
+    global_impact_details=data["global_impact_details"]
+    return render_template("alignment.html", global_impact_details=global_impact_details)
+
 @app.route("/assessments", methods=['GET'])
 def assessments():
     """
