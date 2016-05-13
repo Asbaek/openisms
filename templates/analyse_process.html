@@ -103,12 +103,13 @@
   <input type="hidden" name="asset_id" value="{{ asset.asset_id }}">
   <input class="ui button" type="submit" name="action" value="Apply asset changes">
 </form>
+</fieldset>
 
+<br>
 <form action="/add_asset" method="POST">
   <input type="hidden" name="process_id" value="{{ process.process_id }}">
   <input class="ui button" type="submit" name="action" value="Add asset">
 </form>
-</fieldset>
 <br>
 <br>
 
@@ -328,12 +329,13 @@ Is risk treatment done?:
 {# Threat loop ends here#}
 {% endif %}
 {% endfor %}
-
+</fieldset>
+<br>
 <form action="/add_threat" method="POST">
   <input type="hidden" name="asset_id" value="{{ asset.asset_id }}">
 <input class="ui button" type="submit" name="action" value="Add threat">
 </form>
-</fieldset>
+
 </fieldset>
 
 {% endfor %} {# asset loop ends here #}
