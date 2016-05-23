@@ -3,7 +3,8 @@
     {
       "process_name": "",
       "process_id": "",
-      "process_description": ""
+      "process_description": "",
+      "process_business_unit":""
     }
   ],
   "threats": [

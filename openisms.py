@@ -40,6 +40,66 @@ def write_file(filename, contents, charset='utf-8'):
     with open(filename, 'w') as f:
         f.write(contents.encode(charset))
 
+def fix_json_dict(reference_dict, target_dict):
+    """
+    fix_json_dict 
+    """
+    assert(type(reference_dict) is dict)
+    assert(type(target_dict) is dict)
+    result = {}
+    result.update(target_dict) 
+    for rkey, rvalue in reference_dict.iteritems():
+        tkey_found=False
+        for tkey, tvalue in target_dict.iteritems():
+            if (rkey in tkey):
+                tkey_found=True
+        if not tkey_found:
+            result.update({rkey:rvalue})
+    return result 
+
+def get_impact_type_list(data):
+    """
+    get_impact_type_list returns a list of impact types extracted from data.json 'global_impact_scores' list.
+    Variable:
+    - data strcuture loaded form data.json
+    """
+    result=[]
+    global_impact_details=data.get("global_impact_details",None)
+    for global_impact_detail in global_impact_details:
+        impact_type = global_impact_detail.get("type",None)
+        if impact_type:
+            result.append(impact_type)
+    assert(type(result) is list)
+    return result
+
+def fix_data_structure():
+    data   = import_jsondata(DATA)
+    schema = import_jsondata(SCHEMA)
+
+    for index, process in enumerate(data['processes']):
+        fixed_process = fix_json_dict(schema['processes'][0],process)
+        data['processes'][index]=fixed_process
+    for index, asset in enumerate(data['assets']):
+        fixed_asset = fix_json_dict(schema['assets'][0],asset)
+        data['assets'][index]=fixed_asset
+    for index, threat in enumerate(data['threats']):
+        fixed_threat = fix_json_dict(schema['threats'][0],threat)
+        impact_details = threat.get("impact_scores",None)
+        impact_types = []
+        for impact_detail in impact_details:
+            impact_type = impact_detail.get("type",None)
+     	    if impact_type:
+                impact_types.append(impact_type)
+        global_impact_types = get_impact_type_list(data)
+        for global_impact_type in global_impact_types:
+            if not global_impact_type in impact_types: 
+                new_score = {"type":global_impact_type, "score":"0"}
+                fixed_threat['impact_scores'].append(new_score)
+        data['threats'][index]=fixed_threat
+    output = json.dumps(data, indent=4)
+    write_file(DATA, output, charset='utf-8')
+
+
 ##################
 # Risk functions #
 ##################
@@ -159,7 +219,7 @@ def get_container_dict(search_container_id):
     for index, container in enumerate(data["containers"]):
         container_id = container.get("container_id", None)
         if search_container_id in container_id:
-            container_name = container.get("container_name", None)
+            container_name = container.get("container_name", "No name")
             result.update({"container_id":container_id, "container_name":container_name})
     assert(type(result) is dict)
     return result
@@ -247,7 +307,8 @@ def inject_containers_and_controls(threat_table):
                     control_dict = {}
                     control_dict = get_control_dict(str(temp_control_id))
                     new_data["container_controls"].append(control_dict)
-                containers.append(new_data)
+                if new_data.get("container_name",None):
+                    containers.append(new_data)
     	threat_table[index]["containers"]=containers
         threat_table[index]["asset_id"]=asset_id
     return threat_table        
@@ -293,6 +354,7 @@ def apply_to_aspect(aspect, new_aspect_detail):
     """
     assert(type(aspect) is str)
     assert(type(new_aspect_detail) is dict)
+    print json.dumps(str(new_aspect_detail), indent=4)
     data=import_jsondata(DATA)
     if aspect in "asset":
         asset_id_new= new_aspect_detail.get("asset_id", None)
@@ -327,8 +389,19 @@ def apply_to_aspect(aspect, new_aspect_detail):
             for index, threat in enumerate(data['threats']):
 	        threat_id_existing = threat.get("threat_id", None)
                 if threat_id_new in threat_id_existing:
-                    data["threats"][index].update(new_aspect_detail)
-                    threat_found = True
+                    threat_found=True
+                    threat_index=index
+            if threat_found:
+	        new_impact_scores = new_aspect_detail.get("impact_scores",None)
+                if new_impact_scores:
+                     threat_details=data['threats'][threat_index]['impact_scores']
+                     for index, old_impact_score in enumerate(threat_details):
+                         for new_impact_score in new_impact_scores:
+                             new_impact_type = new_impact_score.get("type",None)
+			     old_impact_type = old_impact_score.get('type',None)
+                             if new_impact_type in old_impact_type:
+                                  data['threats'][threat_index]['impact_scores'][index].update(new_impact_score)
+                data["threats"][threat_index].update(new_aspect_detail)
             if not threat_found:
                 data["threats"].append(new_aspect_detail)
         else:
@@ -348,7 +421,7 @@ def apply_to_aspect(aspect, new_aspect_detail):
             return False
     outputdata = json.dumps(data, indent=4)
     write_file(DATA, outputdata, charset='utf-8')
-    return jsonify(new_aspect_detail)
+    return True
 
     
 ##########################
@@ -583,13 +656,40 @@ def update_asset():
 
 @app.route("/update_threat", methods=['POST'])
 def update_threat():
+    # Get formdata
     formdata = {}
     f = request.form
-    output = {}
     for key in f.keys():
         for value in f.getlist(key):
-            output[key] = value.strip() 
-    return jsonify(output)
+            formdata[key] = value.strip() 
+    # Update risktable
+    threat_id = formdata.get('threat_id',None)
+    asset_id = formdata.get("asset_id",None)
+    risk_ids = {"threat_id":threat_id, "asset_id":asset_id}
+    apply_to_risktable(risk_ids)
+    # Clean formdata
+    formdata.pop("action",None)
+    formdata.pop("asset_id",None)
+    # Get list of impact_score_types from data.json  
+    impact_score_types=[]
+    data=import_jsondata(DATA)
+    global_impact_details=data.get("global_impact_details",None)
+    for global_impact_detail in global_impact_details:
+         impact_score_types.append(global_impact_detail.get("type",None))
+    # Create datastructure for impact_scores and update formdata.
+    impact_scores=[]
+    for impact_score_type in impact_score_types:
+        formdata_variable = formdata.get(impact_score_type, None)
+        if formdata_variable in ["0","1","2","3"]:
+            impact_score={}
+            impact_score['score']=str(formdata_variable)
+            impact_score['type']=impact_score_type
+            impact_scores.append(impact_score)
+            formdata.pop(impact_score_type,None)
+    formdata['impact_scores']=impact_scores        
+    # Store data
+    apply_to_aspect("threat", formdata)
+    return jsonify(formdata)
 
 @app.route("/show_json", methods=['GET'])
 def show_json():
@@ -600,6 +700,7 @@ def show_json():
 # Main code #
 #############
 if __name__ == '__main__':
+    fix_data_structure()
     # Try and get SERVER_NAME env variable, defaults to 127.0.0.1
     host = os.getenv('HOSTNAME', '127.0.0.1')
     app.run(debug=True)

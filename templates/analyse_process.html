@@ -14,7 +14,7 @@
     </div>
     <div class="field">
       <label>Process description</label>
-      <textarea rows="4" name="description" cols=50>{{process.process_description}}</textarea>
+      <textarea rows="4" name="process_description" cols=50>{{process.process_description}}</textarea>
     </div>
     <input type="hidden" name="process_id" value="{{ process.process_id }}">
     <input class="ui button" type="submit" name="action" value="Apply process changes">
@@ -121,8 +121,6 @@
 {% if threat.asset_id == asset.asset_id %}
 <h2>Threat</h2>
 <form class="ui form" action="/update_threat" method="POST">
-    <input type="hidden" name="process_id" value="{{process_id}}">
-
     <div class="field">
       <label>Threat name</label>
       <input type="text" name="threat_name" value="{{threat.threat_name}}">
@@ -130,7 +128,7 @@
 
     <div class="field">
       <label>Threat description</label>
-      <textarea rows="4" name="description" cols=50>{{threat.threat_description}}</textarea>
+      <textarea rows="4" name="threat_description" cols=50>{{threat.threat_description}}</textarea>
     </div>
 
   <h4>Impact analysis</h4>
@@ -147,10 +145,10 @@
        {% set check1=""  %}
        {% set check2=""  %}
        {% set check3=""  %}
-       {% if impact_score.score == 0 %}{% set check0="checked"%}{% endif %}
-       {% if impact_score.score == 1 %}{% set check1="checked"%}{% endif %}
-       {% if impact_score.score == 2 %}{% set check2="checked"%}{% endif %}
-       {% if impact_score.score == 3 %}{% set check3="checked"%}{% endif %}
+       {% if impact_score.score == "0" %}{% set check0="checked"%}{% endif %}
+       {% if impact_score.score == "1" %}{% set check1="checked"%}{% endif %}
+       {% if impact_score.score == "2" %}{% set check2="checked"%}{% endif %}
+       {% if impact_score.score == "3" %}{% set check3="checked"%}{% endif %}
        {{ check0 }}
        {{ check1 }}
        {{ check2 }}
@@ -232,10 +230,10 @@ How frequently is the critical information exposed to the threat?
 {% set check1=""  %}
 {% set check2=""  %}
 {% set check3=""  %}
-{% if threat.threat_probability == 0 %}{% set check0="checked"%}{% endif %}
-{% if threat.threat_probability == 1 %}{% set check1="checked"%}{% endif %}
-{% if threat.threat_probability == 2 %}{% set check2="checked"%}{% endif %}
-{% if threat.threat_probability == 3 %}{% set check3="checked"%}{% endif %}
+{% if threat.threat_probability == "0" %}{% set check0="checked"%}{% endif %}
+{% if threat.threat_probability == "1" %}{% set check1="checked"%}{% endif %}
+{% if threat.threat_probability == "2" %}{% set check2="checked"%}{% endif %}
+{% if threat.threat_probability == "3" %}{% set check3="checked"%}{% endif %}
 <table>
 <tr><td><input type="radio" name="threat_probability" value="0" required {{ check0 }}> Unlikely </td></tr>
 <tr><td><input type="radio" name="threat_probability" value="1" required {{ check1 }}> Rare </td></tr>
@@ -260,7 +258,6 @@ Is risk treatment done?:
    <option value="True">True</option>
 </select>
 <br>
-<input type="hidden" name="process_id" value="{{ process.process_id }}">
 <input type="hidden" name="threat_id" value="{{ threat.threat_id }}">
 <input type="hidden" name="asset_id" value="{{ asset.asset_id }}">
 <input class="ui button" type="submit" name="action" value="Apply threat changes">
