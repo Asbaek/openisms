@@ -289,24 +289,31 @@ def inject_containers_and_controls(threat_table):
     data=import_jsondata(DATA)
     for index,threat_dict in enumerate(threat_table):
         containers=[]
+        containers_reported = []
         asset_id = ""
         threat_table_id = threat_dict.get("threat_id",None)
         for risk in data["risktable"]:
             temp_threat_id = risk.get("threat_id", None)
             if temp_threat_id and (temp_threat_id in threat_table_id):
                 temp_container_id=risk.get("container_id", None)
-                temp_control_id  =risk.get("control_id", None)
                 asset_id = risk.get("asset_id", None) or asset_id
                 new_data = {}
                 new_data["container_controls"]=[]
                 temp_control_ids=[]
-                if temp_container_id:
+                if temp_container_id and not (temp_container_id in containers_reported):
                     container_dict ={}
                     container_dict=get_container_dict(str(temp_container_id))
 		    new_data.update(container_dict)
-                    control_dict = {}
-                    control_dict = get_control_dict(str(temp_control_id))
-                    new_data["container_controls"].append(control_dict)
+		    containers_reported.append(str(temp_container_id))
+		    # loop through all risks with temp_container_id  and get container_id
+                    for id_dict in data["risktable"]:
+                        current_container_id = id_dict.get("container_id", None)
+                        if (current_container_id == temp_container_id):
+                            current_control_id  =id_dict.get("control_id", None)
+                            if current_control_id:
+                                control_dict = {}
+                                control_dict = get_control_dict(str(current_control_id))
+                                new_data["container_controls"].append(control_dict)
                 if new_data.get("container_name",None):
                     containers.append(new_data)
     	threat_table[index]["containers"]=containers
