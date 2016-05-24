@@ -361,7 +361,6 @@ def apply_to_aspect(aspect, new_aspect_detail):
     """
     assert(type(aspect) is str)
     assert(type(new_aspect_detail) is dict)
-    print json.dumps(str(new_aspect_detail), indent=4)
     data=import_jsondata(DATA)
     if aspect in "asset":
         asset_id_new= new_aspect_detail.get("asset_id", None)
@@ -696,6 +695,45 @@ def update_threat():
     formdata['impact_scores']=impact_scores        
     # Store data
     apply_to_aspect("threat", formdata)
+    return jsonify(formdata)
+
+def delete_id_set(id_1, id_2):
+    """
+    delete_id deletes all lines from risktable in data.json, containing both ids.
+    Arguments:
+    - id_1: first id, e.g. "container_000001"
+    - id_2: second id, e.g. "control000001"
+    """
+    assert(type(id_1) is str)
+    assert(type(id_2) is str)
+    data=import_jsondata(DATA)
+    old_risktable = data.get("risktable",None)
+    print old_risktable
+    new_risktable = []
+    for risk in old_risktable:
+        id_1_found=False
+        id_2_found=False
+        for key,value in risk.iteritems():
+            if value==id_1: id_1_found=True
+            if value==id_2: id_2_found=True
+        if not (id_1_found and id_2_found):
+            new_risktable.append(risk)
+    data['risktable']=new_risktable
+    output = json.dumps(data, indent=4)
+    write_file(DATA, output, charset='utf-8')
+    return True
+
+@app.route("/delete_control",methods=['POST','GET'])
+def delete_control():
+    formdata = {}
+    f = request.form
+    for key in f.keys():
+        for value in f.getlist(key):
+            formdata[key] = value.strip() 
+    control_id = formdata.get("control_id",None)
+    container_id = formdata.get("container_id",None)
+    if control_id and container_id:
+        delete_id_set(str(control_id),str(container_id))
     return jsonify(formdata)
 
 @app.route("/show_json", methods=['GET'])
