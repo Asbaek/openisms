@@ -736,6 +736,20 @@ def delete_control():
         delete_id_set(str(control_id),str(container_id))
     return jsonify(formdata)
 
+@app.route("/delete_container",methods=['POST','GET'])
+def delete_container():
+    formdata = {}
+    f = request.form
+    for key in f.keys():
+        for value in f.getlist(key):
+            formdata[key] = value.strip() 
+    threat_id = formdata.get("threat_id",None)
+    container_id = formdata.get("container_id",None)
+    if container_id and threat_id:
+        delete_id_set(str(threat_id),str(container_id))
+    return jsonify(formdata)
+
+
 @app.route("/show_json", methods=['GET'])
 def show_json():
     data = import_jsondata(DATA)

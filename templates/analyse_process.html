@@ -277,6 +277,8 @@ Is risk treatment done?:
 
     <form action="/delete_container" method="POST">
       {{container.container_name}} 
+      <input type="hidden" name="threat_id" value="{{ threat.threat_id }}">
+      <input type="hidden" name="container_id" value="{{ container.container_id }}">
       <input class="red mini ui button" type="submit" name="action" value="Delete container">
     </form>
   </td>
