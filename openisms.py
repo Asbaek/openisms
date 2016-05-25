@@ -507,6 +507,22 @@ def get_next_id(aspect_id_type):
     risktable_template = schema.get("risktable",None)
     aspect_id_types = list(risktable_template[0].keys())
     data = import_jsondata(DATA)
+    risktable=data.get("risktable", None)
+    if aspect_id_type is "process_id":
+        processes=data.get("processes",None)
+        process_ids=[]
+        for process in processes:
+            process_id = process.get("process_id",None)
+            if process_id:
+                process_ids.append(process_id)
+        for risk in risktable:
+            process_id = risk.get("process_id",None)
+            if process_id:
+                process_ids.append(process_id)
+        if not process_ids:
+            process_ids.append("process000000")
+        int_ids = [int(a[7:]) for a in process_ids]
+        return "process" + str(max(int_ids)+1).zfill(6)
     if aspect_id_type is "asset_id":
         assets=data.get("assets",None)
         asset_ids = []
@@ -514,7 +530,6 @@ def get_next_id(aspect_id_type):
             asset_id = asset.get("asset_id", None)
             if asset_id: 
                 asset_ids.append(asset_id)    
-        risktable=data.get("risktable", None)
         for risk in risktable:
             asset_id = risk.get("asset_id", None)
             if asset_id:
@@ -530,7 +545,6 @@ def get_next_id(aspect_id_type):
             threat_id = threat.get("threat_id", None)
             if threat_id: 
                 threat_ids.append(threat_id)    
-        risktable=data.get("risktable", None)
         for risk in risktable:
             threat_id = risk.get("threat_id", None)
             if threat_id:
@@ -546,7 +560,6 @@ def get_next_id(aspect_id_type):
             container_id = container.get("container_id", None)
             if container_id: 
                 container_ids.append(container_id)    
-        risktable=data.get("risktable", None)
         for risk in risktable:
             container_id = risk.get("container_id", None)
             if container_id:
@@ -555,6 +568,19 @@ def get_next_id(aspect_id_type):
             container_ids.append("container000000")
         int_ids = [int(a[9:]) for a in container_ids]
         return "container" + str(max(int_ids)+1).zfill(6)   
+
+@app.route("/add_process", methods=['POST','GET'])
+def add_process():
+    schema=import_jsondata(SCHEMA)
+
+    process_template = schema['processes'][0]
+    process_id = get_next_id("process_id")
+    process_template.update({"process_id":process_id})
+
+    apply_to_aspect("process", process_template)
+    risk_ids = {'process_id':process_id}
+    apply_to_risktable(risk_ids)
+    return jsonify(process_template)    
 
 
 @app.route("/add_asset", methods=['POST'])
@@ -765,5 +791,5 @@ if __name__ == '__main__':
     fix_data_structure()
     # Try and get SERVER_NAME env variable, defaults to 127.0.0.1
     host = os.getenv('HOSTNAME', '127.0.0.1')
-    #app.run(debug=True)
+    app.run(debug=True)
     app.run(host=host)
