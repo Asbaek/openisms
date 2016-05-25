@@ -25,19 +25,19 @@
             "threat_id": "threat000001", 
             "impact_scores": [
                 {
-                    "score": "3", 
+                    "score": "1", 
                     "type": "reputational"
                 }, 
                 {
-                    "score": "3", 
+                    "score": "1", 
                     "type": "legal"
                 }, 
                 {
-                    "score": "3", 
+                    "score": "1", 
                     "type": "financial"
                 }, 
                 {
-                    "score": "3", 
+                    "score": "0", 
                     "type": "health"
                 }, 
                 {
@@ -45,25 +45,25 @@
                     "type": "productivity"
                 }
             ], 
-            "threat_description": "Information is lost2", 
-            "threat_action": "Share", 
-            "threat_name": "Availability2", 
-            "threat_action_executed": "True", 
-            "threat_probability": "3"
+            "threat_description": "All data in the financial database is lost.", 
+            "threat_action": "Modify", 
+            "threat_name": "Availability", 
+            "threat_action_executed": "False", 
+            "threat_probability": "2"
         }
     ], 
     "assets": [
         {
             "asset_id": "asset000001", 
-            "asset_rpo_days": "7 days", 
+            "asset_rpo_days": "1 day", 
             "asset_criticality_i": "True", 
             "asset_criticality_c": "True", 
             "asset_description": "Financial database containing record of all transactions is stored the internal database hotel", 
-            "asset_criticality_a": "False", 
+            "asset_criticality_a": "True", 
             "asset_owner": "CFO", 
             "asset_name": "Internal Financial Database", 
             "process_id": "process000002", 
-            "asset_rto_days": "3 days"
+            "asset_rto_days": "7 days"
         }, 
         {
             "asset_id": "asset000002", 
@@ -325,6 +325,32 @@
             "threat_id": "threat000001", 
             "control_id": "AC-03", 
             "container_id": "container000002"
+        }
+    ], 
+    "threat_library": [
+        {
+            "threat_name": "Malicious Code", 
+            "threat_description": "Use of code to perform unauthorised disclosure, adjustment or destruction"
+        }, 
+        {
+            "threat_name": "Information Gathering", 
+            "threat_description": "Gathering of information"
+        }, 
+        {
+            "threat_name": "Intrusions", 
+            "threat_description": "Unauthorised access to data, systems, physical documents, or facilities"
+        }, 
+        {
+            "threat_name": "Availablity", 
+            "description": "Unavailability of systems, people, physical documents or facilities"
+        }, 
+        {
+            "threat_name": "Information Content Security", 
+            "threat_description": "Unauthorised adjustment of information content"
+        }, 
+        {
+            "threat_name": "Fraud", 
+            "threat_description": "Fraud is deliberate deception to secure unfair or unlawful gain, or to deprive a victim of a legal right."
         }
     ], 
     "containers": [
