@@ -216,7 +216,7 @@
 
 
 <h4>Probability Analysis</h4>
-How frequently is the critical information exposed to the threat?
+Probability of exposure:
 {% set check0=""  %}
 {% set check1=""  %}
 {% set check2=""  %}
@@ -226,10 +226,10 @@ How frequently is the critical information exposed to the threat?
 {% if threat.threat_probability == "2" %}{% set check2="checked"%}{% endif %}
 {% if threat.threat_probability == "3" %}{% set check3="checked"%}{% endif %}
 <table>
-<tr><td><input type="radio" name="threat_probability" value="0" required {{ check0 }}> Unlikely </td></tr>
-<tr><td><input type="radio" name="threat_probability" value="1" required {{ check1 }}> Rare </td></tr>
-<tr><td><input type="radio" name="threat_probability" value="2" required {{ check2 }}> Frequent </td></tr>
-<tr><td><input type="radio" name="threat_probability" value="3" required {{ check3 }}> Almost certain </td></tr>
+<tr><td><input type="radio" name="threat_probability" value="0" required {{ check0 }}> Unlikely (every 10+ years)  </td></tr>
+<tr><td><input type="radio" name="threat_probability" value="1" required {{ check1 }}> Occasionally (every 5-10 years)</td></tr>
+<tr><td><input type="radio" name="threat_probability" value="2" required {{ check2 }}> Likely (every 1-5 years) </td></tr>
+<tr><td><input type="radio" name="threat_probability" value="3" required {{ check3 }}> Very likely (at least yearly) </td></tr>
 </table>
 
 <h4>Risk Treatment Decision</h4>
