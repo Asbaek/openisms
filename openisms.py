@@ -784,6 +784,11 @@ def show_json():
     data = import_jsondata(DATA)
     return jsonify(data)
 
+@app.route("/reports", methods=['GET'])
+def reports():
+    return render_template("reports.html") 
+
+
 #############
 # Main code #
 #############
