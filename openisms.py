@@ -484,11 +484,13 @@ def analyse_process():
     threat_table = inject_containers_and_controls(threat_table)
     threat_table = inject_risk_scores(threat_table)
     
+    threat_library = data.get("threat_library")
     control_library = import_jsondata(CONTROL_LIBRARY)
     container_library = data.get("container_library", None)
     return render_template('analyse_process.html', process_table=process_table,
 						   asset_table=asset_table,
 						   rxo_values=rxo_values,
+ 						   threat_library = threat_library,
 						   global_impact_details=global_impact_details,
 						   threat_table=threat_table,
 						   control_library=control_library,
@@ -586,6 +588,7 @@ def add_threat():
         for value in f.getlist(key):
             formdata[key] = value.strip() 
     asset_id = formdata.get("asset_id",None)
+    threat_template['threat_name'] = formdata.get("threat_name","")
 
     apply_to_aspect("threat", threat_template)
     risk_ids = {'asset_id':asset_id,'threat_id':threat_id}
@@ -762,5 +765,5 @@ if __name__ == '__main__':
     fix_data_structure()
     # Try and get SERVER_NAME env variable, defaults to 127.0.0.1
     host = os.getenv('HOSTNAME', '127.0.0.1')
-    app.run(debug=True)
+    #app.run(debug=True)
     app.run(host=host)

@@ -119,13 +119,8 @@
 <fieldset>
 {% for threat in threat_table %}
 {% if threat.asset_id == asset.asset_id %}
-<h2>Threat</h2>
+<h2>Threat: {{ threat.threat_name }} </h2>
 <form class="ui form" action="/update_threat" method="POST">
-    <div class="field">
-      <label>Threat name</label>
-      <input type="text" name="threat_name" value="{{threat.threat_name}}">
-    </div>
-
     <div class="field">
       <label>Threat description</label>
       <textarea rows="4" name="threat_description" cols=50>{{threat.threat_description}}</textarea>
@@ -149,10 +144,6 @@
        {% if impact_score.score == "1" %}{% set check1="checked"%}{% endif %}
        {% if impact_score.score == "2" %}{% set check2="checked"%}{% endif %}
        {% if impact_score.score == "3" %}{% set check3="checked"%}{% endif %}
-       {{ check0 }}
-       {{ check1 }}
-       {{ check2 }}
-       {{ check3 }}
     <tr>
     <td>
         {% for global_impact in global_impact_details %}
@@ -333,6 +324,12 @@ Is risk treatment done?:
 </fieldset>
 <br>
 <form action="/add_threat" method="POST">
+  <select class="ui dropdown" name="threat_name">
+  {% for l_threat in threat_library %} 
+    <option value="{{l_threat.threat_name}}"> {{l_threat.threat_name}}  
+    </option>
+  {% endfor %}
+    </select>
   <input type="hidden" name="asset_id" value="{{ asset.asset_id }}">
 <input class="ui button" type="submit" name="action" value="Add threat">
 </form>
