@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h3> Risks</h3>
+This list show all risks with action "Retention" (or Accept) in OpenISMS.
+<table class="ui celled table">
+<thead>
+  <tr><th>Risk Name</th><th>Risk Score (0-10)</th><th>Asset Owner</th><th>Sufficient mitigation implemented?</th><th>Selected Action Type</th></tr>
+</thead>
+<tbody>
+  {% for threat in threat_table|sort(attribute='risk_score', reverse = True) %}
+  {% if threat.threat_action=="Retention" %}
+  <tr><td>
+     {{threat.asset_name}} - {{threat.threat_name}}
+  </td><td>
+     {{threat.risk_score}}
+  </td><td>
+     {{threat.asset_owner}}
+  </td><td class="center aligned">
+     {% if threat.threat_action_executed=="True" %} Yes {% endif %}
+     {% if threat.threat_action_executed=="False" %} No {% endif %}
+  </td><td>
+     {{threat.threat_action}}
+  </td><tr>
+  {% endif %}
+  {% endfor %}
+</tbody>
+</table>
+{% endblock %}

@@ -813,6 +813,14 @@ def show_json():
 def reports():
     return render_template("reports.html") 
 
+@app.route("/risk_acceptance", methods=['GET'])
+def risk_acceptance():
+    return render_template("risk_acceptance.html") 
+
+@app.route("/controls_soa", methods=['GET'])
+def controls_soa():
+    return render_template("controls_soa.html") 
+
 @app.route("/risk_report", methods=['POST','GET'])
 def risk_report():
     data = import_jsondata(DATA)
