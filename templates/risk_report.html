@@ -5,7 +5,7 @@
 This list show all risks recorded in OpenISMS.
 <table class="ui celled table">
 <thead>
-  <tr><th>Risk Name</th><th>Risk Score (0-10)</th><th>Asset Owner</th><th>Sufficient mitigation implemented?</th><th>Selected Action Type</th></tr>
+  <tr><th>Risk Name</th><th>Risk Score (0-10)</th><th>Asset Owner</th><th>Sufficient mitigation implemented?</th></tr>
 </thead>
 <tbody>
   {% for threat in threat_table|sort(attribute='risk_score', reverse = True) %}
@@ -18,9 +18,8 @@ This list show all risks recorded in OpenISMS.
   </td><td class="center aligned">
      {% if threat.threat_action_executed=="True" %} Yes {% endif %}
      {% if threat.threat_action_executed=="False" %} No {% endif %}
-  </td><td>
-     {{threat.threat_action}}
-  </td><tr>
+  </td>
+  <tr>
   {% endfor %}
 </tbody>
 </table>
