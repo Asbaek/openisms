@@ -477,33 +477,46 @@ def analyse_process():
     """
     Displays forms to analyse processes 
     """
-    #get input data
+    action=request.args['action']
     process_ids = []
     process_ids.append(request.args['process_id'])
     process_table = get_table(process_ids)
+    if action=="Delete":
+        process_id = str(process_ids[0])
+        if process_id:
+            delete_id_set(process_id, process_id)
+            data=import_jsondata(DATA)
+            for index,process in enumerate(data['processes']):
+                row_process_id = process.get("process_id")
+                if row_process_id == process_id:
+                    data['processes'].pop(index)
+                    break  
+            output = json.dumps(data, indent=4)
+            write_file(DATA, output, charset='utf-8')
+        return assessments()
+    if action=="Analyse":
+        asset_ids = get_process_assets(process_ids)
+        asset_table = get_table(asset_ids)
+        data = import_jsondata(DATA)
+        rxo_values = data["rxo_values"]
+        global_impact_details = data["global_impact_details"]
 
-    asset_ids = get_process_assets(process_ids)
-    asset_table = get_table(asset_ids)
-    data = import_jsondata(DATA)
-    rxo_values = data["rxo_values"]
-    global_impact_details = data["global_impact_details"]
-
-    threat_ids = get_asset_threats(asset_ids)
-    threat_table = get_table(threat_ids)
-    threat_table = inject_containers_and_controls(threat_table)
-    threat_table = inject_risk_scores(threat_table)
+        threat_ids = get_asset_threats(asset_ids)
+        threat_table = get_table(threat_ids)
+        threat_table = inject_containers_and_controls(threat_table)
+        threat_table = inject_risk_scores(threat_table)
     
-    threat_library = data.get("threat_library")
-    control_library = import_jsondata(CONTROL_LIBRARY)
-    container_library = data.get("container_library", None)
-    return render_template('analyse_process.html', process_table=process_table,
-						   asset_table=asset_table,
-						   rxo_values=rxo_values,
- 						   threat_library = threat_library,
-						   global_impact_details=global_impact_details,
-						   threat_table=threat_table,
-						   control_library=control_library,
-						   container_library=container_library)
+        threat_library = data.get("threat_library")
+        control_library = import_jsondata(CONTROL_LIBRARY)
+        container_library = data.get("container_library", None)
+        return render_template('analyse_process.html', process_table=process_table,
+						       asset_table=asset_table,
+						       rxo_values=rxo_values,
+ 						       threat_library = threat_library,
+						       global_impact_details=global_impact_details,
+						       threat_table=threat_table,
+						       control_library=control_library,
+						       container_library=container_library)
 def get_next_id(aspect_id_type):
     """
     get_next_id returns next unique available ID number, depending on aspect_name.
@@ -672,6 +685,7 @@ def update_process():
         for value in f.getlist(key):
             new_process_data[key] = value.strip() 
     process_id = new_process_data.get("process_id",None)
+    action = new_process_data.get("action",None)
     new_process_data.pop("action", None)
     apply_to_aspect("process", new_process_data)
     risk_ids = {'process_id':process_id}
@@ -744,9 +758,11 @@ def delete_id_set(id_1, id_2):
     """
     assert(type(id_1) is str)
     assert(type(id_2) is str)
+    print str(id_1)
+    print str(id_2)
+  
     data=import_jsondata(DATA)
     old_risktable = data.get("risktable",None)
-    print old_risktable
     new_risktable = []
     for risk in old_risktable:
         id_1_found=False
