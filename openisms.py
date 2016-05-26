@@ -234,7 +234,7 @@ def get_risk_score(threat_dict):
     """
     data=import_jsondata(DATA)
     global_impact_details=data.get("global_impact_details", None)
-    risk_score = -1.0 
+    risk_score = 0.0
     impact_scores = threat_dict.get("impact_scores",None)
     try:
         for global_impact in global_impact_details: 
