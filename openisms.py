@@ -838,7 +838,10 @@ def risk_acceptance():
 
 @app.route("/controls_soa", methods=['GET'])
 def controls_soa():
-    return render_template("controls_soa.html") 
+    data = import_jsondata(DATA)
+    control_library=import_jsondata(CONTROL_LIBRARY)
+    control_table = control_library['control_library']
+    return render_template("controls_soa.html",control_table=control_table) 
 
 @app.route("/risk_report", methods=['POST','GET'])
 def risk_report():

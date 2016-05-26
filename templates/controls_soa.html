@@ -1,5 +1,21 @@
 {% extends "layout.html" %}
 {% block body %}
 
-<h3>Controls</h3>
+<h3>All Risks</h3>
+This list show all risks recorded in OpenISMS.
+<table class="ui celled table">
+<thead>
+  <tr><th>Control ID</th><th>Control Name</th></tr>
+</thead>
+<tbody>
+  {% for control in control_table %}
+  <tr><td>
+     {{control.control_id}}
+  </td><td>
+     {{control.control_name}}
+  </td>
+  <tr>
+  {% endfor %}
+</tbody>
+</table>
 {% endblock %}
