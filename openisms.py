@@ -188,6 +188,25 @@ def get_asset_threats(asset_ids):
     assert(type(result) is list), "get_asset_threats encountered an error in result variable"
     return result
 
+
+def get_threat_process(threat_id, data):
+    assert(type(threat_id) is str)
+    process_id = None 
+    asset_id = None
+    for risk in data['risktable']:
+        var_threat_id = risk.get("threat_id", None)
+        var_asset_id = risk.get("asset_id",None)
+        if var_threat_id and var_asset_id:
+            if var_threat_id == threat_id:
+                asset_id = var_asset_id
+    for risk in data['risktable']:
+        var_process_id = risk.get("process_id",None)
+        var_asset_id = risk.get("asset_id", None)
+        if var_process_id and var_asset_id:
+            if var_asset_id == asset_id:
+                process_id = var_process_id            
+    return process_id
+
 def get_control_dict(search_control_id):
     """
     Returns a dict with control_id and control_name if searc_control_id is found in control_library.json 
@@ -223,6 +242,7 @@ def get_container_dict(search_container_id):
             result.update({"container_id":container_id, "container_name":container_name})
     assert(type(result) is dict)
     return result
+
 
 def get_risk_score(threat_dict):
     """
@@ -505,7 +525,6 @@ def analyse_process():
         threat_table = get_table(threat_ids)
         threat_table = inject_containers_and_controls(threat_table)
         threat_table = inject_risk_scores(threat_table)
-    
         threat_library = data.get("threat_library")
         control_library = import_jsondata(CONTROL_LIBRARY)
         container_library = data.get("container_library", None)
@@ -832,6 +851,16 @@ def risk_report():
     threat_table = get_table(threat_ids)
     threat_table = inject_containers_and_controls(threat_table)
     threat_table = inject_risk_scores(threat_table)
+    for index,threat in enumerate(threat_table):
+        process_name = ""
+        threat_id = threat.get("threat_id", None)
+        process_id = get_threat_process(str(threat_id), data)   
+        for process in data['processes']:
+            var_process_id = process.get("process_id", None)
+            if var_process_id:
+                if process_id == var_process_id:
+                    process_name = process.get("process_name", "")
+        threat_table[index]['process_name']=process_name
     return render_template("risk_report.html",threat_table=threat_table) 
 
 

@@ -1,21 +1,45 @@
 {
     "processes": [
         {
-            "process_name": "Finance - Financial reporting", 
+            "process_description": "", 
             "process_id": "process000002", 
-            "process_description": "Authorities and key stakeholders requires timely and correct financial reporting", 
+            "process_name": "Finance - Budgeting & Reporting", 
             "process_business_unit": ""
         }, 
         {
-            "process_name": "Human Resources - Hirering", 
+            "process_name": "Human Resources - Employment", 
             "process_id": "process000001", 
-            "process_description": "Hirering process ensures skilled resources when needed", 
+            "process_description": "Human Resources department are handling recruitment, performance measurement, compensation/benefits managemnt, salary adjustments and resignations/dismissals for employees in the organisation.", 
             "process_business_unit": ""
         }, 
         {
-            "process_name": "IT - Development", 
+            "process_name": "Finance - Procurement", 
             "process_id": "process000003", 
-            "process_description": "IT Development provides business processes automation", 
+            "process_description": "", 
+            "process_business_unit": ""
+        }, 
+        {
+            "process_name": "IT - Hosting", 
+            "process_id": "process000004", 
+            "process_description": "", 
+            "process_business_unit": ""
+        }, 
+        {
+            "process_description": "", 
+            "process_id": "process000005", 
+            "process_name": "IT - Networking", 
+            "process_business_unit": ""
+        }, 
+        {
+            "process_description": "", 
+            "process_id": "process000006", 
+            "process_name": "IT - Software development", 
+            "process_business_unit": ""
+        }, 
+        {
+            "process_name": "IT - Collaboration", 
+            "process_id": "process000007", 
+            "process_description": "", 
             "process_business_unit": ""
         }
     ], 
@@ -50,6 +74,37 @@
             "threat_name": "Availability", 
             "threat_action_executed": "False", 
             "threat_probability": "2"
+        }, 
+        {
+            "threat_action_rationale": "", 
+            "threat_id": "threat000003", 
+            "impact_scores": [
+                {
+                    "score": "0", 
+                    "type": "legal"
+                }, 
+                {
+                    "score": "0", 
+                    "type": "financial"
+                }, 
+                {
+                    "score": "0", 
+                    "type": "productivity"
+                }, 
+                {
+                    "score": "0", 
+                    "type": "reputational"
+                }, 
+                {
+                    "score": "0", 
+                    "type": "health"
+                }
+            ], 
+            "threat_description": "", 
+            "threat_action": "", 
+            "threat_name": "Availablity", 
+            "threat_action_executed": "", 
+            "threat_probability": ""
         }
     ], 
     "assets": [
@@ -76,6 +131,30 @@
             "asset_name": "", 
             "process_id": "", 
             "asset_rto_days": "Not selected"
+        }, 
+        {
+            "asset_id": "asset000003", 
+            "asset_name": "", 
+            "asset_criticality_i": "False", 
+            "asset_criticality_c": "False", 
+            "asset_description": "", 
+            "asset_criticality_a": "False", 
+            "asset_owner": "", 
+            "asset_rpo_days": "Not selected", 
+            "process_id": "", 
+            "asset_rto_days": "Not selected"
+        }, 
+        {
+            "asset_id": "asset000004", 
+            "asset_rpo_days": "1 day", 
+            "asset_criticality_i": "True", 
+            "asset_criticality_c": "False", 
+            "asset_description": "All contracts are stored in a database.", 
+            "asset_criticality_a": "True", 
+            "asset_owner": "CFO", 
+            "asset_name": "Contracts database", 
+            "process_id": "", 
+            "asset_rto_days": "14 days"
         }
     ], 
     "global_impact_details": [
@@ -325,6 +404,36 @@
             "threat_id": "threat000001", 
             "control_id": "AC-03", 
             "container_id": "container000002"
+        }, 
+        {
+            "process_id": "process000001"
+        }, 
+        {
+            "process_id": "process000003"
+        }, 
+        {
+            "process_id": "process000004"
+        }, 
+        {
+            "process_id": "process000005"
+        }, 
+        {
+            "asset_id": "asset000003", 
+            "process_id": "process000005"
+        }, 
+        {
+            "process_id": "process000006"
+        }, 
+        {
+            "process_id": "process000007"
+        }, 
+        {
+            "asset_id": "asset000004", 
+            "process_id": "process000003"
+        }, 
+        {
+            "asset_id": "asset000004", 
+            "threat_id": "threat000003"
         }
     ], 
     "threat_library": [
