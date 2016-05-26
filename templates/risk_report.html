@@ -18,6 +18,7 @@ This list show all risks recorded in OpenISMS.
   </td><td class="center aligned">
      {% if threat.threat_action_executed=="True" %} Yes {% endif %}
      {% if threat.threat_action_executed=="False" %} No {% endif %}
+     {% if threat.threat_action_executed=="" %} Not assessed {% endif %}
   </td>
   <tr>
   {% endfor %}
