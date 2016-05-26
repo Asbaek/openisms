@@ -318,6 +318,15 @@ def inject_containers_and_controls(threat_table):
                     containers.append(new_data)
     	threat_table[index]["containers"]=containers
         threat_table[index]["asset_id"]=asset_id
+        asset_name=""
+        asset_owner=""
+        for asset in data['assets']:
+            var_asset_id = asset.get("asset_id", None)
+            if var_asset_id == asset_id:
+                asset_name=asset.get("asset_name",None)
+                asset_owner=asset.get("asset_owner",None)
+        threat_table[index]["asset_name"]=asset_name
+        threat_table[index]["asset_owner"]=asset_owner
     return threat_table        
 
 def apply_to_risktable(risk_dict):
@@ -787,6 +796,19 @@ def show_json():
 @app.route("/reports", methods=['GET'])
 def reports():
     return render_template("reports.html") 
+
+@app.route("/risk_report", methods=['POST','GET'])
+def risk_report():
+    data = import_jsondata(DATA)
+    threat_ids=[]
+    for risk in data['risktable']:
+        threat_id = risk.get('threat_id',None) 
+        if threat_id:
+            threat_ids.append(threat_id)
+    threat_table = get_table(threat_ids)
+    threat_table = inject_containers_and_controls(threat_table)
+    threat_table = inject_risk_scores(threat_table)
+    return render_template("risk_report.html",threat_table=threat_table) 
 
 
 #############
