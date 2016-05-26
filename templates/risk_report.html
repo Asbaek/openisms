@@ -8,7 +8,7 @@ This list show all risks recorded in OpenISMS.
   <tr><th>Risk Name</th><th>Risk Score (0-10)</th><th>Asset Owner</th><th>Sufficient mitigation implemented?</th></tr>
 </thead>
 <tbody>
-  {% for threat in threat_table|sort(attribute='risk_score', reverse = False) %}
+  {% for threat in threat_table|sort(attribute='risk_score', reverse = True) %}
   <tr><td>
      {{threat.asset_name}} - {{threat.threat_name}}
   </td><td>
