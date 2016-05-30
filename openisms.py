@@ -13,6 +13,7 @@ import re
 DATA = "assessments/data.json"
 SCHEMA = "assessments/schema.json"
 CONTROL_LIBRARY = "assessments/control_library.json"
+DELIVERABLES = "assessments/deliverables.json"
 app = Flask(__name__)
 
 ###########################
@@ -843,6 +844,11 @@ def controls_soa():
     control_table = control_library['control_library']
     return render_template("controls_soa.html",control_table=control_table) 
 
+@app.route("/deliverables", methods=['GET'])
+def deliverables():
+    deliverables = import_jsondata(DELIVERABLES)
+    return render_template("deliverables.html", deliverables=deliverables['deliverables'])
+
 @app.route("/risk_report", methods=['POST','GET'])
 def risk_report():
     data = import_jsondata(DATA)
@@ -865,7 +871,6 @@ def risk_report():
                     process_name = process.get("process_name", "")
         threat_table[index]['process_name']=process_name
     return render_template("risk_report.html",threat_table=threat_table) 
-
 
 #############
 # Main code #

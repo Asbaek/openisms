@@ -159,46 +159,46 @@
     ], 
     "global_impact_details": [
         {
-            "priority": "1", 
+            "high": "Irrevokable damage to less important stakholders confidence", 
             "medium": "Revokable damage to reputation and stakeholders confidence", 
             "description": "Reputation and stakeholder confidence", 
-            "high": "Irrevokable damage to less important stakholders confidence", 
+            "priority": "1", 
             "critical": "Irrevokable damage to key stakholders confidence or public reputation", 
             "low": "Minimal damage to reputation and stakeholder confidence", 
             "type": "reputational"
         }, 
         {
-            "priority": "2", 
+            "high": "Fines, non-frivolous lawsuits or investigations exceed 200.000 euro", 
             "medium": "Fines, non-frivolous lawsuits or investigations do not exceed 200.000 euro", 
             "description": "Fines and legal penialties", 
-            "high": "Fines, non-frivolous lawsuits or investigations exceed 200.000 euro", 
+            "priority": "2", 
             "critical": "Public investigations of organisational practices is made", 
             "low": "Fines, non-frivolous lawsuits or investigations do not exceed 50.000 euro", 
             "type": "legal"
         }, 
         {
-            "priority": "3", 
+            "high": "Yearly revenue reduction or one time loss of 200.000-500.000 euros", 
             "medium": "Yearly revenue reduction or one time loss of 50.000-200.000 euros", 
             "description": "Financial", 
-            "high": "Yearly revenue reduction or one time loss of 200.000-500.000 euros", 
+            "priority": "3", 
             "critical": "Yearly revenue reduction or one time loss of more than 500.000 euros", 
             "low": "Yearly revenue reduction or one time loss of less than 50.000 euros", 
             "type": "financial"
         }, 
         {
-            "priority": "4", 
+            "high": "More than 4 days of degrade in employee or customer health.", 
             "medium": "Maximum 4 days of degrade in employee or customer health.", 
             "description": "Health and safety", 
-            "high": "More than 4 days of degrade in employee or customer health.", 
+            "priority": "4", 
             "critical": "Permenent degrade in employee or customer health", 
             "low": "No significant threats to health and safety", 
             "type": "health"
         }, 
         {
-            "priority": "5", 
+            "high": "Less than 4 full time employees are requred for less than 6 months", 
             "medium": "Less than 1 full time employee is required for less than 2 months", 
             "description": "Productivity", 
-            "high": "Less than 4 full time employees are requred for less than 6 months", 
+            "priority": "5", 
             "critical": "More than 4 full time employees are required for more than 6 months", 
             "low": "Less than 1 full time employee is required for less than 1 month", 
             "type": "productivity"
@@ -366,6 +366,46 @@
         "6 months", 
         "more than 1 year"
     ], 
+    "containers": [
+        {
+            "container_id": "container000001", 
+            "container_description": "A database server is software and hardware needed to operate the database", 
+            "container_name": "Server - Database"
+        }, 
+        {
+            "action": "Add container", 
+            "threat_id": "threat000001", 
+            "container_description": "", 
+            "container_id": "container000002", 
+            "container_name": "Administrators - Servers"
+        }
+    ], 
+    "threat_library": [
+        {
+            "threat_name": "Malicious Code", 
+            "threat_description": "Use of code to perform unauthorised disclosure, adjustment or destruction"
+        }, 
+        {
+            "threat_name": "Information Gathering", 
+            "threat_description": "Gathering of information"
+        }, 
+        {
+            "threat_name": "Intrusions", 
+            "threat_description": "Unauthorised access to data, systems, physical documents, or facilities"
+        }, 
+        {
+            "threat_name": "Availablity", 
+            "description": "Unavailability of systems, people, physical documents or facilities"
+        }, 
+        {
+            "threat_name": "Information Content Security", 
+            "threat_description": "Unauthorised adjustment of information content"
+        }, 
+        {
+            "threat_name": "Fraud", 
+            "threat_description": "Fraud is deliberate deception to secure unfair or unlawful gain, or to deprive a victim of a legal right."
+        }
+    ], 
     "risktable": [
         {
             "asset_id": "asset000001", 
@@ -434,46 +474,6 @@
         {
             "asset_id": "asset000004", 
             "threat_id": "threat000003"
-        }
-    ], 
-    "threat_library": [
-        {
-            "threat_name": "Malicious Code", 
-            "threat_description": "Use of code to perform unauthorised disclosure, adjustment or destruction"
-        }, 
-        {
-            "threat_name": "Information Gathering", 
-            "threat_description": "Gathering of information"
-        }, 
-        {
-            "threat_name": "Intrusions", 
-            "threat_description": "Unauthorised access to data, systems, physical documents, or facilities"
-        }, 
-        {
-            "threat_name": "Availablity", 
-            "description": "Unavailability of systems, people, physical documents or facilities"
-        }, 
-        {
-            "threat_name": "Information Content Security", 
-            "threat_description": "Unauthorised adjustment of information content"
-        }, 
-        {
-            "threat_name": "Fraud", 
-            "threat_description": "Fraud is deliberate deception to secure unfair or unlawful gain, or to deprive a victim of a legal right."
-        }
-    ], 
-    "containers": [
-        {
-            "container_id": "container000001", 
-            "container_description": "A database server is software and hardware needed to operate the database", 
-            "container_name": "Server - Database"
-        }, 
-        {
-            "action": "Add container", 
-            "threat_id": "threat000001", 
-            "container_description": "", 
-            "container_id": "container000002", 
-            "container_name": "Administrators - Servers"
         }
     ]
 }

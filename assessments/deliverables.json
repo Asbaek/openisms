@@ -1,60 +1,81 @@
 {
   "deliverables": [
     {
-      "maturity_current": "",
-      "name": "ISMS Scope",
-      "maturity_planned": "",
-      "link": "",
-      "control_references": [],
+      "maturity_current": "0",
+      "name": "Organisation and ISMS Scope",
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": [
+        "Clause 4.1",
+        "Clause 4.2",
+	"Clause 4.3"],
       "_id": "D0001",
-      "type": "Document"
+      "type": "Mandatory Document"
     },
     {
-      "maturity_current": "",
+      "maturity_current": "0",
       "name": "Information Security Policy",
-      "maturity_planned": "",
-      "link": "Intraweb",
-      "control_references": [],
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["Clause 5.2"],
       "_id": "D0002",
-      "type": "Document"
+      "type": "Mandatory Document"
     },
     {
-      "maturity_current": "",
+      "maturity_current": "0",
       "name": "Statement of Applicability",
-      "maturity_planned": "",
-      "link": "",
-      "control_references": [],
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["Clause 6.1.3"],
       "_id": "D0003",
-      "type": "Document"
+      "type": "Mandatory Document"
     },
     {
-      "maturity_current": "",
+      "maturity_current": "0",
       "name": "Risk Treatment Plan",
-      "maturity_planned": "",
-      "link": "",
-      "control_references": [],
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": [
+	"Clause 6.1.3",
+	"Clause 6.2"
+],
       "_id": "D0004",
-      "type": "Document"
+      "type": "Mandatory Document"
     },
     {
-      "maturity_current": "",
+      "maturity_current": "0",
+      "name": "Information Security Objectives",
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["Clause 6.2"],
+      "_id": "D0002",
+      "type": "Mandatory Document"
+    },
+    {
+      "maturity_current": "0",
       "name": "Management Review Memos",
-      "maturity_planned": "",
-      "link": "",
-      "control_references": [],
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["Clause 9.3"],
       "_id": "D0005",
-      "type": "Record"
+      "type": "Mandatory Record"
     },
     {
-      "maturity_current": "",
+      "maturity_current": "0",
       "name": "Acceptable Use Policy",
-      "maturity_planned": "",
-      "link": "",
-      "control_references": [],
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["A.9.1.1"],
       "_id": "D0006",
-      "type": "Document"
+      "type": "Mandatory Document"
     }
   ],
+  "document_types":[
+   "Mandatory Document",
+   "Optional Document",
+   "Mandatory Record",
+   "Optional Record"
+   ],
   "deliverable_maturity": {
     "0": "Non-existent. Absence of awareness and documentation",
     "1": "Initial. Awareness of need to study is present, but no documentation",
