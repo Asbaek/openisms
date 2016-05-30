@@ -20,6 +20,13 @@
     <input class="ui button" type="submit" name="action" value="Apply process changes">
   </form>
 </fieldset>
+<br>
+<form action="/add_asset" method="POST">
+  <input type="hidden" name="process_id" value="{{ process.process_id }}">
+  <input class="ui button" type="submit" name="action" value="Add asset">
+</form>
+<br>
+<br>
 
 {# FORM TO SELECT ASSET TO UPDATE, ADD OR DELETE #}
 {% for asset in asset_table %} {# ends at end of template!#}
@@ -106,16 +113,21 @@
 </fieldset>
 
 <br>
-<form action="/add_asset" method="POST">
-  <input type="hidden" name="process_id" value="{{ process.process_id }}">
-  <input class="ui button" type="submit" name="action" value="Add asset">
+<br>
+<form action="/add_threat" method="POST">
+  <select class="ui dropdown" name="threat_name">
+  {% for l_threat in threat_library %} 
+    <option value="{{l_threat.threat_name}}"> {{l_threat.threat_name}}  
+    </option>
+  {% endfor %}
+    </select>
+  <input type="hidden" name="asset_id" value="{{ asset.asset_id }}">
+<input class="ui button" type="submit" name="action" value="Add threat">
 </form>
 <br>
 <br>
 
-
 {# Threat form #}
-<h2>Threats to Critical Information</h2>
 <fieldset>
 {% for threat in threat_table %}
 {% if threat.asset_id == asset.asset_id %}
@@ -328,17 +340,6 @@ Is risk treatment done?:
 {% endfor %}
 </fieldset>
 <br>
-<form action="/add_threat" method="POST">
-  <select class="ui dropdown" name="threat_name">
-  {% for l_threat in threat_library %} 
-    <option value="{{l_threat.threat_name}}"> {{l_threat.threat_name}}  
-    </option>
-  {% endfor %}
-    </select>
-  <input type="hidden" name="asset_id" value="{{ asset.asset_id }}">
-  <input type="hidden" name="process_id" value="{{ process.process_id }}">
-<input class="ui button" type="submit" name="action" value="Add threat">
-</form>
 
 </fieldset>
 

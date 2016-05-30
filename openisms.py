@@ -13,6 +13,7 @@ import re
 DATA = "assessments/data.json"
 SCHEMA = "assessments/schema.json"
 CONTROL_LIBRARY = "assessments/control_library.json"
+DELIVERABLES = "assessments/deliverables.json"
 app = Flask(__name__)
 
 ###########################
@@ -188,6 +189,25 @@ def get_asset_threats(asset_ids):
     assert(type(result) is list), "get_asset_threats encountered an error in result variable"
     return result
 
+
+def get_threat_process(threat_id, data):
+    assert(type(threat_id) is str)
+    process_id = None 
+    asset_id = None
+    for risk in data['risktable']:
+        var_threat_id = risk.get("threat_id", None)
+        var_asset_id = risk.get("asset_id",None)
+        if var_threat_id and var_asset_id:
+            if var_threat_id == threat_id:
+                asset_id = var_asset_id
+    for risk in data['risktable']:
+        var_process_id = risk.get("process_id",None)
+        var_asset_id = risk.get("asset_id", None)
+        if var_process_id and var_asset_id:
+            if var_asset_id == asset_id:
+                process_id = var_process_id            
+    return process_id
+
 def get_control_dict(search_control_id):
     """
     Returns a dict with control_id and control_name if searc_control_id is found in control_library.json 
@@ -224,6 +244,7 @@ def get_container_dict(search_container_id):
     assert(type(result) is dict)
     return result
 
+
 def get_risk_score(threat_dict):
     """
     Returns a risk score as a string with 2 decimals. 
@@ -234,7 +255,7 @@ def get_risk_score(threat_dict):
     """
     data=import_jsondata(DATA)
     global_impact_details=data.get("global_impact_details", None)
-    risk_score = -1.0 
+    risk_score = 0.0
     impact_scores = threat_dict.get("impact_scores",None)
     try:
         for global_impact in global_impact_details: 
@@ -254,7 +275,7 @@ def get_risk_score(threat_dict):
 
     risk_score=risk_score*10.0/45.0      
     if risk_score>0.0:
-    	result = str('{0:.2f}'.format(risk_score))
+    	result = str('{:05.2f}'.format(risk_score))
     else:
 	result = "No risk calculated"
     assert(type(result) is str)
@@ -318,6 +339,15 @@ def inject_containers_and_controls(threat_table):
                     containers.append(new_data)
     	threat_table[index]["containers"]=containers
         threat_table[index]["asset_id"]=asset_id
+        asset_name=""
+        asset_owner=""
+        for asset in data['assets']:
+            var_asset_id = asset.get("asset_id", None)
+            if var_asset_id == asset_id:
+                asset_name=asset.get("asset_name",None)
+                asset_owner=asset.get("asset_owner",None)
+        threat_table[index]["asset_name"]=asset_name
+        threat_table[index]["asset_owner"]=asset_owner
     return threat_table        
 
 def apply_to_risktable(risk_dict):
@@ -468,33 +498,45 @@ def analyse_process():
     """
     Displays forms to analyse processes 
     """
-    #get input data
+    action=request.args['action']
     process_ids = []
     process_ids.append(request.args['process_id'])
     process_table = get_table(process_ids)
+    if action=="Delete":
+        process_id = str(process_ids[0])
+        if process_id:
+            delete_id_set(process_id, process_id)
+            data=import_jsondata(DATA)
+            for index,process in enumerate(data['processes']):
+                row_process_id = process.get("process_id")
+                if row_process_id == process_id:
+                    data['processes'].pop(index)
+                    break  
+            output = json.dumps(data, indent=4)
+            write_file(DATA, output, charset='utf-8')
+        return assessments()
+    if action=="Analyse":
+        asset_ids = get_process_assets(process_ids)
+        asset_table = get_table(asset_ids)
+        data = import_jsondata(DATA)
+        rxo_values = data["rxo_values"]
+        global_impact_details = data["global_impact_details"]
 
-    asset_ids = get_process_assets(process_ids)
-    asset_table = get_table(asset_ids)
-    data = import_jsondata(DATA)
-    rxo_values = data["rxo_values"]
-    global_impact_details = data["global_impact_details"]
-
-    threat_ids = get_asset_threats(asset_ids)
-    threat_table = get_table(threat_ids)
-    threat_table = inject_containers_and_controls(threat_table)
-    threat_table = inject_risk_scores(threat_table)
-    
-    threat_library = data.get("threat_library")
-    control_library = import_jsondata(CONTROL_LIBRARY)
-    container_library = data.get("container_library", None)
-    return render_template('analyse_process.html', process_table=process_table,
-						   asset_table=asset_table,
-						   rxo_values=rxo_values,
- 						   threat_library = threat_library,
-						   global_impact_details=global_impact_details,
-						   threat_table=threat_table,
-						   control_library=control_library,
-						   container_library=container_library)
+        threat_ids = get_asset_threats(asset_ids)
+        threat_table = get_table(threat_ids)
+        threat_table = inject_containers_and_controls(threat_table)
+        threat_table = inject_risk_scores(threat_table)
+        threat_library = data.get("threat_library")
+        control_library = import_jsondata(CONTROL_LIBRARY)
+        container_library = data.get("container_library", None)
+        return render_template('analyse_process.html', process_table=process_table,
+						       asset_table=asset_table,
+						       rxo_values=rxo_values,
+ 						       threat_library = threat_library,
+						       global_impact_details=global_impact_details,
+						       threat_table=threat_table,
+						       control_library=control_library,
+						       container_library=container_library)
 def get_next_id(aspect_id_type):
     """
     get_next_id returns next unique available ID number, depending on aspect_name.
@@ -507,6 +549,22 @@ def get_next_id(aspect_id_type):
     risktable_template = schema.get("risktable",None)
     aspect_id_types = list(risktable_template[0].keys())
     data = import_jsondata(DATA)
+    risktable=data.get("risktable", None)
+    if aspect_id_type is "process_id":
+        processes=data.get("processes",None)
+        process_ids=[]
+        for process in processes:
+            process_id = process.get("process_id",None)
+            if process_id:
+                process_ids.append(process_id)
+        for risk in risktable:
+            process_id = risk.get("process_id",None)
+            if process_id:
+                process_ids.append(process_id)
+        if not process_ids:
+            process_ids.append("process000000")
+        int_ids = [int(a[7:]) for a in process_ids]
+        return "process" + str(max(int_ids)+1).zfill(6)
     if aspect_id_type is "asset_id":
         assets=data.get("assets",None)
         asset_ids = []
@@ -514,7 +572,6 @@ def get_next_id(aspect_id_type):
             asset_id = asset.get("asset_id", None)
             if asset_id: 
                 asset_ids.append(asset_id)    
-        risktable=data.get("risktable", None)
         for risk in risktable:
             asset_id = risk.get("asset_id", None)
             if asset_id:
@@ -530,7 +587,6 @@ def get_next_id(aspect_id_type):
             threat_id = threat.get("threat_id", None)
             if threat_id: 
                 threat_ids.append(threat_id)    
-        risktable=data.get("risktable", None)
         for risk in risktable:
             threat_id = risk.get("threat_id", None)
             if threat_id:
@@ -546,7 +602,6 @@ def get_next_id(aspect_id_type):
             container_id = container.get("container_id", None)
             if container_id: 
                 container_ids.append(container_id)    
-        risktable=data.get("risktable", None)
         for risk in risktable:
             container_id = risk.get("container_id", None)
             if container_id:
@@ -555,6 +610,19 @@ def get_next_id(aspect_id_type):
             container_ids.append("container000000")
         int_ids = [int(a[9:]) for a in container_ids]
         return "container" + str(max(int_ids)+1).zfill(6)   
+
+@app.route("/add_process", methods=['POST','GET'])
+def add_process():
+    schema=import_jsondata(SCHEMA)
+
+    process_template = schema['processes'][0]
+    process_id = get_next_id("process_id")
+    process_template.update({"process_id":process_id})
+
+    apply_to_aspect("process", process_template)
+    risk_ids = {'process_id':process_id}
+    apply_to_risktable(risk_ids)
+    return jsonify(process_template)    
 
 
 @app.route("/add_asset", methods=['POST'])
@@ -641,6 +709,7 @@ def update_process():
         for value in f.getlist(key):
             new_process_data[key] = value.strip() 
     process_id = new_process_data.get("process_id",None)
+    action = new_process_data.get("action",None)
     new_process_data.pop("action", None)
     apply_to_aspect("process", new_process_data)
     risk_ids = {'process_id':process_id}
@@ -714,9 +783,11 @@ def delete_id_set(id_1, id_2):
     """
     assert(type(id_1) is str)
     assert(type(id_2) is str)
+    print str(id_1)
+    print str(id_2)
+  
     data=import_jsondata(DATA)
     old_risktable = data.get("risktable",None)
-    print old_risktable
     new_risktable = []
     for risk in old_risktable:
         id_1_found=False
@@ -764,6 +835,49 @@ def delete_container():
 def show_json():
     data = import_jsondata(DATA)
     return jsonify(data)
+
+@app.route("/reports", methods=['GET'])
+def reports():
+    return render_template("reports.html") 
+
+@app.route("/risk_acceptance", methods=['GET'])
+def risk_acceptance():
+    return render_template("risk_acceptance.html") 
+
+@app.route("/controls_soa", methods=['GET'])
+def controls_soa():
+    data = import_jsondata(DATA)
+    control_library=import_jsondata(CONTROL_LIBRARY)
+    control_table = control_library['control_library']
+    return render_template("controls_soa.html",control_table=control_table) 
+
+@app.route("/deliverables", methods=['GET'])
+def deliverables():
+    deliverables = import_jsondata(DELIVERABLES)
+    return render_template("deliverables.html", deliverables=deliverables['deliverables'])
+
+@app.route("/risk_report", methods=['POST','GET'])
+def risk_report():
+    data = import_jsondata(DATA)
+    threat_ids=[]
+    for risk in data['risktable']:
+        threat_id = risk.get('threat_id',None) 
+        if threat_id:
+            threat_ids.append(threat_id)
+    threat_table = get_table(threat_ids)
+    threat_table = inject_containers_and_controls(threat_table)
+    threat_table = inject_risk_scores(threat_table)
+    for index,threat in enumerate(threat_table):
+        process_name = ""
+        threat_id = threat.get("threat_id", None)
+        process_id = get_threat_process(str(threat_id), data)   
+        for process in data['processes']:
+            var_process_id = process.get("process_id", None)
+            if var_process_id:
+                if process_id == var_process_id:
+                    process_name = process.get("process_name", "")
+        threat_table[index]['process_name']=process_name
+    return render_template("risk_report.html",threat_table=threat_table) 
 
 #############
 # Main code #

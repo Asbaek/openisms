@@ -1,60 +1,234 @@
 {
   "deliverables": [
     {
-      "maturity_current": "",
-      "name": "ISMS Scope",
-      "maturity_planned": "",
-      "link": "",
-      "control_references": [],
+      "maturity_current": "0",
+      "name": "Organisation and ISMS Scope",
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": [
+        "Clause 4.1",
+        "Clause 4.2",
+	"Clause 4.3"],
       "_id": "D0001",
-      "type": "Document"
+      "type": "Mandatory Document"
     },
     {
-      "maturity_current": "",
+      "maturity_current": "0",
       "name": "Information Security Policy",
-      "maturity_planned": "",
-      "link": "Intraweb",
-      "control_references": [],
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["Clause 5.2"],
       "_id": "D0002",
-      "type": "Document"
+      "type": "Mandatory Document"
     },
     {
-      "maturity_current": "",
-      "name": "Statement of Applicability",
-      "maturity_planned": "",
-      "link": "",
-      "control_references": [],
+      "maturity_current": "0",
+      "name": "Risk Assessment Method",
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["Clause 6.1.2"],
       "_id": "D0003",
-      "type": "Document"
+      "type": "Mandatory Document"
     },
     {
-      "maturity_current": "",
+      "maturity_current": "0",
+      "name": "Statement of Applicability",
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["Clause 6.1.3"],
+      "_id": "D0003",
+      "type": "Mandatory Document"
+    },
+    {
+      "maturity_current": "0",
       "name": "Risk Treatment Plan",
-      "maturity_planned": "",
-      "link": "",
-      "control_references": [],
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": [
+	"Clause 6.1.3",
+	"Clause 6.2"
+],
       "_id": "D0004",
-      "type": "Document"
+      "type": "Mandatory Document"
     },
     {
-      "maturity_current": "",
+      "maturity_current": "0",
+      "name": "Information Security Objectives",
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["Clause 6.2"],
+      "_id": "D0002",
+      "type": "Mandatory Document"
+    },
+    {
+      "maturity_current": "0",
+      "name": "Training, Education and Awareness Records",
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["Clause 7.2"],
+      "_id": "D0002",
+      "type": "Mandatory Records"
+    },
+    {
+      "maturity_current": "0",
+      "name": "Risk Assessment Report",
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["Clause 8.2"],
+      "_id": "D0002",
+      "type": "Mandatory Document"
+    },
+    {
+      "maturity_current": "0",
+      "name": "Security Performance and Measurement Results",
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["Clause 9.1"],
+      "_id": "D0002",
+      "type": "Mandatory Records"
+    },
+    {
+      "maturity_current": "0",
+      "name": "Internal Audit Program",
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["Clause 9.2"],
+      "_id": "D0002",
+      "type": "Mandatory Records"
+    },
+    {
+      "maturity_current": "0",
+      "name": "Internal Audit Results",
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["Clause 9.2"],
+      "_id": "D0002",
+      "type": "Mandatory Records"
+    },
+    {
+      "maturity_current": "0",
       "name": "Management Review Memos",
-      "maturity_planned": "",
-      "link": "",
-      "control_references": [],
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["Clause 9.3"],
       "_id": "D0005",
-      "type": "Record"
+      "type": "Mandatory Record"
     },
     {
-      "maturity_current": "",
-      "name": "Acceptable Use Policy",
-      "maturity_planned": "",
-      "link": "",
-      "control_references": [],
+      "maturity_current": "0",
+      "name": "Corrective Action Results",
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["Clause 10.1"],
+      "_id": "D0005",
+      "type": "Mandatory Record"
+    },
+    {
+      "maturity_current": "0",
+      "name": "Security Roles and Responsibilities",
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["A.6.1.1"],
+      "_id": "D0002",
+      "type": "Mandatory Document"
+    },
+    {
+      "maturity_current": "0",
+      "name": "Asset Inventory",
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["A.8.1.1"],
       "_id": "D0006",
-      "type": "Document"
+      "type": "Mandatory Document"
+    },
+    {
+      "maturity_current": "0",
+      "name": "Acceptable Use Policy",
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["A.8.1.3"],
+      "_id": "D0006",
+      "type": "Mandatory Document"
+    },
+    {
+      "maturity_current": "0",
+      "name": "Access Control Policy",
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["A.9.1.1"],
+      "_id": "D0006",
+      "type": "Mandatory Document"
+    },
+    {
+      "maturity_current": "0",
+      "name": "IT Operating Procedures",
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["A.12.1.1"],
+      "_id": "D0006",
+      "type": "Mandatory Document"
+    },
+    {
+      "maturity_current": "0",
+      "name": "System Engineering Security Principles",
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["A.14.2.5"],
+      "_id": "D0006",
+      "type": "Mandatory Document"
+    },
+    {
+      "maturity_current": "0",
+      "name": "Log Reviews",
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["A.12.4.1","A.12.4.3"],
+      "_id": "D0005",
+      "type": "Mandatory Record"
+    },
+    {
+      "maturity_current": "0",
+      "name": "Supplier Relationship Security Policy",
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["A.15.1.1"],
+      "_id": "D0006",
+      "type": "Mandatory Document"
+    },
+    {
+      "maturity_current": "0",
+      "name": "Security Incident Procedure",
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["A.16.1.5"],
+      "_id": "D0006",
+      "type": "Mandatory Document"
+    },
+    {
+      "maturity_current": "0",
+      "name": "Security Business Continuity Procedures",
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["A.17.1.2"],
+      "_id": "D0006",
+      "type": "Mandatory Document"
+    },
+    {
+      "maturity_current": "0",
+      "name": "Contractual and Regulatory Security Requirements",
+      "maturity_planned": "3",
+      "link": "Draft",
+      "controls": ["A.18.1.1"],
+      "_id": "D0006",
+      "type": "Mandatory Document"
     }
   ],
+  "document_types":[
+   "Mandatory Document",
+   "Optional Document",
+   "Mandatory Record",
+   "Optional Record"
+   ],
   "deliverable_maturity": {
     "0": "Non-existent. Absence of awareness and documentation",
     "1": "Initial. Awareness of need to study is present, but no documentation",
