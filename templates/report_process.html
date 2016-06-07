@@ -1,345 +1,102 @@
 {% extends "layout.html" %}
 {% block body %}
 
-<h2>Risk Analysis</h2>
 {# FORM TO UPDATE PROCESS DETAILS #}
 {% for process in process_table %} {#loop ends at end of template!#}
 
-<fieldset>
-<h2>Process<h2>
-<form class="ui form" action="/update_process" method="POST">
-    <div class="field">
-      <label>Process name</label>
-      <input type="text" name="process_name" value="{{process.process_name}}">
-    </div>
-    <div class="field">
-      <label>Process description</label>
-      <textarea rows="4" name="process_description" cols=50>{{process.process_description}}</textarea>
-    </div>
-    <input type="hidden" name="process_id" value="{{ process.process_id }}">
-    <input class="ui button" type="submit" name="action" value="Apply process changes">
-  </form>
-</fieldset>
-<br>
-<form action="/add_asset" method="POST">
-  <input type="hidden" name="process_id" value="{{ process.process_id }}">
-  <input class="ui button" type="submit" name="action" value="Add asset">
-</form>
+<h2>Risk Report for {{process.process_name}}</h2>
+<h3>Process description</h3>
+{{process.process_description}}
 <br>
 <br>
 
-{# FORM TO SELECT ASSET TO UPDATE, ADD OR DELETE #}
-{% for asset in asset_table %} {# ends at end of template!#}
-<br>
-<br>
-<fieldset>
 <fieldset>
 <h2>Critical Information</h2>
-<form class="ui form" action="/update_asset" method="POST">
+{# FORM TO SELECT ASSET TO UPDATE, ADD OR DELETE #}
 
-    <div class="field">
-    <label>Asset name</label>
-    <div class="ui input">
-      <input type="text" name="asset_name" value="{{asset.asset_name}}">
-    </div>
-   </div>
+<table class="ui celled table">
+  <tr>
+    <th>Critical Information Name</th>
+    <th>Description</th>
+    <th>Owner</th>
+    <th>Confidential</th>
+    <th>Integrity critical </th>
+    <th>Availability critical</th>
+    <th>Backup frequency (RPO)</th>
+    <th>Lowest acceptable recovery time (RTO)</th>
+  </tr>
 
-    <div class="field">
-    <label>Asset description</label>
-    <textarea rows="4" name="asset_description" cols=50>{{asset.asset_description}}</textarea>
-    </div>
-
-    <div class="field">
-    <label>Asset owner</label>
-    <div class="ui input">
-      <input type="text" name="asset_owner" value="{{asset.asset_owner}}">
-    </div>
-   </div>
-
-   {% set check_c="" %}
-   {% set check_i="" %}
-   {% set check_a="" %}
-   {% if asset.asset_criticality_c == "True" %} {% set check_c="checked" %} {% endif %}
-   {% if asset.asset_criticality_i == "True" %} {% set check_i="checked" %} {% endif %}
-   {% if asset.asset_criticality_a == "True" %} {% set check_a="checked" %} {% endif %}
-   <div class="inline field">
-     <div class="ui checkbox">
-       <input type="hidden"  name="asset_criticality_c" value ="False" {{ check_c }} tabindex="0" class="hidden">
-       <input type="checkbox" name="asset_criticality_c" value ="True" {{ check_c }} tabindex="0" class="hidden">
-       <label>Confidentiality critical</label>
-     </div>
-    </div>
-
-    <div class="inline field">
-      <div class="ui checkbox">
-        <input type="hidden" name="asset_criticality_i" value ="False" {{ check_i }} tabindex="0" class="hidden">
-        <input type="checkbox" name="asset_criticality_i" value ="True" {{ check_i }} tabindex="0" class="hidden">
-        <label>Integrity critical</label>
-      </div>
-    </div>
-
-    <div class="inline field">
-      <div class="ui checkbox">
-        <input type="hidden" name="asset_criticality_a" value ="False" {{ check_a }} tabindex="0" class="hidden">
-        <input type="checkbox" name="asset_criticality_a" value ="True" {{ check_a }} tabindex="0" class="hidden">
-        <label>Availability critical</label>
-      </div>
-    </div>
-
-     <div class="field">
-    Recovery point objective
-    <select class="ui fluid dropdown" name="asset_rpo_days">
-      <option>{{asset.asset_rpo_days}}</option>
-      {% for element in rxo_values %}
-      <option value="{{element}}">{{element}} </option>
-      {% endfor %}
-    </select>
-  </div>
-
-  <div class="field">
-    Recovery time objective
-    <select class="ui fluid dropdown" name="asset_rto_days">
-      <option>{{asset.asset_rto_days}}</option>
-      {% for element in rxo_values %}
-        <option value="{{element}}">{{element}} </option>
-      {% endfor %}
-    </select>
-  </div>
-
-  <input type="hidden" name="process_id" value="{{ process.process_id }}">
-  <input type="hidden" name="asset_id" value="{{ asset.asset_id }}">
-  <input class="ui button" type="submit" name="action" value="Apply asset changes">
-</form>
+{% for asset in asset_table %}
+  <tr>
+    <td>{{asset.asset_name}}</td>
+    <td>{{asset.asset_description}}</td>
+    <td>{{asset.asset_owner}}</td>
+    <td>{% if asset.asset_criticality_c == "True" %}Yes{% else %}No{% endif %}
+    <td>{% if asset.asset_criticality_i == "True" %}Yes{% else %}No{% endif %}
+    <td>{% if asset.asset_criticality_a == "True" %}Yes{% else %}No{% endif %}
+    <td>{{asset.asset_rpo_days}} </td>
+    <td>{{asset.asset_rto_days}} </td>
+  </tr>
+{% endfor %}
+</table>
 </fieldset>
-
-<br>
-<br>
-<form action="/add_threat" method="POST">
-  <select class="ui dropdown" name="threat_name">
-  {% for l_threat in threat_library %} 
-    <option value="{{l_threat.threat_name}}"> {{l_threat.threat_name}}  
-    </option>
-  {% endfor %}
-    </select>
-  <input type="hidden" name="asset_id" value="{{ asset.asset_id }}">
-<input class="ui button" type="submit" name="action" value="Add threat">
-</form>
-<br>
 <br>
 
 {# Threat form #}
 <fieldset>
-{% for threat in threat_table %}
-{% if threat.asset_id == asset.asset_id %}
-<h2>Threat: {{ threat.threat_name }} </h2>
-<form class="ui form" action="/update_threat" method="POST">
-    <div class="field">
-      <label>Threat description</label>
-      <textarea rows="4" name="threat_description" cols=50>{{threat.threat_description}}</textarea>
-    </div>
+<h2> Risk Environment </h2>
+<table class="ui celled table">
+  <tr>
+    <th>Risk</th>
+    <th>Risk Score</th>
+    <th>Threat description</th>
+    <th>Sufficient Treatment established?</th>
+    <th>Treatment decision</th>
+  </tr>
 
-  <h4>Impact analysis</h4>
-    <table class="ui celled table">
-    <tr>
-    <td>Impact area</td>
-    <td>Low</td>
-    <td>Medium</td>
-    <td>High</td>
-    <td>Critical</td>
-    </tr>
-    {% for impact_score in threat.impact_scores %}
-       {% set check0=""  %}
-       {% set check1=""  %}
-       {% set check2=""  %}
-       {% set check3=""  %}
-       {% if impact_score.score == "0" %}{% set check0="checked"%}{% endif %}
-       {% if impact_score.score == "1" %}{% set check1="checked"%}{% endif %}
-       {% if impact_score.score == "2" %}{% set check2="checked"%}{% endif %}
-       {% if impact_score.score == "3" %}{% set check3="checked"%}{% endif %}
-    <tr>
-    <td>
-        {% for global_impact in global_impact_details %}
-        {% if global_impact.type == impact_score.type %}
-        {{global_impact.description}}
-	{% endif %}
-        {% endfor %}
-    </td>
-     <td>   
-        </div>
-        </div>
-        </div>
-       <input type="radio" name="{{impact_score.type}}" value="0" required {{ check0 }}>
-        {% for global_impact in global_impact_details %}
-        {% if global_impact.type == impact_score.type %}
-         <label>{{global_impact.low}}</label>
-	{% endif %}
-        {% endfor %}
-        </div>
-        </div>
-        </div>
-     </td>
-     <td>
-       <div class="inline fields">
-       <div class="field">
-       <div class="ui radio checkbox">
-       <input type="radio" name="{{impact_score.type}}" value="1" required {{ check1 }}>
-        {% for global_impact in global_impact_details %}
-        {% if global_impact.type == impact_score.type %}
-         <label>{{global_impact.medium}}</label>
-	{% endif %}
-        {% endfor %}
-        </div>
-        </div>
-        </div>
-     </td>
-     <td>
-       <div class="inline fields">
-       <div class="field">
-       <div class="ui radio checkbox">
-       <input type="radio" name="{{impact_score.type}}" value="2" required {{ check2 }}>
-        {% for global_impact in global_impact_details %}
-        {% if global_impact.type == impact_score.type %}
-         <label>{{global_impact.high}}</label>
-	{% endif %}
-        {% endfor %}
-        </div>
-        </div>
-        </div>
-     </td>
-     <td>
-       <div class="inline fields">
-       <div class="field">
-       <div class="ui radio checkbox">
-       <input type="radio" name="{{impact_score.type}}" value="3" required {{ check3 }}>
-        {% for global_impact in global_impact_details %}
-        {% if global_impact.type == impact_score.type %}
-         <label>{{global_impact.critical}}</label>
-	{% endif %}
-        {% endfor %}
-        </div>
-        </div>
-        </div>
-     </td>
-     <td>
-    </td>
-    </tr>
-    {% endfor %}
-    </table>
-
-
-<h4>Probability Analysis</h4>
-Probability of exposure:
-{% set check0=""  %}
-{% set check1=""  %}
-{% set check2=""  %}
-{% set check3=""  %}
-{% if threat.threat_probability == "0" %}{% set check0="checked"%}{% endif %}
-{% if threat.threat_probability == "1" %}{% set check1="checked"%}{% endif %}
-{% if threat.threat_probability == "2" %}{% set check2="checked"%}{% endif %}
-{% if threat.threat_probability == "3" %}{% set check3="checked"%}{% endif %}
-<table>
-<tr><td><input type="radio" name="threat_probability" value="0" required {{ check0 }}> Unlikely (every 10+ years)  </td></tr>
-<tr><td><input type="radio" name="threat_probability" value="1" required {{ check1 }}> Occasionally (every 5-10 years)</td></tr>
-<tr><td><input type="radio" name="threat_probability" value="2" required {{ check2 }}> Likely (every 1-5 years) </td></tr>
-<tr><td><input type="radio" name="threat_probability" value="3" required {{ check3 }}> Very likely (at least yearly) </td></tr>
+  {% for asset in asset_table %} {# ends at end of template!#}
+  {% for threat in threat_table|sort(attribute='risk_score', reverse = True ) %}
+  {% if threat.asset_id == asset.asset_id %}
+  <tr>
+    <td> {{ asset.asset_name }} - {{ threat.threat_name }} </td>
+    <td> {{ threat.risk_score }}</td>
+    <td> {{ threat.threat_description }} </td>
+    <td> {{ threat.threat_action_executed }} </td>
+    <td> {{ threat.threat_action }} </td>
+  </tr>
+  {% endif %}
+  {% endfor %}
+  {% endfor %}
 </table>
-
-<h4>Risk Treatment Decision</h4>
-Select one of the following options:
-<select name="threat_action"> 
-   <option value="{{threat.threat_action}}" selected>{{threat.threat_action}}</option>
-   <option value="Modify">Modify - implement or change security controls</option>
-   <option value="Retire">Retention - document managements acceptance of the risk</option>
-   <option value="Avoid">Avoid - avoid having the critical information at all </option>
-   <option value="Share">Share - share the risk with external parties like insurance companies or outsourcing partners</option>
-</select>
+</fieldset>
 <br>
-Is risk treatment done?:
-<select name="threat_action_executed"> 
-   <option selected>{{threat.threat_action_executed}}</option>
-   <option value="False">False</option>
-   <option value="True">True</option>
-</select>
-<br>
-<input type="hidden" name="threat_id" value="{{ threat.threat_id }}">
-<input type="hidden" name="asset_id" value="{{ asset.asset_id }}">
-<input class="ui button" type="submit" name="action" value="Apply threat changes">
-</form>
 
-<h4>Control selection</h4>
-  <table class="ui celled table">
-  <thead>
+<fieldset>
+<h2>Control selection</h2>
+<table class="ui celled table">
     <tr>
       <th>Container</th>
       <th>Controls</th>
     </tr>
-    {% for container in threat.containers|sort(attribute='container_name') %}
-    <tr>
-  </thead>
-  <td> 
-
-    <form action="/delete_container" method="POST">
-      {{container.container_name}} 
-      <input type="hidden" name="threat_id" value="{{ threat.threat_id }}">
-      <input type="hidden" name="container_id" value="{{ container.container_id }}">
-      <input class="red mini ui button" type="submit" name="action" value="Delete container">
-    </form>
-  </td>
-  <td>
-
-    {% for control in container.container_controls %}
-    <form action="/delete_control" method="POST">
-      {{control.control_id}} {{control.control_name}}
-      <input type="hidden" name="control_id" value="{{ control.control_id }}">
-      <input type="hidden" name="container_id" value="{{ container.container_id }}">
-    <input class="red mini ui button" type="submit" name="action" value="Delete control">
-    </form>
-    {% endfor %}
-
-    <div class="field">
-    <form action="/add_control" method="POST">
-      <select class="ui search dropdown" name="control_id"> 
-      <option selected></option>
-      {% for control_lib_item in control_library.control_library %}
-      <option value="{{control_lib_item.control_id}}"> 
-        {{control_lib_item.control_id}} {{control_lib_item.control_name}} 
-      </option> 
+    {% for asset in asset_table %} {# ends at end of template!#}
+    {% for threat in threat_table %}
+    {% if threat.asset_id == asset.asset_id %}
+      {% for container in threat.containers|sort(attribute='container_name') %}
+      <tr>
+      <td>{{container.container_name}}</td>
+      <td>
+      {% for control in container.container_controls %}
+        {{control.control_id}} {{control.control_name}} <br>
       {% endfor %}
-      </select>
-    <input type="hidden" name="threat_id" value="{{ threat.threat_id }}">
-    <input type="hidden" name="container_id" value="{{ container.container_id }}">
-    <input class="ui button" type="submit" name="action" value="Add control">
-    </form>
-    </div>
-  </td>
+      {% endfor %}
+      </td>
+      </tr>  
+    {% endif %}
     {% endfor %}
-  </tr>  
+    {% endfor %}
 </table>
-
-<div class="field">
-  <form action="/add_container" method="POST">
-    <select class="ui dropdown" name="container_name">
-      <option selected></option>
-      {% for container in container_library|sort(attribute='container_name') %}
-      <option value="{{container.container_name}}"> {{container.container_name}} 
-      </option>
-      {% endfor%}
-    </select>
-    <input type="hidden" name="threat_id" value="{{ threat.threat_id }}">
-    <input class="ui button" type="submit" name="action" value="Add container">
-  </form>
-</div>
-
-{# Threat loop ends here#}
-{% endif %}
+</fieldset>
 {% endfor %}
-</fieldset>
-<br>
-
-</fieldset>
-
-{% endfor %} {# asset loop ends here #}
-{% endfor %} {# proccess loop ends here#}
 
 {% endblock %}
 
