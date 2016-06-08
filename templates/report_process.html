@@ -1,0 +1,102 @@
+{% extends "layout.html" %}
+{% block body %}
+
+{# FORM TO UPDATE PROCESS DETAILS #}
+{% for process in process_table %} {#loop ends at end of template!#}
+
+<h2>Risk Report for {{process.process_name}}</h2>
+<h3>Process description</h3>
+{{process.process_description}}
+<br>
+<br>
+
+<fieldset>
+<h2>Critical Information</h2>
+{# FORM TO SELECT ASSET TO UPDATE, ADD OR DELETE #}
+
+<table class="ui celled table">
+  <tr>
+    <th>Critical Information Name</th>
+    <th>Description</th>
+    <th>Owner</th>
+    <th>Confidential</th>
+    <th>Integrity critical </th>
+    <th>Availability critical</th>
+    <th>Backup frequency (RPO)</th>
+    <th>Lowest acceptable recovery time (RTO)</th>
+  </tr>
+
+{% for asset in asset_table %}
+  <tr>
+    <td>{{asset.asset_name}}</td>
+    <td>{{asset.asset_description}}</td>
+    <td>{{asset.asset_owner}}</td>
+    <td>{% if asset.asset_criticality_c == "True" %}Yes{% else %}No{% endif %}
+    <td>{% if asset.asset_criticality_i == "True" %}Yes{% else %}No{% endif %}
+    <td>{% if asset.asset_criticality_a == "True" %}Yes{% else %}No{% endif %}
+    <td>{{asset.asset_rpo_days}} </td>
+    <td>{{asset.asset_rto_days}} </td>
+  </tr>
+{% endfor %}
+</table>
+</fieldset>
+<br>
+
+{# Threat form #}
+<fieldset>
+<h2> Risk Environment </h2>
+<table class="ui celled table">
+  <tr>
+    <th>Risk</th>
+    <th>Risk Score</th>
+    <th>Threat description</th>
+    <th>Sufficient Treatment established?</th>
+    <th>Treatment decision</th>
+  </tr>
+
+  {% for asset in asset_table %} {# ends at end of template!#}
+  {% for threat in threat_table|sort(attribute='risk_score', reverse = True ) %}
+  {% if threat.asset_id == asset.asset_id %}
+  <tr>
+    <td> {{ asset.asset_name }} - {{ threat.threat_name }} </td>
+    <td> {{ threat.risk_score }}</td>
+    <td> {{ threat.threat_description }} </td>
+    <td> {{ threat.threat_action_executed }} </td>
+    <td> {{ threat.threat_action }} </td>
+  </tr>
+  {% endif %}
+  {% endfor %}
+  {% endfor %}
+</table>
+</fieldset>
+<br>
+
+<fieldset>
+<h2>Control selection</h2>
+<table class="ui celled table">
+    <tr>
+      <th>Container</th>
+      <th>Controls</th>
+    </tr>
+    {% for asset in asset_table %} {# ends at end of template!#}
+    {% for threat in threat_table %}
+    {% if threat.asset_id == asset.asset_id %}
+      {% for container in threat.containers|sort(attribute='container_name') %}
+      <tr>
+      <td>{{container.container_name}}</td>
+      <td>
+      {% for control in container.container_controls %}
+        {{control.control_id}} {{control.control_name}} <br>
+      {% endfor %}
+      {% endfor %}
+      </td>
+      </tr>  
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
+</table>
+</fieldset>
+{% endfor %}
+
+{% endblock %}
+

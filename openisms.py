@@ -537,6 +537,32 @@ def analyse_process():
 						       threat_table=threat_table,
 						       control_library=control_library,
 						       container_library=container_library)
+    if action=="Report":
+        asset_ids = get_process_assets(process_ids)
+        asset_table = get_table(asset_ids)
+        data = import_jsondata(DATA)
+        rxo_values = data["rxo_values"]
+        global_impact_details = data["global_impact_details"]
+
+        threat_ids = get_asset_threats(asset_ids)
+        threat_table = get_table(threat_ids)
+        threat_table = inject_containers_and_controls(threat_table)
+        threat_table = inject_risk_scores(threat_table)
+        threat_library = data.get("threat_library")
+        control_library = import_jsondata(CONTROL_LIBRARY)
+        container_library = data.get("container_library", None)
+        return render_template('report_process.html', process_table=process_table,
+						       asset_table=asset_table,
+						       rxo_values=rxo_values,
+ 						       threat_library = threat_library,
+						       global_impact_details=global_impact_details,
+						       threat_table=threat_table,
+						       control_library=control_library,
+						       container_library=container_library)
+
+
+
+
 def get_next_id(aspect_id_type):
     """
     get_next_id returns next unique available ID number, depending on aspect_name.
@@ -849,6 +875,26 @@ def controls_soa():
     data = import_jsondata(DATA)
     control_library=import_jsondata(CONTROL_LIBRARY)
     control_table = control_library['control_library']
+    for index,control in enumerate(control_table):
+        control_id = control.get("control_id",None)
+        control_counter=0
+        control_assets=[]
+        control_containers=[]
+        if control_id:
+            for risk in data['risktable']:
+                risktable_control_id=risk.get("control_id",None)
+                if control_id==risktable_control_id:
+                    control_counter+=1
+                    container_id = risk.get("container_id",None) 
+                    if container_id:
+                        container_dict=get_container_dict(str(container_id))
+                        container_name=container_dict.get("container_name", "None")
+                        control_containers.append(container_name)
+        control_assets=set(control_assets)
+        control_containers=set(control_containers)
+        control_table[index]["control_containers"]=control_containers   
+        control_table[index]["control_assets"]=control_assets  
+        control_table[index]["control_count"]=control_counter   
     return render_template("controls_soa.html",control_table=control_table) 
 
 @app.route("/deliverables", methods=['GET'])
