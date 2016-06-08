@@ -667,7 +667,7 @@ def add_asset():
     apply_to_aspect("asset", asset_template)
     risk_ids = {'process_id':process_id,'asset_id':asset_id}
     apply_to_risktable(risk_ids)
-    return jsonify(asset_template)    
+    return redirect(url_for('analyse_process',process_id=process_id,action='Analyse process'))
 
 @app.route("/add_threat", methods=['POST'])
 def add_threat():
@@ -681,13 +681,14 @@ def add_threat():
     for key in f.keys():
         for value in f.getlist(key):
             formdata[key] = value.strip() 
+    process_id = formdata.get('process_id',None)
     asset_id = formdata.get("asset_id",None)
     threat_template['threat_name'] = formdata.get("threat_name","")
 
     apply_to_aspect("threat", threat_template)
     risk_ids = {'asset_id':asset_id,'threat_id':threat_id}
     apply_to_risktable(risk_ids)
-    return jsonify(threat_template)    
+    return redirect(url_for('analyse_process',process_id=process_id,action='Analyse process'))
 
 @app.route("/add_container", methods=['POST'])
 def add_container():
@@ -696,6 +697,7 @@ def add_container():
     for key in f.keys():
         for value in f.getlist(key):
             formdata[key] = value.strip() 
+    process_id = formdata.get('process_id',None)
     threat_id = formdata.get("threat_id",None)
     container_id = get_next_id("container_id")
     schema=import_jsondata(SCHEMA)
@@ -707,7 +709,7 @@ def add_container():
         apply_to_aspect("container", container_template)
         risk_ids = {'threat_id':threat_id,'container_id':container_id}
         apply_to_risktable(risk_ids)
-        return jsonify(formdata)    
+        return redirect(url_for('analyse_process',process_id=process_id,action='Analyse process'))
     else:
         return "Select a name"
 
@@ -718,9 +720,11 @@ def add_control():
     for key in f.keys():
         for value in f.getlist(key):
             formdata[key] = value.strip() 
+    process_id = formdata.get("process_id",None)
     formdata.pop("action",None)
+    formdata.pop("process_id")
     apply_to_risktable(formdata)
-    return jsonify(formdata)    
+    return redirect(url_for('analyse_process',process_id=process_id,action='Analyse process'))
 
 @app.route("/update_process", methods=['POST'])
 def update_process():
@@ -736,7 +740,7 @@ def update_process():
     apply_to_aspect("process", new_process_data)
     risk_ids = {'process_id':process_id}
     apply_to_risktable(risk_ids)
-    return jsonify(new_process_data)
+    return redirect(url_for('analyse_process',process_id=process_id,action='Analyse process'))
 
 @app.route("/update_asset", methods=['POST'])
 def update_asset():
@@ -756,7 +760,7 @@ def update_asset():
     #store id comination
     risk_ids = {'process_id':process_id,'asset_id':asset_id}
     apply_to_risktable(risk_ids)
-    return jsonify(new_asset_data)
+    return redirect(url_for('analyse_process',process_id=process_id,action='Analyse process'))
 
 @app.route("/update_threat", methods=['POST'])
 def update_threat():
@@ -767,6 +771,7 @@ def update_threat():
         for value in f.getlist(key):
             formdata[key] = value.strip() 
     # Update risktable
+    process_id = formdata.get('process_id',None)
     threat_id = formdata.get('threat_id',None)
     asset_id = formdata.get("asset_id",None)
     risk_ids = {"threat_id":threat_id, "asset_id":asset_id}
@@ -793,7 +798,7 @@ def update_threat():
     formdata['impact_scores']=impact_scores        
     # Store data
     apply_to_aspect("threat", formdata)
-    return jsonify(formdata)
+    return redirect(url_for('analyse_process',process_id=process_id,action='Analyse process'))
 
 def delete_id_set(id_1, id_2):
     """
@@ -830,11 +835,12 @@ def delete_control():
     for key in f.keys():
         for value in f.getlist(key):
             formdata[key] = value.strip() 
+    process_id = formdata.get('process_id',None)
     control_id = formdata.get("control_id",None)
     container_id = formdata.get("container_id",None)
     if control_id and container_id:
         delete_id_set(str(control_id),str(container_id))
-    return jsonify(formdata)
+    return redirect(url_for('analyse_process',process_id=process_id,action='Analyse process'))
 
 @app.route("/delete_container",methods=['POST','GET'])
 def delete_container():
@@ -843,11 +849,12 @@ def delete_container():
     for key in f.keys():
         for value in f.getlist(key):
             formdata[key] = value.strip() 
+    process_id = formdata.get('process_id',None)
     threat_id = formdata.get("threat_id",None)
     container_id = formdata.get("container_id",None)
     if container_id and threat_id:
         delete_id_set(str(threat_id),str(container_id))
-    return jsonify(formdata)
+    return redirect(url_for('analyse_process',process_id=process_id,action='Analyse process'))
 
 
 @app.route("/show_json", methods=['GET'])
@@ -923,7 +930,8 @@ def risk_report():
 #############
 if __name__ == '__main__':
     fix_data_structure()
-    # Try and get SERVER_NAME env variable, defaults to 127.0.0.1
+    # Try and get HOSTNAME env variable, defaults to 127.0.0.1
     host = os.getenv('HOSTNAME', '127.0.0.1')
-    app.run(debug=True)
-    app.run(host=host)
+    # Will be true if DEBUG is set to anything, otherwise false
+    debug = not not (os.getenv('DEBUG', False))
+    app.run(host=host,debug=debug)

@@ -263,6 +263,7 @@ Is risk treatment done?:
 <br>
 <input type="hidden" name="threat_id" value="{{ threat.threat_id }}">
 <input type="hidden" name="asset_id" value="{{ asset.asset_id }}">
+<input type="hidden" name="process_id" value="{{ process.process_id }}">
 <input class="ui button" type="submit" name="action" value="Apply threat changes">
 </form>
 
@@ -282,7 +283,8 @@ Is risk treatment done?:
       {{container.container_name}} 
       <input type="hidden" name="threat_id" value="{{ threat.threat_id }}">
       <input type="hidden" name="container_id" value="{{ container.container_id }}">
-      <input class="red mini ui button" type="submit" name="action" value="Delete container">
+      <input type="hidden" name="process_id" value="{{ process.process_id }}">
+      <input class="mini ui button" type="submit" name="action" value="Delete container">
     </form>
   </td>
   <td>
@@ -292,7 +294,8 @@ Is risk treatment done?:
       {{control.control_id}} {{control.control_name}}
       <input type="hidden" name="control_id" value="{{ control.control_id }}">
       <input type="hidden" name="container_id" value="{{ container.container_id }}">
-    <input class="red mini ui button" type="submit" name="action" value="Delete control">
+      <input type="hidden" name="process_id" value="{{ process.process_id }}">
+    <input class="mini ui button" type="submit" name="action" value="Delete control">
     </form>
     {% endfor %}
 
@@ -308,6 +311,7 @@ Is risk treatment done?:
       </select>
     <input type="hidden" name="threat_id" value="{{ threat.threat_id }}">
     <input type="hidden" name="container_id" value="{{ container.container_id }}">
+    <input type="hidden" name="process_id" value="{{ process.process_id }}">
     <input class="ui button" type="submit" name="action" value="Add control">
     </form>
     </div>
@@ -326,6 +330,7 @@ Is risk treatment done?:
       {% endfor%}
     </select>
     <input type="hidden" name="threat_id" value="{{ threat.threat_id }}">
+    <input type="hidden" name="process_id" value="{{ process.process_id }}">
     <input class="ui button" type="submit" name="action" value="Add container">
   </form>
 </div>
@@ -340,6 +345,21 @@ Is risk treatment done?:
 
 {% endfor %} {# asset loop ends here #}
 {% endfor %} {# proccess loop ends here#}
+
+<script>
+  var scrollPosition = Number(sessionStorage.getItem('scroll'));
+  if (scrollPosition) {
+    window.scroll(0, scrollPosition);
+    // Forget position after automatically jumping down
+    sessionStorage.setItem('scroll', 0);
+  }
+
+  // Remember the position when the user submits a form
+  // This way we can automatically jump down the page to where they were
+  $('input[type=submit]').click(function(e) {
+    sessionStorage.setItem('scroll', document.body.scrollTop);
+  });
+</script>
 
 {% endblock %}
 
