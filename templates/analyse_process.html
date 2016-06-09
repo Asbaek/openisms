@@ -341,5 +341,21 @@ Is risk treatment done?:
 {% endfor %} {# asset loop ends here #}
 {% endfor %} {# proccess loop ends here#}
 
+<script>
+  // Automatically jump to previous position
+  var scrollPosition = Number(sessionStorage.getItem('scroll'));
+  if (scrollPosition) {
+  window.scroll(0, scrollPosition);
+  // Forget position after automatically jumping down
+  sessionStorage.setItem('scroll', 0);
+}
+
+// Remember the position when the user submits a form
+// This way we can automatically jump down the page to where they were
+$('input[type=submit]').click(function(e) {
+  sessionStorage.setItem('scroll', document.body.scrollTop);
+}); 
+</script>
+
 {% endblock %}
 
