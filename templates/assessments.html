@@ -6,7 +6,7 @@
 {% for process in process_table|sort(attribute='process_name') %}
 <div class="field">
   <div class="ui radio checkbox">
-    <input type="radio" name="process_id" value="{{process.process_id}}">
+    <input required type="radio" name="process_id" value="{{process.process_id}}">
     <label>{{process.process_name}}</label>
   </div>
 </div>
@@ -16,6 +16,7 @@
 <input class="ui button" type=submit name="action" value="Delete">
 <input class="ui button" type=submit name="action" value="Report">
 </form>
+
 <form class="ui form" action="/add_process" method=POST>
 <input class="ui button" type=submit name="action" value="Add"
 <form>

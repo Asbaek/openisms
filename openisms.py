@@ -931,7 +931,9 @@ def risk_report():
 #############
 if __name__ == '__main__':
     fix_data_structure()
-    # Try and get SERVER_NAME env variable, defaults to 127.0.0.1
+    # Try and get HOSTNAME env variable, defaults to 127.0.0.1
     host = os.getenv('HOSTNAME', '127.0.0.1')
-    app.run(debug=True)
     app.run(host=host)
+    # Will debug if DEBUG is set to anything, otherwise false
+    debug = not not (os.getenv('DEBUG', False))
+    app.run(host=host,debug=debug)
