@@ -122,6 +122,7 @@
   {% endfor %}
     </select>
   <input type="hidden" name="asset_id" value="{{ asset.asset_id }}">
+  <input type="hidden" name="process_id" value="{{ process.process_id }}">
 <input class="ui button" type="submit" name="action" value="Add threat">
 </form>
 <br>
@@ -263,6 +264,7 @@ Is risk treatment done?:
 <br>
 <input type="hidden" name="threat_id" value="{{ threat.threat_id }}">
 <input type="hidden" name="asset_id" value="{{ asset.asset_id }}">
+<input type="hidden" name="process_id" value="{{ process.process_id }}">
 <input class="ui button" type="submit" name="action" value="Apply threat changes">
 </form>
 
@@ -280,6 +282,7 @@ Is risk treatment done?:
 
     <form action="/delete_container" method="POST">
       {{container.container_name}} 
+      <input type="hidden" name="process_id" value="{{ process.process_id }}">
       <input type="hidden" name="threat_id" value="{{ threat.threat_id }}">
       <input type="hidden" name="container_id" value="{{ container.container_id }}">
       <input class="red mini ui button" type="submit" name="action" value="Delete container">
@@ -290,6 +293,7 @@ Is risk treatment done?:
     {% for control in container.container_controls %}
     <form action="/delete_control" method="POST">
       {{control.control_id}} {{control.control_name}}
+      <input type="hidden" name="process_id" value="{{ process.process_id }}">
       <input type="hidden" name="control_id" value="{{ control.control_id }}">
       <input type="hidden" name="container_id" value="{{ container.container_id }}">
     <input class="red mini ui button" type="submit" name="action" value="Delete control">
@@ -306,6 +310,7 @@ Is risk treatment done?:
       </option> 
       {% endfor %}
       </select>
+    <input type="hidden" name="process_id" value="{{ process.process_id }}">
     <input type="hidden" name="threat_id" value="{{ threat.threat_id }}">
     <input type="hidden" name="container_id" value="{{ container.container_id }}">
     <input class="ui button" type="submit" name="action" value="Add control">
@@ -325,6 +330,7 @@ Is risk treatment done?:
       </option>
       {% endfor%}
     </select>
+    <input type="hidden" name="process_id" value="{{ process.process_id }}">
     <input type="hidden" name="threat_id" value="{{ threat.threat_id }}">
     <input class="ui button" type="submit" name="action" value="Add container">
   </form>
