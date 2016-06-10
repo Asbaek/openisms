@@ -810,9 +810,6 @@ def delete_id_set(id_1, id_2):
     """
     assert(type(id_1) is str)
     assert(type(id_2) is str)
-    print str(id_1)
-    print str(id_2)
-  
     data=import_jsondata(DATA)
     old_risktable = data.get("risktable",None)
     new_risktable = []
