@@ -648,7 +648,7 @@ def add_process():
     apply_to_aspect("process", process_template)
     risk_ids = {'process_id':process_id}
     apply_to_risktable(risk_ids)
-    return jsonify(process_template)    
+    return assessments()    
 
 
 @app.route("/add_asset", methods=['POST'])
