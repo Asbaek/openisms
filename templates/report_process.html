@@ -96,7 +96,28 @@
     {% endfor %}
 </table>
 </fieldset>
+
 {% endfor %}
 
-{% endblock %}
+<br>
+<fieldset>
+<h2>Signatures</h2>
+<table class="ui celled table">
+<tr>
+<th>Role</th><th>Name</th><th>Signature</th><th>Date</th>
+</tr>
+<tr>
+<td>Risk Analyst</td>
+<td>Name:_____________________________</td>
+<td>Signature:_____________________________</td>
+<td>Date: ________________</td>
+</tr>
+{% for asset in asset_table %}
+<tr>
+<td>Owner of {{asset.asset_name}}({{asset.asset_owner}})</td><td>Name:_____________________________</td><td>Signature:_____________________________</td><td>Date: ________________</td>
+</tr>
+{% endfor %}
+</fieldset>
+<br>
 
+{% endblock %}
