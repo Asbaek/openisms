@@ -505,7 +505,7 @@ def analyse_process():
     if action=="Delete":
         process_id = str(process_ids[0])
         if process_id:
-            delete_id_set(process_id, process_id)
+            delete_cascading_ids(process_id)
             data=import_jsondata(DATA)
             for index,process in enumerate(data['processes']):
                 row_process_id = process.get("process_id")
@@ -820,6 +820,40 @@ def delete_id_set(id_1, id_2):
             if value==id_1: id_1_found=True
             if value==id_2: id_2_found=True
         if not (id_1_found and id_2_found):
+            new_risktable.append(risk)
+    data['risktable']=new_risktable
+    output = json.dumps(data, indent=4)
+    write_file(DATA, output, charset='utf-8')
+    return True
+
+def delete_cascading_ids(aspect_id):
+    assert(type(aspect_id) is str)
+    prefix = aspect_id[0:5]
+    assert(prefix in ["proce","asset","threa"])
+    data=import_jsondata(DATA)
+    old_risktable = data.get("risktable",None)
+    id_order = ["process_id","asset_id","threat_id"]
+    remove_list=[]
+    remove_list.append(aspect_id)
+    for risk in old_risktable:
+        remove_risk = False
+        for id_type in id_order:
+            for id_key, id_value in risk.iteritems():
+                if id_type == id_key:
+                    if id_value in remove_list:
+                        remove_risk=True
+                        break
+            if remove_risk:
+                for id_key, id_value in risk.iteritems():
+                    if id_type==id_key:
+                        remove_list.append(id_value)
+    new_risktable = []
+    for risk in old_risktable:
+        keep_risk=True
+        for id_key, id_value in risk.iteritems():
+            if id_value in remove_list:
+                keep_risk=False
+        if keep_risk:
             new_risktable.append(risk)
     data['risktable']=new_risktable
     output = json.dumps(data, indent=4)
