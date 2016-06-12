@@ -505,15 +505,9 @@ def analyse_process():
     if action=="Delete":
         process_id = str(process_ids[0])
         if process_id:
-            delete_cascading_ids(process_id)
-            data=import_jsondata(DATA)
-            for index,process in enumerate(data['processes']):
-                row_process_id = process.get("process_id")
-                if row_process_id == process_id:
-                    data['processes'].pop(index)
-                    break  
-            output = json.dumps(data, indent=4)
-            write_file(DATA, output, charset='utf-8')
+            depending_ids=delete_cascading_ids(process_id)
+            for aspect_id in depending_ids:
+                delete_aspect(str(aspect_id))
         return assessments()
     if action=="Analyse":
         asset_ids = get_process_assets(process_ids)
@@ -858,6 +852,30 @@ def delete_cascading_ids(aspect_id):
     data['risktable']=new_risktable
     output = json.dumps(data, indent=4)
     write_file(DATA, output, charset='utf-8')
+    return list(set(remove_list))
+
+def delete_aspect(aspect_id):
+    assert(type(aspect_id) is str)
+    ref = ""
+    key = ""
+    if aspect_id[0:7]=="process":
+        ref="processes"
+        key="process_id"
+    elif aspect_id[0:5]=="asset":
+        ref="assets"
+        key="asset_id"
+    elif aspect_id[0:6]=="threat":
+        ref="threats"
+        key="threat_id"
+    if ref:
+        data=import_jsondata(DATA)
+        for index,aspect in enumerate(data[ref]):
+            row_id = aspect.get(key,None)
+            if row_id == aspect_id:
+                data[ref].pop(index)
+                break  
+        output = json.dumps(data, indent=4)
+        write_file(DATA, output, charset='utf-8')
     return True
 
 @app.route("/delete_control",methods=['POST','GET'])
