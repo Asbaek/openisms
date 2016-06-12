@@ -746,15 +746,23 @@ def update_asset():
     for key in f.keys():
         for value in f.getlist(key):
             new_asset_data[key] = value.strip() 
+    action = new_asset_data.get("action",None)
     process_id = new_asset_data.get("process_id",None)
     asset_id = new_asset_data.get("asset_id",None)
-    #clean data before storage
-    new_asset_data.pop("process_id",None)
-    new_asset_data.pop("action",None)
-    apply_to_aspect("asset", new_asset_data)
-    #store id comination
-    risk_ids = {'process_id':process_id,'asset_id':asset_id}
-    apply_to_risktable(risk_ids)
+    if action == "Delete asset":
+        if asset_id:
+            depending_ids=[]
+            depending_ids=delete_cascading_ids(str(asset_id))
+            for aspect_id in depending_ids:
+                delete_aspect(str(aspect_id))
+    if action == "Apply asset changes":
+        #clean data before storage
+        new_asset_data.pop("process_id",None)
+        new_asset_data.pop("action",None)
+        apply_to_aspect("asset", new_asset_data)
+        #store id comination
+        risk_ids = {'process_id':process_id,'asset_id':asset_id}
+        apply_to_risktable(risk_ids)
     return redirect(url_for('analyse_process',process_id=process_id,action='Analyse'))
 
 @app.route("/update_threat", methods=['POST'])
