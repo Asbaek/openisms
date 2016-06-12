@@ -765,34 +765,42 @@ def update_threat():
     for key in f.keys():
         for value in f.getlist(key):
             formdata[key] = value.strip() 
+    action = formdata.get('action',None)
     # Update risktable
     process_id = formdata.get('process_id',None)
     threat_id = formdata.get('threat_id',None)
     asset_id = formdata.get("asset_id",None)
-    risk_ids = {"threat_id":threat_id, "asset_id":asset_id}
-    apply_to_risktable(risk_ids)
-    # Clean formdata
-    formdata.pop("action",None)
-    formdata.pop("asset_id",None)
-    # Get list of impact_score_types from data.json  
-    impact_score_types=[]
-    data=import_jsondata(DATA)
-    global_impact_details=data.get("global_impact_details",None)
-    for global_impact_detail in global_impact_details:
-         impact_score_types.append(global_impact_detail.get("type",None))
-    # Create datastructure for impact_scores and update formdata.
-    impact_scores=[]
-    for impact_score_type in impact_score_types:
-        formdata_variable = formdata.get(impact_score_type, None)
-        if formdata_variable in ["0","1","2","3"]:
-            impact_score={}
-            impact_score['score']=str(formdata_variable)
-            impact_score['type']=impact_score_type
-            impact_scores.append(impact_score)
-            formdata.pop(impact_score_type,None)
-    formdata['impact_scores']=impact_scores        
-    # Store data
-    apply_to_aspect("threat", formdata)
+    if action == "Delete threat":
+        if threat_id:
+            depending_ids=[]
+            depending_ids=delete_cascading_ids(str(threat_id))
+            for aspect_id in depending_ids:
+                delete_aspect(str(aspect_id))
+    if action == "Apply threat changes":
+        risk_ids = {"threat_id":threat_id, "asset_id":asset_id}
+        apply_to_risktable(risk_ids)
+        # Clean formdata
+        formdata.pop("action",None)
+        formdata.pop("asset_id",None)
+        # Get list of impact_score_types from data.json  
+        impact_score_types=[]
+        data=import_jsondata(DATA)
+        global_impact_details=data.get("global_impact_details",None)
+        for global_impact_detail in global_impact_details:
+            impact_score_types.append(global_impact_detail.get("type",None))
+        # Create datastructure for impact_scores and update formdata.
+        impact_scores=[]
+        for impact_score_type in impact_score_types:
+            formdata_variable = formdata.get(impact_score_type, None)
+            if formdata_variable in ["0","1","2","3"]:
+                impact_score={}
+                impact_score['score']=str(formdata_variable)
+                impact_score['type']=impact_score_type
+                impact_scores.append(impact_score)
+                formdata.pop(impact_score_type,None)
+        formdata['impact_scores']=impact_scores        
+        # Store data
+        apply_to_aspect("threat", formdata)
     return redirect(url_for('analyse_process',process_id=process_id,action='Analyse'))
 
 def delete_id_set(id_1, id_2):
