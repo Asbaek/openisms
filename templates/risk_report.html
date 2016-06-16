@@ -5,14 +5,18 @@
 This list show all risks recorded in OpenISMS.
 <table class="ui celled table">
 <thead>
-  <tr><th>Process Name</th><th>Risk Name</th><th>Risk Score<br>(0-10)</th><th>Asset Owner</th><th>Sufficient mitigation implemented?</th></tr>
+  <tr><th>Risk Number</th><th>Risk Name</th><th>Process Name</th><th>Risk Score<br>(0-10)</th><th>Asset Owner</th><th>Sufficient mitigation implemented?</th></tr>
 </thead>
 <tbody>
   {% for threat in threat_table|sort(attribute='risk_score', reverse = True) %}
   <tr><td>
-     {{threat.process_name}}
+     <center>
+     {{ loop.index }}
+     </center>
   </td><td>
      {{threat.asset_name}} - {{threat.threat_name}}
+  </td><td>
+     {{threat.process_name}}
   </td><td>
      {{threat.risk_score}}
   </td><td>
@@ -26,4 +30,6 @@ This list show all risks recorded in OpenISMS.
   {% endfor %}
 </tbody>
 </table>
+<br>
+<br>
 {% endblock %}
