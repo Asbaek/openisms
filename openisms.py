@@ -944,9 +944,9 @@ def controls_soa():
     for index,control in enumerate(control_table):
         control_id = control.get("control_id",None)
         control_counter=0
-        control_assets=[]
         control_containers=[]
         if control_id:
+            #find control_containers+control_counter
             for risk in data['risktable']:
                 risktable_control_id=risk.get("control_id",None)
                 if control_id==risktable_control_id:
@@ -956,10 +956,33 @@ def controls_soa():
                         container_dict=get_container_dict(str(container_id))
                         container_name=container_dict.get("container_name", "None")
                         control_containers.append(container_name)
-        control_assets=set(control_assets)
-        control_containers=set(control_containers)
-        control_table[index]["control_containers"]=control_containers   
-        control_table[index]["control_assets"]=control_assets  
+            #find control_assets
+            related_ids = []
+            for risk in data['risktable']:
+                risktable_control_id = risk.get("control_id", None)
+                risktable_container_id = risk.get("container_id", None)
+                if control_id == risktable_control_id:
+                    if risktable_control_id and risktable_container_id:
+                        related_ids.append(risktable_container_id)
+            for risk in data['risktable']:
+                risktable_container_id = risk.get("container_id", None)
+                risktable_threat_id = risk.get("threat_id",None)
+                if risktable_container_id in related_ids:
+                    related_ids.append(risktable_threat_id)
+            control_asset_ids =[]
+            for risk in data['risktable']:
+                risktable_threat_id = risk.get("threat_id",None)
+                risktable_asset_id = risk.get("asset_id", None)
+                if risktable_threat_id in related_ids:
+                    control_asset_ids.append(risktable_asset_id)
+            control_assets=[]
+            for asset in data['assets']:
+                asset_id=asset.get("asset_id",None)
+                if asset_id in control_asset_ids:
+                    asset_name = asset.get("asset_name",None)
+                    control_assets.append(asset_name)
+        control_table[index]["control_containers"]=set(control_containers)
+        control_table[index]["control_assets"]=set(control_assets)  
         control_table[index]["control_count"]=control_counter   
         
         deliverables = import_jsondata(DELIVERABLES)
