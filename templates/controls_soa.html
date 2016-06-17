@@ -5,15 +5,21 @@
 This list show all risks recorded in OpenISMS.
 <table class="ui celled table">
 <thead>
-  <tr><th>Control ID</th><th>Control Name</th><th>Information to cover</th><th>Containers to cover</th><th>Times used</th></tr>
+  <tr>
+  <th>Control ID</th>
+  <th>Control Name</th>
+  <th>Information to cover</th>
+  <th>Containers to cover</th>
+  <th>Times used</th>
+  <th>Associated deliverables</th>
+  </tr>
 </thead>
 <tbody>
   {% for control in control_table %}
-  <tr><td>
-     {{control.control_id}}
-  </td><td>
-     {{control.control_name}}
-  </td><td>
+  <tr>
+  <td>{{control.control_id}}</td>
+  <td>{{control.control_name}}</td>
+  <td>
      <ul>
      {% for asset in control.control_assets %}
         <li>{{asset}}</li> 
@@ -21,7 +27,8 @@ This list show all risks recorded in OpenISMS.
         <li>None</li>
      {% endfor %}
      </ul>
-  </td><td>
+  </td>
+  <td>
      <ul>
      {% for container in control.control_containers %}
         <li>{{container}}</li> 
@@ -29,8 +36,16 @@ This list show all risks recorded in OpenISMS.
         <li>None</li> 
      {% endfor %}
      </ul>
-  </td><td>
-   {{control.control_count}}
+  </td>
+  <td>{{control.control_count}}</td>
+  <td>
+     <ul>
+     {% for deliverable_name in control.deliverable_names %}
+        <li>{{deliverable_name}}</li> 
+     {% else %}
+        <li>None</li>
+     {% endfor %}
+     </ul>
   </td>
   <tr>
   {% endfor %}

@@ -961,12 +961,45 @@ def controls_soa():
         control_table[index]["control_containers"]=control_containers   
         control_table[index]["control_assets"]=control_assets  
         control_table[index]["control_count"]=control_counter   
+        
+        deliverables = import_jsondata(DELIVERABLES)
+        deliverable_names=[]
+        for deliverable in deliverables["deliverables"]:
+            deliverable_control_references = deliverable.get("controls",None)
+            if deliverable_control_references:
+                for dcontrol_id in deliverable_control_references:
+                    if dcontrol_id == control_id:
+                        deliverable_name = deliverable.get("name", None)
+                        if deliverable_name:
+                            deliverable_names.append(deliverable_name)
+        control_table[index]["deliverable_names"]=set(deliverable_names)      
     return render_template("controls_soa.html",control_table=control_table) 
 
 @app.route("/deliverables", methods=['GET'])
 def deliverables():
-    deliverables = import_jsondata(DELIVERABLES)
-    return render_template("deliverables.html", deliverables=deliverables['deliverables'])
+    data = import_jsondata(DATA)
+    deliverables_import = import_jsondata(DELIVERABLES)
+    deliverables_table = deliverables_import['deliverables']
+    # Count the number of times the deliverable was relevant in the SOA
+    control_library=import_jsondata(CONTROL_LIBRARY)
+    control_table = control_library['control_library']
+    for index,control in enumerate(control_table):
+        control_id = control.get("control_id",None)
+        control_counter=0
+        if control_id:
+            for risk in data['risktable']:
+                risktable_control_id=risk.get("control_id",None)
+                if control_id==risktable_control_id:
+                    control_counter+=1
+            index_to_change = None
+            for index2,deliverable in enumerate(deliverables_table):
+                deliverable_control_references = deliverable.get("controls",None)
+                for dcontrol_id in deliverable_control_references:
+                    if dcontrol_id == control_id:
+                        index_to_change = index2
+            if index_to_change: 
+                deliverables_table[index_to_change]["count"]=control_counter 
+    return render_template("deliverables.html", deliverables_table=deliverables_table)
 
 @app.route("/risk_report", methods=['POST','GET'])
 def risk_report():

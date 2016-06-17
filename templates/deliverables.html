@@ -13,9 +13,10 @@ NOTE: You can assess and add documents in the documents  section of the assessme
   <td><b>Maturity current</b></td>
   <td><b>Maturity planned</b></td>
   <td><b>Maturity progress</b></td>
-  <td><b>Control references</b></td>
+  <td><b>ISO references</b></td>
+  <td><b>Number of references from SOA</b></td>
 </tr>
-{% for delivery in deliverables %}
+{% for delivery in deliverables_table %}
 	  <tr>
  	    <td>{{ delivery.name }} </td>
 	    <td> {{ delivery.type}} </td>
@@ -24,6 +25,7 @@ NOTE: You can assess and add documents in the documents  section of the assessme
 	    <td><center> {{ delivery.maturity_planned }} </center></td>
             <td> <progress value="{{ delivery.maturity_current }}" max="{{ delivery.maturity_planned|int}}"></progress>
             <td> {% for control in delivery.controls %} {{ control }} <br> {% endfor %} </td>
+            <td><center>{{ delivery.count }}</center></td>
 	</tr>
 {% endfor %}
 </table>
