@@ -48,10 +48,10 @@
 <table class="ui celled table">
   <tr>
     <th>Risk</th>
-    <th>Risk Score</th>
+    <th>Risk Score<br>(assuming no controls in place)</th>
     <th>Threat description</th>
-    <th>Sufficient Treatment established?</th>
-    <th>Treatment decision</th>
+    <th>Treatment decision<br>(assuming no controls in place)</th>
+    <th>Acceptable Treatment established today?</th>
   </tr>
 
   {% for asset in asset_table %} {# ends at end of template!#}
@@ -61,8 +61,8 @@
     <td> {{ asset.asset_name }} - {{ threat.threat_name }} </td>
     <td> {{ threat.risk_score }}</td>
     <td> {{ threat.threat_description }} </td>
-    <td> {{ threat.threat_action_executed }} </td>
     <td> {{ threat.threat_action }} </td>
+    <td> {% if threat.threat_action_executed == "True" %}Yes{% else %}No{% endif %}</td>
   </tr>
   {% endif %}
   {% endfor %}
@@ -82,7 +82,7 @@
     </tr>
     {% for asset in asset_table %} {# ends at end of template!#}
     {% for threat in threat_table %}
-      {% for container in threat.containers|sort(attribute='container_name') %}
+      {% for container in threat.containers|sort(attribute='container_name', reverse = True ) %}
         {% if threat.asset_id == asset.asset_id %}
         <tr>
         <td>{{container.container_name}}</td>
