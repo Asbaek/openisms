@@ -275,7 +275,7 @@ def get_risk_score(threat_dict):
 
     risk_score=risk_score*10.0/45.0      
     if risk_score>0.0:
-    	result = str('{:05.2f}'.format(risk_score))
+    	result = str('{:04.1f}'.format(risk_score))
     else:
 	result = "No risk calculated"
     assert(type(result) is str)
