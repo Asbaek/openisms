@@ -4,7 +4,24 @@
 This page is an inventory of documents used to implement the ISMS.<br>
 NOTE: You can assess and add documents in the documents  section of the assessments/data.json file. <br>
 <br>
-
+<h4>Maturity definitions</h4>
+<table class="ui celled table">
+<tr>
+  <td><b>Maturity level</b></td> 
+  <td><b>Description</b></td>
+</tr>
+{% for i in ["0","1","2","3","4","5"] %}
+{% for element, description in deliverable_maturity.iteritems() %}
+{% if i == element %}
+<tr>
+  <td>{{element}}</td> 
+  <td>{{description}}</td>
+</tr>
+{% endif %}
+{% endfor %}
+{% endfor %}
+</table>
+<br>
 <table class="ui celled table">
 <tr>
   <td><b>Delivery name</b></td> 
@@ -21,8 +38,28 @@ NOTE: You can assess and add documents in the documents  section of the assessme
  	    <td>{{ delivery.name }} </td>
 	    <td> {{ delivery.type}} </td>
 	    <td> {{ delivery.link }} </td>
-	    <td><center> {{ delivery.maturity_current}}</center></td>
-	    <td><center> {{ delivery.maturity_planned }} </center></td>
+	    <td>
+                <form class="ui form" action="/update_deliverables" method="POST">
+                <select onchange="this.form.submit()" class="ui fluid dropdown" name="maturity_current">
+                <option>{{ delivery.maturity_current}} </option>
+                {% for element  in ["0","1","2","3","4","5"] %}
+                <option value="{{element}}">{{element}}</option>
+                {% endfor %}
+                </select>
+                <input type="hidden" value="{{ delivery.name }}" name="name">
+                </form>
+            </td>
+	    <td>
+                <form class="ui form" action="/update_deliverables" method="POST">
+                <select onchange="this.form.submit()" class="ui fluid dropdown" name="maturity_planned">
+                <option>{{ delivery.maturity_planned}} </option>
+                {% for element  in ["0","1","2","3","4","5"] %}
+                <option value="{{element}}">{{element}}</option>
+                {% endfor %}
+                </select>
+                <input type="hidden" value="{{ delivery.name }}" name="name">
+                </form>
+            </td>
             <td> <progress value="{{ delivery.maturity_current }}" max="{{ delivery.maturity_planned|int}}"></progress>
             <td> {% for control in delivery.controls %} {{ control }} <br> {% endfor %} </td>
             <td><center>{{ delivery.count }}</center></td>

@@ -1022,7 +1022,32 @@ def deliverables():
                         index_to_change = index2
             if index_to_change: 
                 deliverables_table[index_to_change]["count"]=control_counter 
-    return render_template("deliverables.html", deliverables_table=deliverables_table)
+    deliverable_maturity = deliverables_import.get("deliverable_maturity",None)
+    return render_template("deliverables.html", deliverables_table=deliverables_table, deliverable_maturity=deliverable_maturity)
+
+@app.route("/update_deliverables", methods=['POST'])
+def update_deliverables():
+    deliverables_import = import_jsondata(DELIVERABLES)
+    formdata = {}
+    f = request.form
+    for key in f.keys():
+        for value in f.getlist(key):
+            formdata[key] = value.strip() 
+    maturity_current = formdata.get('maturity_current',None)
+    maturity_planned = formdata.get('maturity_planned',None)
+    name = formdata.get('name', None)
+    if name:
+        delivery_index = None
+        for index, deliverable in enumerate(deliverables_import["deliverables"]):
+            var_name = deliverable.get("name", None)
+            if var_name == name:
+                delivery_index = index
+	        break
+        if delivery_index != None:
+            deliverables_import["deliverables"][delivery_index].update(formdata)   
+    output = json.dumps(deliverables_import, indent=4)
+    write_file(DELIVERABLES, output, charset='utf-8')
+    return deliverables()    
 
 @app.route("/risk_report", methods=['POST','GET'])
 def risk_report():
