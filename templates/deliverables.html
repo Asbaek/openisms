@@ -37,7 +37,13 @@ NOTE: You can assess and add documents in the documents  section of the assessme
 	  <tr>
  	    <td>{{ delivery.name }} </td>
 	    <td> {{ delivery.type}} </td>
-	    <td> {{ delivery.link }} </td>
+
+	    <td>
+                <form class="ui form" action="/update_deliverables" method="POST">
+                <input type="hidden" value="{{ delivery.name }}" name="name" {{ delivery.name }}>
+                <input type="text"  onchange="this.form.submit()" class="ui fluid dropdown" name="link" value="{{ delivery.link }}" size="30">
+                </form>
+            </td>
 	    <td>
                 <form class="ui form" action="/update_deliverables" method="POST">
                 <select onchange="this.form.submit()" class="ui fluid dropdown" name="maturity_current">
